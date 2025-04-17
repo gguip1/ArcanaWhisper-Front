@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TarotCard from './TarotCard';
-import { majorArcana, shuffleCards } from '../data/tarotData';
+// import { majorArcana, shuffleCards } from '../data/tarotData';
+import { shuffleCards } from '../data/tarotData';
 import { FaArrowRight, FaRedo, FaHome } from 'react-icons/fa';
 import { FiShuffle } from 'react-icons/fi';
 
