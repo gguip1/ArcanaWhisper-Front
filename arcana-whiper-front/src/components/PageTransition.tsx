@@ -7,6 +7,19 @@ interface PageTransitionProps {
 
 const PageTransition: React.FC<PageTransitionProps> = ({ targetPage, customMessage }) => {
   const [stage, setStage] = useState<'initial' | 'animate' | 'final'>('initial');
+  // 컴포넌트가 마운트될 때 메시지를 한 번만 결정
+  const [message] = useState(() => {
+    if (customMessage) return customMessage;
+    
+    switch (targetPage) {
+      case 'cardSelection': 
+        return '타로 카드를 불러오는 중...';
+      case 'result':
+        return '당신의 운명을 해석하는 중...';
+      default: 
+        return '돌아가는 중...';
+    }
+  });
   
   useEffect(() => {
     // Start animation after component mounts
@@ -25,25 +38,11 @@ const PageTransition: React.FC<PageTransitionProps> = ({ targetPage, customMessa
     };
   }, []);
   
-  // 상황에 맞는 메시지 결정
-  const getMessage = () => {
-    if (customMessage) return customMessage;
-    
-    switch (targetPage) {
-      case 'cardSelection': 
-        return '타로 카드를 불러오는 중...';
-      case 'result':
-        return '당신의 운명을 해석하는 중...';
-      default: 
-        return '돌아가는 중...';
-    }
-  };
-  
   return (
     <div className={`transition-container ${stage}`}>
       <div className="mystical-orb-loader"></div>
       <div className="transition-text">
-        {getMessage()}
+        {message}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TarotCard from './TarotCard';
 import { majorArcana, shuffleCards } from '../data/tarotData';
-import { FaArrowRight, FaRedo } from 'react-icons/fa';
+import { FaArrowRight, FaRedo, FaHome } from 'react-icons/fa';
 import { FiShuffle } from 'react-icons/fi';
 
 // props 인터페이스 업데이트
@@ -11,6 +11,7 @@ interface CardSelectionProps {
   maxCards: number;
   onResetCards?: () => void;
   onRequestReading?: (cardNumbers: number[]) => void; // API 요청 함수 추가
+  onGoHome?: () => void; // 홈으로 돌아가는 핸들러 추가
 }
 
 const CardSelection: React.FC<CardSelectionProps> = ({ 
@@ -18,7 +19,8 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   onCardSelect,
   maxCards,
   onResetCards,
-  onRequestReading
+  onRequestReading,
+  onGoHome
 }) => {
   const [cardPositions, setCardPositions] = useState<{[key: number]: {x: number, y: number, rotation: number, baseZIndex: number}}>({});
   const remainingSelections = maxCards - selectedCards.length;
@@ -147,17 +149,30 @@ const CardSelection: React.FC<CardSelectionProps> = ({
       return card ? card.number : -1;
     }).filter(num => num !== -1); // 유효하지 않은 번호 제거
     
-    // 콘솔에 선택된 카드 정보 출력
-    console.log('=== 선택된 카드 정보 ===');
-    selectedCardNumbers.forEach((num, i) => {
-      const position = i === 0 ? '과거' : i === 1 ? '현재' : '미래';
-      const card = majorArcana.find(c => c.number === num);
-      console.log(`[${position}] ${card?.name} (${num}) - ${card?.description}`);
-    });
+    // // 콘솔에 선택된 카드 정보 출력
+    // console.log('=== 선택된 카드 정보 ===');
+    // selectedCardNumbers.forEach((num, i) => {
+    //   const position = i === 0 ? '과거' : i === 1 ? '현재' : '미래';
+    //   const card = majorArcana.find(c => c.number === num);
+    //   console.log(`[${position}] ${card?.name} (${num}) - ${card?.description}`);
+    // });
     
     // API 요청
     if (onRequestReading && selectedCardNumbers.length === maxCards) {
       onRequestReading(selectedCardNumbers);
+    }
+  };
+
+  // 홈 버튼 클릭 효과 처리
+  const handleHomeButtonClick = () => {
+    const homeButton = document.querySelector('.home-button');
+    if (homeButton) {
+      homeButton.classList.add('clicked');
+      
+      // 클릭 효과 후 홈으로 이동
+      if (onGoHome) {
+        onGoHome();
+      }
     }
   };
   
@@ -167,6 +182,17 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   
   return (
     <div className="card-selection-container">
+      {/* 홈으로 돌아가는 버튼 추가 */}
+      <button 
+        className="home-button"
+        onClick={handleHomeButtonClick}
+        title="홈으로 돌아가기"
+        aria-label="홈으로 돌아가기"
+      >
+        <FaHome className="home-icon" />
+        <span className="home-text">홈</span>
+      </button>
+
       <div className="card-selection-header">
         <div className="selection-indicators">
           {Array.from({ length: maxCards }).map((_, index) => (

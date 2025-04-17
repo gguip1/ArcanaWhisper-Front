@@ -380,6 +380,105 @@ html {
   to { transform: rotate(360deg); }
 }
 
+/* 홈으로 돌아가는 버튼 스타일 */
+.home-button {
+  position: fixed;
+  top: 1.2rem;
+  left: 1.2rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(30, 30, 46, 0.8);
+  color: #d4b2ff;
+  border: 1px solid rgba(156, 39, 176, 0.5);
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.home-button:hover {
+  background: rgba(156, 39, 176, 0.2);
+  box-shadow: 0 6px 15px rgba(156, 39, 176, 0.3);
+  transform: translateY(-2px);
+}
+
+.home-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: rgba(156, 39, 176, 0.4);
+}
+
+/* 클릭 시 시각적 피드백 */
+.home-button.clicked {
+  transform: scale(0.95);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  background: rgba(156, 39, 176, 0.3);
+  transition: all 0.1s ease;
+}
+
+.home-icon {
+  font-size: 1.1rem;
+}
+
+.home-text {
+  font-weight: 600;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .home-button {
+    top: 0.8rem;
+    left: 0.8rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .home-icon {
+    font-size: 1rem;
+  }
+  
+  /* 헤더 여백 조정 */
+  .card-selection-header {
+    margin-top: 3.5rem;
+  }
+  
+  .reading-header {
+    margin-top: 3.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-button {
+    top: 0.6rem;
+    left: 0.6rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .home-icon {
+    font-size: 0.9rem;
+  }
+  
+  /* 모바일에서는 아이콘만 표시 */
+  .home-text {
+    display: none;
+  }
+  
+  .home-button {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    padding: 0;
+  }
+}
+
 /* 카드 섞기 버튼 스타일 */
 .shuffle-button {
   position: absolute;

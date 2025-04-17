@@ -85,13 +85,7 @@ function App() {
   const handleGoHome = () => {
     handleResetCards();
     setReadingResult('');
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentPage('home');
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 1000);
-    }, 1500);
+    setCurrentPage('home');
   };
   
   const handleCloseError = () => {
@@ -111,6 +105,7 @@ function App() {
           maxCards={MAX_CARDS}
           onResetCards={handleResetCards}
           onRequestReading={handleRequestReading}
+          onGoHome={handleGoHome}
         />
       )}
       
