@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { FaHome, FaSyncAlt, FaFilePdf } from 'react-icons/fa';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
+import { FaHome, FaSyncAlt } from 'react-icons/fa';
+// import { FaHome, FaSyncAlt, FaFilePdf } from 'react-icons/fa';
+// import { jsPDF } from 'jspdf';
+// import html2canvas from 'html2canvas';
 
 interface ReadingResultProps {
   markdown: string;
