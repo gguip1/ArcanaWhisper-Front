@@ -3,9 +3,9 @@
  */
 
 // API 요청에 대한 타입 정의
-interface TarotRequest {
-  cards: number[];
-}
+// interface TarotRequest {
+//   cards: number[];
+// }
 
 // API 응답에 대한 타입 정의
 interface TarotResponse {
