@@ -1,0 +1,1693 @@
+#root {
+  width: 100%;
+  max-width: 100%; /* 최대 너비를 100%로 확장 */
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  height: 100vh;
+}
+
+body {
+  background: #121212;
+  color: #f5f5f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+html {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 100vw; /* 최대 너비를 뷰포트 너비로 제한 */
+  height: 100vh;
+  margin: 0; /* 마진 제거 */
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e2e;
+  box-shadow: none; /* 화면 전체 모드에서는 박스 섀도우 제거 */
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+  position: relative; /* 자식 요소들의 기준점 */
+  overflow: hidden;
+}
+
+/* Home Page Styles */
+.home-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background: radial-gradient(ellipse at top, #2a1b3d 0%, #1e1e2e 70%);
+  overflow: hidden;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+.home-content {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  width: 90%;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  background: rgba(30, 30, 46, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.home-title {
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  margin-bottom: 0.5rem;
+  color: #d4b2ff;
+  text-shadow: 
+    0 0 15px rgba(212, 178, 255, 0.6),
+    0 0 30px rgba(156, 39, 176, 0.3);
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: linear-gradient(45deg, #d4b2ff, #9c27b0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  line-height: 1.1;
+  white-space: normal; /* nowrap에서 normal로 변경 */
+  word-wrap: break-word; /* 긴 단어 처리 추가 */
+  overflow-wrap: break-word; /* 모던 브라우저 지원 */
+  hyphens: auto; /* 필요시 하이픈 사용 */
+  max-width: 100%; /* 최대 너비 제한 */
+}
+
+.home-tagline {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: #a990fc;
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+  font-weight: 500;
+  letter-spacing: 1px;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+.home-description {
+  max-width: 700px;
+  margin: 0 auto clamp(1.5rem, 4vw, 2.5rem);
+  line-height: 1.5;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: #e2e2e2;
+  padding: 0;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto clamp(1rem, 3vw, 2rem);
+  width: 100%;
+}
+
+.start-button {
+  background: linear-gradient(90deg, #9c27b0 0%, #673ab7 100%);
+  color: white;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 600;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 4vw, 3rem);
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
+  white-space: normal; /* nowrap에서 normal로 변경 */
+  max-width: 90%; /* 버튼 너비 제한 */
+}
+
+.start-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.5s ease;
+}
+
+.start-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 7px 20px rgba(156, 39, 176, 0.6);
+}
+
+.start-button:hover:before {
+  left: 100%;
+}
+
+.btn-text {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-icon {
+  font-size: clamp(1.2rem, 3vw, 1.4rem);
+  position: relative;
+  z-index: 2;
+}
+
+.disclaimer {
+  margin-top: clamp(1rem, 3vw, 1.5rem);
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  background: rgba(156, 39, 176, 0.1);
+  border-radius: 12px;
+  color: #a8a8a8;
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  line-height: 1.5;
+  border-left: 3px solid #9c27b0;
+}
+
+.disclaimer p {
+  margin-bottom: 0.5rem;
+}
+
+.disclaimer p:last-child {
+  margin-bottom: 0;
+}
+
+/* Decorative elements */
+.home-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+@keyframes pulsate {
+  0% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+  100% { opacity: 0.5; transform: scale(1); }
+}
+
+@keyframes float1 {
+  0% { transform: translateY(0) translateX(0) rotate(10deg); }
+  50% { transform: translateY(-20px) translateX(5px) rotate(12deg); }
+  100% { transform: translateY(0) translateX(0) rotate(10deg); }
+}
+
+@keyframes float2 {
+  0% { transform: translateY(0) translateX(0) rotate(-15deg); }
+  50% { transform: translateY(-15px) translateX(-8px) rotate(-12deg); }
+  100% { transform: translateY(0) translateX(0) rotate(-15deg); }
+}
+
+@keyframes float3 {
+  0% { transform: translateY(0) translateX(0) rotate(5deg); }
+  50% { transform: translateY(-18px) translateX(10px) rotate(7deg); }
+  100% { transform: translateY(0) translateX(0) rotate(5deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.floating-card {
+  position: absolute;
+  width: 140px;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: float 8s infinite ease-in-out;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.home-decoration.animated .floating-card {
+  opacity: 0.7;
+}
+
+.card-1 {
+  top: 15%;
+  right: 15%;
+  background: linear-gradient(45deg, #2c0b3f, #590d82);
+  background-size: 200% 200%;
+  animation-delay: 0s;
+  transform: rotate(10deg);
+  opacity: 0.7;
+}
+
+.card-2 {
+  bottom: 15%;
+  left: 10%;
+  background: linear-gradient(45deg, #330b3f, #5d0d82);
+  background-size: 200% 200%;
+  animation-delay: 2s;
+  transform: rotate(-15deg);
+  opacity: 0.6;
+}
+
+.card-3 {
+  top: 30%;
+  left: 15%;
+  background: linear-gradient(45deg, #380b3f, #4a0d82);
+  background-size: 200% 200%;
+  animation-delay: 4s;
+  transform: rotate(5deg);
+  opacity: 0.5;
+}
+
+.home-decoration.animated .card-1 {
+  animation: float1 8s infinite ease-in-out;
+  animation-delay: 0.1s;
+}
+
+.home-decoration.animated .card-2 {
+  animation: float2 10s infinite ease-in-out;
+  animation-delay: 0.2s;
+}
+
+.home-decoration.animated .card-3 {
+  animation: float3 9s infinite ease-in-out;
+  animation-delay: 0.3s;
+}
+
+.mystical-orb {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(156, 39, 176, 0.3) 0%, rgba(103, 58, 183, 0.1) 50%, rgba(0, 0, 0, 0) 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  filter: blur(20px);
+  animation: pulsate 5s infinite ease-in-out;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.home-decoration.animated .mystical-orb {
+  opacity: 0.5;
+  animation: pulsate 5s infinite ease-in-out;
+  animation-delay: 0.5s;
+}
+
+/* 카드 로딩 컨테이너 스타일 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  color: #d4b2ff;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #1e1e2e 0%, #2d2b42 100%);
+}
+
+.loading-container::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  margin-left: 15px;
+  border: 3px solid rgba(212, 178, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #d4b2ff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 카드 섞기 버튼 스타일 */
+.shuffle-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(30, 30, 46, 0.8);
+  color: #d4b2ff;
+  border: 1px solid rgba(156, 39, 176, 0.5);
+  padding: 0.7rem 1.2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.shuffle-button:hover {
+  background: rgba(156, 39, 176, 0.2);
+  box-shadow: 0 6px 15px rgba(156, 39, 176, 0.3);
+  transform: translateY(-2px);
+}
+
+.shuffle-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.shuffle-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.shuffle-icon {
+  font-size: 1.1rem;
+}
+
+/* 반응형 위치 조정 */
+@media (max-width: 768px) {
+  .shuffle-button {
+    position: static; /* 절대 위치 대신 일반 흐름에 배치 */
+    margin: 0.5rem auto 1rem;
+    width: auto;
+    max-width: 200px;
+    padding: 0.5rem 1.5rem;
+  }
+  
+  .card-selection-header {
+    margin-bottom: 0.5rem; /* 헤더와 버튼 사이 간격 줄임 */
+  }
+  
+  .tarot-cards-container {
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .shuffle-button {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.2rem;
+    margin: 0.3rem auto 0.8rem;
+  }
+  
+  .shuffle-icon {
+    font-size: 0.9rem;
+  }
+}
+
+/* 반응형 스타일 추가 */
+@media (max-width: 768px) {
+  .shuffle-button {
+    top: 0.8rem;
+    right: 0.8rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .shuffle-button {
+    top: 0.6rem;
+    right: 0.6rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .shuffle-icon {
+    font-size: 0.9rem;
+  }
+}
+
+/* Card Selection Page Styles */
+.card-selection-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(135deg, #1e1e2e 0%, #2d2b42 100%);
+  height: 100vh;
+  width: 100%;
+  max-width: 100vw; /* 최대 너비를 뷰포트 너비로 제한 */
+  margin: 0; /* 좌우 마진 제거 */
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  overflow-x: hidden;
+}
+
+.card-selection-header {
+  position: relative;
+  z-index: 20;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.card-selection-title {
+  font-size: 2.5rem;
+  color: #d4b2ff;
+  margin: 0.5rem 0;
+  text-shadow: 0 0 10px rgba(156, 39, 176, 0.3);
+}
+
+.selection-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 1rem;
+}
+
+.card-indicator {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 30, 46, 0.7);
+  color: #a8a8a8;
+  font-weight: bold;
+  border: 2px solid rgba(156, 39, 176, 0.5);
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.card-indicator.selected {
+  background: #9c27b0;
+  color: white;
+  box-shadow: 0 0 12px rgba(156, 39, 176, 0.5);
+  transform: scale(1.05);
+}
+
+.selection-instruction {
+  font-size: 1.1rem;
+  color: #d4b2ff;
+  margin: 0.5rem 0 1rem;
+}
+
+/* 새로운 타로 카드 컨테이너 스타일 */
+.tarot-cards-container {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 180px);
+  overflow: visible;
+  margin: 0 auto;
+  padding: 1rem 0;
+  box-sizing: border-box;
+}
+
+.tarot-card-wrapper {
+  position: absolute;
+  width: 140px;
+  height: 220px;
+  transform-origin: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), z-index 0s;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.tarot-card-wrapper:hover {
+  z-index: 500 !important; /* 호버 시에는 500으로 고정된 z-index 사용 */
+  transform: translate(-50%, -50%) rotate(0deg) scale(1.05) !important;
+  filter: drop-shadow(0 10px 25px rgba(156, 39, 176, 0.5));
+}
+
+.tarot-card-wrapper.selected {
+  /* z-index는 인라인 스타일로 동적 적용됨 */
+  filter: drop-shadow(0 15px 35px rgba(156, 39, 176, 0.8));
+}
+
+/* 카드 컨테이너 내부 스크롤 방지 */
+.tarot-cards-container::-webkit-scrollbar {
+  display: none;
+}
+
+.tarot-cards-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 기존 카드 그리드 스타일 제거 */
+.cards-grid-container, .cards-grid {
+  display: none;
+}
+
+/* Tarot Card Styles 조정 */
+.tarot-card-wrapper .tarot-card {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  max-width: none;
+}
+
+/* 타로 카드 뒷면 스타일 */
+.tarot-card-back-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.tarot-card-back-gradient {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(45deg, #2c0b3f, #590d82);
+  border-radius: 12px;
+  color: rgba(212, 178, 255, 0.2);
+  font-size: 3rem;
+}
+
+.tarot-card-back-symbol {
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 5px rgba(212, 178, 255, 0.5); }
+  to { text-shadow: 0 0 20px rgba(212, 178, 255, 0.8), 0 0 30px #9c27b0; }
+}
+
+/* 카드 앞면 플레이스홀더 스타일 개선 */
+.tarot-card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e1e2e, #2d2b42);
+  color: #d4b2ff;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.tarot-card-placeholder h3 {
+  font-size: 1.2rem;
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.tarot-card-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #d4b2ff, #9c27b0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 5px rgba(156, 39, 176, 0.3);
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+  .tarot-card-placeholder h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tarot-card-number {
+    font-size: 2rem;
+  }
+  
+  .tarot-card-back-symbol {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .tarot-card-placeholder h3 {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .tarot-card-number {
+    font-size: 1.5rem;
+  }
+  
+  .tarot-card-back-symbol {
+    font-size: 2rem;
+  }
+}
+
+/* 반응형 스타일 */
+@media (max-width: 1200px) {
+  .tarot-card-wrapper {
+    width: 120px;
+    height: 190px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tarot-card-wrapper {
+    width: 100px;
+    height: 160px;
+  }
+  
+  .tarot-cards-container {
+    height: calc(100vh - 160px);
+  }
+  
+  .home-content {
+    padding: clamp(1rem, 4vw, 2rem);
+    width: 92%;
+  }
+}
+
+@media (max-width: 576px) {
+  .tarot-card-wrapper {
+    width: 80px;
+    height: 130px;
+  }
+  
+  .tarot-card-name {
+    font-size: 0.7rem;
+    padding: 5px 0;
+  }
+  
+  .tarot-cards-container {
+    height: calc(100vh - 150px);
+  }
+  
+  .card-selection-container {
+    padding: 1rem 0.5rem;
+  }
+}
+
+/* For smaller screens */
+@media (max-width: 768px) {
+  .card-indicator {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  
+  .card-selection-title {
+    font-size: 2rem;
+  }
+  
+  .selection-instruction {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-indicator {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  
+  .card-selection-title {
+    font-size: 1.8rem;
+  }
+}
+
+.card-selection-header {
+  margin-bottom: 2rem;
+}
+
+.card-selection-subtitle {
+  font-size: 1.2rem;
+  color: #a8a8a8;
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
+}
+
+.selection-info {
+  margin: 1rem auto 2rem;
+  padding: 1rem;
+  background: rgba(156, 39, 176, 0.1);
+  border-radius: 8px;
+  color: #d4b2ff;
+  max-width: 600px;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+/* Tarot Card Styles */
+.tarot-card {
+  position: relative;
+  height: 240px;
+  perspective: 1000px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 160px;
+  margin: 0 auto;
+}
+
+.tarot-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s, box-shadow 0.3s;
+  transform-style: preserve-3d;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.tarot-card.selected .tarot-card-inner {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 25px rgba(156, 39, 176, 0.5);
+  border: 2px solid #9c27b0;
+}
+
+.tarot-card-front,
+.tarot-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tarot-card-front {
+  background: linear-gradient(45deg, #2c0b3f, #590d82);
+  color: #d4b2ff;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.tarot-card-back {
+  background-color: #f0f0f0;
+  transform: rotateY(180deg);
+}
+
+.tarot-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tarot-card-name {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 7px 0;
+  font-size: 0.9rem;
+}
+
+.tarot-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tarot-card.disabled:hover .tarot-card-inner {
+  transform: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Page Transition Animation */
+.transition-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  background: radial-gradient(ellipse at center, #2a1b3d 0%, #1e1e2e 70%);
+  border-radius: 0; /* 모서리 제거 */
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.transition-container.initial {
+  opacity: 0;
+}
+
+.transition-container.animate {
+  opacity: 1;
+}
+
+.transition-container.final {
+  opacity: 1;
+}
+
+.mystical-orb-loader {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(156, 39, 176, 0.7) 0%, rgba(103, 58, 183, 0.3) 50%, rgba(0, 0, 0, 0) 70%);
+  filter: blur(8px);
+  animation: pulse-loader 1.5s infinite ease-in-out;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.mystical-orb-loader:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(212, 178, 255, 0.5);
+  filter: blur(5px);
+  animation: pulse-loader-inner 1.5s infinite ease-in-out alternate;
+}
+
+@keyframes pulse-loader {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.9; }
+  100% { transform: scale(0.8); opacity: 0.5; }
+}
+
+@keyframes pulse-loader-inner {
+  0% { transform: translate(-50%, -50%) scale(0.8); }
+  100% { transform: translate(-50%, -50%) scale(1.3); }
+}
+
+.transition-text {
+  position: relative;
+  color: #d4b2ff;
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(212, 178, 255, 0.6);
+  z-index: 10;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.transition-cards {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.transition-card {
+  position: absolute;
+  width: 140px;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(45deg, #2c0b3f, #590d82);
+  opacity: 0;
+  transform: scale(0.1) rotate(0deg);
+  transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.transition-container.animate .transition-card {
+  opacity: 0.8;
+}
+
+.transition-container.animate .transition-card.card1 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  animation: spreadCard1 1.5s forwards;
+}
+
+.transition-container.animate .transition-card.card2 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  animation: spreadCard2 1.5s forwards;
+}
+
+.transition-container.animate .transition-card.card3 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  animation: spreadCard3 1.5s forwards;
+}
+
+.transition-container.animate .transition-card.card4 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  animation: spreadCard4 1.5s forwards;
+}
+
+.transition-container.animate .transition-card.card5 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  animation: spreadCard5 1.5s forwards;
+}
+
+@keyframes spreadCard1 {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
+  100% { top: 30%; left: 20%; transform: translate(-50%, -50%) scale(1) rotate(720deg); }
+}
+
+@keyframes spreadCard2 {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
+  100% { top: 20%; left: 70%; transform: translate(-50%, -50%) scale(1) rotate(740deg); }
+}
+
+@keyframes spreadCard3 {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
+  100% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1) rotate(720deg); }
+}
+
+@keyframes spreadCard4 {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
+  100% { top: 70%; left: 30%; transform: translate(-50%, -50%) scale(1) rotate(700deg); }
+}
+
+@keyframes spreadCard5 {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
+  100% { top: 70%; left: 80%; transform: translate(-50%, -50%) scale(1) rotate(760deg); }
+}
+
+.transition-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(30, 30, 46, 0.8) 70%);
+  z-index: 5;
+}
+
+/* Responsive styles for transition */
+@media (max-width: 768px) {
+  .transition-card {
+    width: 100px;
+    height: 160px;
+  }
+  
+  .transition-text {
+    font-size: 1.4rem;
+  }
+
+  .mystical-orb-loader {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .home-title {
+    font-size: 3rem;
+  }
+  
+  .home-tagline {
+    font-size: 1.2rem;
+  }
+  
+  .home-content {
+    padding: 2rem 1.5rem;
+    width: 85%;
+  }
+  
+  .floating-card {
+    width: 100px;
+    height: 160px;
+  }
+
+  .disclaimer {
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* 소형 화면용 추가 스타일 */
+@media (max-width: 480px) {
+  .home-title {
+    font-size: clamp(2rem, 7vw, 2.5rem);
+    letter-spacing: 1px;
+  }
+  
+  .start-button {
+    padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.2rem, 3vw, 2rem);
+  }
+}
+
+/* Fix for iOS height issues */
+@supports (-webkit-touch-callout: none) {
+  .home-container, .app-container {
+    height: -webkit-fill-available;
+  }
+}
+
+/* 카드 선택 완료 시 하단에 표시되는 액션 영역 */
+.card-action-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999; /* 최상위 레이어로 배치 */
+  pointer-events: none; /* 기본적으로 클릭 이벤트 통과 */
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.card-action-overlay.closing {
+  animation: slideDown 0.6s ease-in-out forwards;
+}
+
+.card-action-panel {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  padding: 0 clamp(0.5rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+  box-sizing: border-box;
+  animation: slideUp 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.card-action-content {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  width: clamp(280px, 90%, 800px);
+  padding: clamp(1rem, 4vw, 2.5rem);
+  background: rgba(30, 30, 46, 0.85);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto; /* 이 영역은 클릭 가능 */
+}
+
+.card-action-title {
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  margin-bottom: clamp(0.5rem, 2vw, 1rem);
+  color: #d4b2ff;
+  text-shadow: 
+    0 0 15px rgba(212, 178, 255, 0.6),
+    0 0 30px rgba(156, 39, 176, 0.3);
+  font-weight: 700;
+  letter-spacing: clamp(0.5px, 0.5vw, 2px);
+  background: linear-gradient(45deg, #d4b2ff, #9c27b0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap; /* 항상 한 줄로 표시 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 필요시 ...으로 표시 */
+  max-width: 100%; /* 최대 너비 설정 */
+}
+
+.card-action-description-container {
+  margin: 0 auto clamp(0.8rem, 3vw, 1.5rem);
+  width: 100%;
+  text-align: center;
+}
+
+.card-action-description-line {
+  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+  color: #e2e2e2;
+  line-height: 1.5;
+  margin: clamp(0.3rem, 1vw, 0.5rem) 0;
+  padding: 0;
+}
+
+.card-action-buttons {
+  display: flex;
+  justify-content: center;
+  margin: clamp(0.3rem, 1.5vw, 0.5rem) auto 0;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  width: 100%;
+}
+
+.card-action-button {
+  justify-content: center;
+  background: linear-gradient(90deg, #9c27b0 0%, #673ab7 100%);
+  color: white;
+  font-size: clamp(0.85rem, 1.8vw, 1.2rem);
+  font-weight: 600;
+  padding: clamp(0.5rem, 1.5vw, 1rem) clamp(1rem, 3vw, 3rem);
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: clamp(5px, 1vw, 10px);
+}
+
+.card-action-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.5s ease;
+}
+
+.card-action-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 7px 20px rgba(156, 39, 176, 0.6);
+}
+
+.card-action-button:hover:before {
+  left: 100%;
+}
+
+.card-action-button.primary-button {
+  flex: 2;
+  min-width: 240px;
+}
+
+.card-action-button.secondary-action {
+  background: rgba(30, 30, 46, 0.7);
+  border: 1px solid rgba(156, 39, 176, 0.5);
+  color: #d4b2ff;
+  flex: 1;
+  min-width: 150px;
+}
+
+.card-action-button.secondary-action:hover {
+  background: rgba(30, 30, 46, 0.9);
+}
+
+.card-action-button.secondary-action {
+  background: rgba(9, 132, 227, 0.8);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(9, 132, 227, 0.4);
+}
+
+.card-action-button.tertiary-action {
+  background: rgba(30, 30, 46, 0.7);
+  border: 1px solid rgba(156, 39, 176, 0.5);
+  color: #d4b2ff;
+}
+
+.card-action-button.secondary-action:hover {
+  box-shadow: 0 7px 20px rgba(9, 132, 227, 0.6);
+}
+
+.card-action-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none !important;
+}
+
+/* 반응형 스타일 */
+/* 큰 화면 (1200px 이상) */
+@media (min-width: 1201px) {
+  .card-action-content {
+    padding: 2.5rem;
+  }
+  
+  .card-action-title {
+    font-size: 2.2rem;
+  }
+  
+  .card-action-button {
+    padding: 1rem 3rem;
+  }
+}
+
+/* 중간 크기 화면 (768px ~ 1200px) */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .card-action-content {
+    padding: 2rem;
+    width: 85%;
+  }
+  
+  .card-action-title {
+    font-size: 1.8rem;
+  }
+}
+
+/* 태블릿 화면 (480px ~ 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .card-action-panel {
+    padding-bottom: 1.5rem;
+  }
+  
+  .card-action-content {
+    padding: 1.5rem;
+    width: 92%;
+  }
+  
+  .card-action-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .card-action-button {
+    width: 100%;
+    min-width: auto;
+    justify-content: center;
+  }
+  
+  .card-action-title {
+    font-size: clamp(1.4rem, 4vw, 1.6rem);
+    white-space: nowrap; /* 태블릿에서도 한 줄 유지 */
+  }
+  
+  .card-action-description-line {
+    font-size: clamp(0.85rem, 1.8vw, 1rem);
+  }
+}
+
+/* 모바일 화면 (480px 이하) */
+@media (max-width: 480px) {
+  .card-action-panel {
+    padding-bottom: 1rem;
+  }
+  
+  .card-action-content {
+    padding: clamp(0.8rem, 3vw, 1.2rem);
+    width: 95%;
+  }
+  
+  .card-action-title {
+    font-size: clamp(1.1rem, 3.5vw, 1.3rem); /* 글자 크기 더 작게 조정 */
+    margin-bottom: 0.5rem;
+    white-space: nowrap; /* 모바일에서도 한 줄 유지 */
+    letter-spacing: 0; /* 글자 간격 없애기 */
+  }
+  
+  .card-action-description-container {
+    margin-bottom: 0.8rem;
+  }
+  
+  .card-action-description-line {
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+    margin: 0.2rem 0;
+    line-height: 1.4;
+  }
+  
+  .card-action-buttons {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  
+  .card-action-button {
+    width: 100%;
+    padding: 0.7rem 1.2rem;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  }
+  
+  .btn-icon {
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  }
+}
+
+/* 초소형 화면 (360px 이하) */
+@media (max-width: 360px) {
+  .card-action-content {
+    padding: 0.8rem;
+  }
+  
+  .card-action-title {
+    font-size: clamp(0.9rem, 3vw, 1rem); /* 초소형 화면에서 더 작게 */
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  
+  .card-action-description-line {
+    font-size: 0.75rem;
+    margin: 0.15rem 0;
+  }
+  
+  .card-action-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(120%); opacity: 0; }
+}
+
+/* 타로 결과 페이지 스타일 */
+.reading-result-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e1e2e 0%, #2d2b42 100%);
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.reading-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.reading-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 0.5rem;
+  color: #d4b2ff;
+  text-shadow: 
+    0 0 15px rgba(212, 178, 255, 0.6),
+    0 0 30px rgba(156, 39, 176, 0.3);
+  font-weight: 700;
+  background: linear-gradient(45deg, #d4b2ff, #9c27b0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.reading-content {
+  background: rgba(30, 30, 46, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  margin: 0 auto 2rem;
+  width: 100%;
+  max-width: min(900px, calc(100vw - 2rem));
+  color: #e2e2e2;
+  line-height: 1.8;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 마크다운 스타일 */
+.reading-content h1, .reading-content h2 {
+  color: #d4b2ff;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.reading-content h3, .reading-content h4 {
+  color: #a990fc;
+  margin-top: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.reading-content p {
+  margin-bottom: 1rem;
+}
+
+.reading-content ul, .reading-content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.reading-content blockquote {
+  border-left: 4px solid #9c27b0;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #a8a8a8;
+  font-style: italic;
+}
+
+.reading-content pre {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 1rem 0;
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.reading-content code {
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.reading-content strong {
+  color: #d4b2ff;
+}
+
+.reading-content em {
+  color: #a990fc;
+}
+
+.reading-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.reading-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reading-action-btn.primary-action {
+  background: linear-gradient(90deg, #9c27b0 0%, #673ab7 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+}
+
+.reading-action-btn.secondary-action {
+  background: rgba(30, 30, 46, 0.7);
+  border: 1px solid rgba(156, 39, 176, 0.5);
+  color: #d4b2ff;
+}
+
+.reading-action-btn:hover {
+  transform: translateY(-3px);
+}
+
+.reading-action-btn.primary-action:hover {
+  box-shadow: 0 7px 20px rgba(156, 39, 176, 0.6);
+}
+
+/* 오류 모달 스타일 */
+.error-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.error-modal {
+  background: rgba(30, 30, 46, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  animation: slideUp 0.4s ease;
+}
+
+.error-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #a8a8a8;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.error-close-btn:hover {
+  color: #d4b2ff;
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.error-title {
+  color: #d4b2ff;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #e2e2e2;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.error-action-btn {
+  background: linear-gradient(90deg, #9c27b0 0%, #673ab7 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.error-action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .reading-result-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .reading-content {
+    padding: 1.5rem;
+  }
+  
+  .reading-actions {
+    flex-direction: column;
+    max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+  
+  .reading-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .error-modal {
+    width: 85%;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .reading-content {
+    padding: 1.2rem;
+    margin: 0 auto 1.5rem;
+  }
+  
+  .reading-action-btn {
+    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+  }
+  
+  .reading-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .error-title {
+    font-size: 1.3rem;
+  }
+  
+  .error-message {
+    font-size: 0.9rem;
+  }
+}
