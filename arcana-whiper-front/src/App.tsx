@@ -5,6 +5,7 @@ import CardSelection from './components/CardSelection'
 import PageTransition from './components/PageTransition'
 import ReadingResult from './components/ReadingResult'
 import ErrorModal from './components/ErrorModal'
+import LoginButton from './components/LoginButton'
 import { requestTarotReading } from './services/tarotService'
 
 function App() {
@@ -94,6 +95,9 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* 로그인 버튼 추가 - 모든 페이지에서 항상 보임 */}
+      <LoginButton position="fixed" providers={['google', 'kakao']} />
+      
       {currentPage === 'home' && !isTransitioning && !isLoading && (
         <Home onStartReading={handleStartReading} />
       )}

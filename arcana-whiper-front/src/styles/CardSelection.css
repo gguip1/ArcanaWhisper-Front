@@ -1,0 +1,548 @@
+/* Card Selection Page Styles */
+.card-selection-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(135deg, #1e1e2e 0%, #2d2b42 100%);
+  height: 100vh;
+  width: 100%;
+  max-width: 100vw; /* 최대 너비를 뷰포트 너비로 제한 */
+  margin: 0; /* 좌우 마진 제거 */
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  overflow-x: hidden;
+}
+
+.card-selection-header {
+  position: relative;
+  z-index: 20;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.card-selection-title {
+  font-size: 2.5rem;
+  color: #d4b2ff;
+  margin: 0.5rem 0;
+  text-shadow: 0 0 10px rgba(156, 39, 176, 0.3);
+}
+
+/* 인디케이터 스타일 업데이트 */
+.selection-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 1rem;
+}
+
+.card-indicator {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 30, 46, 0.7);
+  color: #a8a8a8;
+  font-weight: bold;
+  border: 2px solid rgba(156, 39, 176, 0.5);
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.card-indicator.selected {
+  background: #9c27b0;
+  color: white;
+  box-shadow: 0 0 12px rgba(156, 39, 176, 0.5);
+  transform: scale(1.05);
+}
+
+/* 섞기 인디케이터 스타일 */
+.shuffle-indicator {
+  cursor: pointer;
+  background: rgba(30, 30, 46, 0.7);
+  color: #d4b2ff;
+  overflow: hidden;
+  position: relative;
+  border: none;
+  padding: 0; /* 패딩 제거로 정확한 크기 유지 */
+}
+
+.shuffle-indicator:hover {
+  background: rgba(156, 39, 176, 0.3);
+  box-shadow: 0 0 12px rgba(156, 39, 176, 0.4);
+  transform: scale(1.05);
+}
+
+.shuffle-indicator:active {
+  transform: scale(0.95);
+}
+
+.shuffle-indicator:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.shuffle-indicator .shuffle-icon {
+  font-size: 1.2rem;
+  color: #d4b2ff;
+}
+
+.selection-instruction {
+  font-size: 1.1rem;
+  color: #d4b2ff;
+  margin: 0.5rem 0 1rem;
+}
+
+.card-selection-subtitle {
+  font-size: 1.2rem;
+  color: #a8a8a8;
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
+}
+
+.selection-info {
+  margin: 1rem auto 2rem;
+  padding: 1rem;
+  background: rgba(156, 39, 176, 0.1);
+  border-radius: 8px;
+  color: #d4b2ff;
+  max-width: 600px;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+/* 타로 카드 컨테이너 스타일 */
+.tarot-cards-container {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 180px);
+  overflow: visible;
+  margin: 0 auto;
+  padding: 1rem 0;
+  box-sizing: border-box;
+}
+
+.tarot-card-wrapper {
+  position: absolute;
+  width: 140px;
+  height: 220px;
+  transform-origin: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), z-index 0s;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.tarot-card-wrapper:hover {
+  z-index: 500 !important; /* 호버 시에는 500으로 고정된 z-index 사용 */
+  transform: translate(-50%, -50%) rotate(0deg) scale(1.05) !important;
+  filter: drop-shadow(0 10px 25px rgba(156, 39, 176, 0.5));
+}
+
+.tarot-card-wrapper.selected {
+  /* z-index는 인라인 스타일로 동적 적용됨 */
+  filter: drop-shadow(0 15px 35px rgba(156, 39, 176, 0.8));
+}
+
+/* 카드 컨테이너 내부 스크롤 방지 */
+.tarot-cards-container::-webkit-scrollbar {
+  display: none;
+}
+
+.tarot-cards-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 기존 카드 그리드 스타일 제거 */
+.cards-grid-container, .cards-grid {
+  display: none;
+}
+
+/* Tarot Card Styles 조정 */
+.tarot-card-wrapper .tarot-card {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  max-width: none;
+}
+
+/* 카드 액션 오버레이 */
+.card-action-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999; /* 최상위 레이어로 배치 */
+  pointer-events: none; /* 기본적으로 클릭 이벤트 통과 */
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.card-action-overlay.closing {
+  animation: slideDown 0.6s ease-in-out forwards;
+}
+
+.card-action-panel {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  padding: 0 clamp(0.5rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+  box-sizing: border-box;
+  animation: slideUp 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.card-action-content {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  width: clamp(280px, 90%, 800px);
+  padding: clamp(1rem, 4vw, 2.5rem);
+  background: rgba(30, 30, 46, 0.85);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto; /* 이 영역은 클릭 가능 */
+}
+
+.card-action-title {
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  margin-bottom: clamp(0.5rem, 2vw, 1rem);
+  color: #d4b2ff;
+  text-shadow: 
+    0 0 15px rgba(212, 178, 255, 0.6),
+    0 0 30px rgba(156, 39, 176, 0.3);
+  font-weight: 700;
+  letter-spacing: clamp(0.5px, 0.5vw, 2px);
+  background: linear-gradient(45deg, #d4b2ff, #9c27b0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap; /* 항상 한 줄로 표시 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 필요시 ...으로 표시 */
+  max-width: 100%; /* 최대 너비 설정 */
+}
+
+.card-action-description-container {
+  margin: 0 auto clamp(0.8rem, 3vw, 1.5rem);
+  width: 100%;
+  text-align: center;
+}
+
+.card-action-description-line {
+  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+  color: #e2e2e2;
+  line-height: 1.5;
+  margin: clamp(0.3rem, 1vw, 0.5rem) 0;
+  padding: 0;
+}
+
+.card-action-buttons {
+  display: flex;
+  justify-content: center;
+  margin: clamp(0.3rem, 1.5vw, 0.5rem) auto 0;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  width: 100%;
+}
+
+.card-action-button {
+  justify-content: center;
+  background: linear-gradient(90deg, #9c27b0 0%, #673ab7 100%);
+  color: white;
+  font-size: clamp(0.85rem, 1.8vw, 1.2rem);
+  font-weight: 600;
+  padding: clamp(0.5rem, 1.5vw, 1rem) clamp(1rem, 3vw, 3rem);
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: clamp(5px, 1vw, 10px);
+}
+
+.card-action-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.5s ease;
+}
+
+.card-action-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 7px 20px rgba(156, 39, 176, 0.6);
+}
+
+.card-action-button:hover:before {
+  left: 100%;
+}
+
+.card-action-button.primary-button {
+  flex: 2;
+  min-width: 240px;
+}
+
+.card-action-button.secondary-action {
+  background: rgba(30, 30, 46, 0.7);
+  border: 1px solid rgba(156, 39, 176, 0.5);
+  color: #d4b2ff;
+  flex: 1;
+  min-width: 150px;
+}
+
+.card-action-button.secondary-action:hover {
+  background: rgba(30, 30, 46, 0.9);
+}
+
+.card-action-button.secondary-action {
+  background: rgba(9, 132, 227, 0.8);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(9, 132, 227, 0.4);
+}
+
+.card-action-button.tertiary-action {
+  background: rgba(30, 30, 46, 0.7);
+  border: 1px solid rgba(156, 39, 176, 0.5);
+  color: #d4b2ff;
+}
+
+.card-action-button.secondary-action:hover {
+  box-shadow: 0 7px 20px rgba(9, 132, 227, 0.6);
+}
+
+.card-action-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none !important;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(120%); opacity: 0; }
+}
+
+/* 반응형 위치 조정 */
+@media (max-width: 768px) {
+  .card-indicator {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  
+  .shuffle-indicator .shuffle-icon {
+    font-size: 1.1rem;
+  }
+  
+  .card-selection-header {
+    margin-top: 3rem; /* 로그인 버튼 아래로 내려가도록 여백 추가 */
+    margin-bottom: 0.5rem; /* 헤더와 버튼 사이 간격 줄임 */
+  }
+  
+  .tarot-cards-container {
+    margin-top: 0.5rem;
+  }
+  
+  .card-selection-title {
+    font-size: 2rem;
+  }
+  
+  .selection-instruction {
+    font-size: 1rem;
+  }
+  
+  .tarot-card-wrapper {
+    width: 100px;
+    height: 160px;
+  }
+  
+  .tarot-cards-container {
+    height: calc(100vh - 160px);
+  }
+}
+
+@media (max-width: 480px) {
+  .card-indicator {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  
+  .shuffle-indicator .shuffle-icon {
+    font-size: 1rem;
+  }
+  
+  .card-selection-title {
+    font-size: 1.8rem;
+  }
+}
+
+/* 반응형 스타일 */
+@media (max-width: 1200px) {
+  .tarot-card-wrapper {
+    width: 120px;
+    height: 190px;
+  }
+}
+
+@media (max-width: 576px) {
+  .tarot-card-wrapper {
+    width: 80px;
+    height: 130px;
+  }
+  
+  .tarot-card-name {
+    font-size: 0.7rem;
+    padding: 5px 0;
+  }
+  
+  .tarot-cards-container {
+    height: calc(100vh - 150px);
+  }
+  
+  .card-selection-container {
+    padding: 1rem 0.5rem;
+  }
+}
+
+/* 카드 액션 오버레이 반응형 */
+@media (min-width: 1201px) {
+  .card-action-content {
+    padding: 2.5rem;
+  }
+  
+  .card-action-title {
+    font-size: 2.2rem;
+  }
+  
+  .card-action-button {
+    padding: 1rem 3rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .card-action-content {
+    padding: 2rem;
+    width: 85%;
+  }
+  
+  .card-action-title {
+    font-size: 1.8rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .card-action-panel {
+    padding-bottom: 1.5rem;
+  }
+  
+  .card-action-content {
+    padding: 1.5rem;
+    width: 92%;
+  }
+  
+  .card-action-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .card-action-button {
+    width: 100%;
+    min-width: auto;
+    justify-content: center;
+  }
+  
+  .card-action-title {
+    font-size: clamp(1.4rem, 4vw, 1.6rem);
+    white-space: nowrap; /* 태블릿에서도 한 줄 유지 */
+  }
+  
+  .card-action-description-line {
+    font-size: clamp(0.85rem, 1.8vw, 1rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .card-action-panel {
+    padding-bottom: 1rem;
+  }
+  
+  .card-action-content {
+    padding: clamp(0.8rem, 3vw, 1.2rem);
+    width: 95%;
+  }
+  
+  .card-action-title {
+    font-size: clamp(1.1rem, 3.5vw, 1.3rem); /* 글자 크기 더 작게 조정 */
+    margin-bottom: 0.5rem;
+    white-space: nowrap; /* 모바일에서도 한 줄 유지 */
+    letter-spacing: 0; /* 글자 간격 없애기 */
+  }
+  
+  .card-action-description-container {
+    margin-bottom: 0.8rem;
+  }
+  
+  .card-action-description-line {
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+    margin: 0.2rem 0;
+    line-height: 1.4;
+  }
+  
+  .card-action-buttons {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  
+  .card-action-button {
+    width: 100%;
+    padding: 0.7rem 1.2rem;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  }
+  
+  .btn-icon {
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  }
+}
+
+/* 초소형 화면 (360px 이하) */
+@media (max-width: 360px) {
+  .card-action-content {
+    padding: 0.8rem;
+  }
+  
+  .card-action-title {
+    font-size: clamp(0.9rem, 3vw, 1rem); /* 초소형 화면에서 더 작게 */
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  
+  .card-action-description-line {
+    font-size: 0.75rem;
+    margin: 0.15rem 0;
+  }
+  
+  .card-action-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+  }
+}

@@ -1,0 +1,189 @@
+/* 타로 결과 페이지 스타일 */
+.reading-result-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e1e2e 0%, #2d2b42 100%);
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.reading-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.reading-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 0.5rem;
+  color: #d4b2ff;
+  text-shadow: 
+    0 0 15px rgba(212, 178, 255, 0.6),
+    0 0 30px rgba(156, 39, 176, 0.3);
+  font-weight: 700;
+  background: linear-gradient(45deg, #d4b2ff, #9c27b0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.reading-content {
+  background: rgba(30, 30, 46, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  margin: 0 auto 2rem;
+  width: 100%;
+  max-width: min(900px, calc(100vw - 2rem));
+  color: #e2e2e2;
+  line-height: 1.8;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 마크다운 스타일 */
+.reading-content h1, .reading-content h2 {
+  color: #d4b2ff;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.reading-content h3, .reading-content h4 {
+  color: #a990fc;
+  margin-top: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.reading-content p {
+  margin-bottom: 1rem;
+}
+
+.reading-content ul, .reading-content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.reading-content blockquote {
+  border-left: 4px solid #9c27b0;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #a8a8a8;
+  font-style: italic;
+}
+
+.reading-content pre {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 1rem 0;
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.reading-content code {
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.reading-content strong {
+  color: #d4b2ff;
+}
+
+.reading-content em {
+  color: #a990fc;
+}
+
+.reading-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.reading-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reading-action-btn.primary-action {
+  background: linear-gradient(90deg, #9c27b0 0%, #673ab7 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+}
+
+.reading-action-btn.secondary-action {
+  background: rgba(30, 30, 46, 0.7);
+  border: 1px solid rgba(156, 39, 176, 0.5);
+  color: #d4b2ff;
+}
+
+.reading-action-btn:hover {
+  transform: translateY(-3px);
+}
+
+.reading-action-btn.primary-action:hover {
+  box-shadow: 0 7px 20px rgba(156, 39, 176, 0.6);
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .reading-header {
+    margin-top: 3.5rem;
+  }
+  
+  .reading-result-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .reading-content {
+    padding: 1.5rem;
+  }
+  
+  .reading-actions {
+    flex-direction: column;
+    max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+  
+  .reading-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .reading-content {
+    padding: 1.2rem;
+    margin: 0 auto 1.5rem;
+  }
+  
+  .reading-action-btn {
+    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+  }
+  
+  .reading-header {
+    margin-bottom: 1.5rem;
+  }
+}

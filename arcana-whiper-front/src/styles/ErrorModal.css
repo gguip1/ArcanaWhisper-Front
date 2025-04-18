@@ -1,0 +1,96 @@
+/* 오류 모달 스타일 */
+.error-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.error-modal {
+  background: rgba(30, 30, 46, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  animation: slideUp 0.4s ease;
+}
+
+.error-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #a8a8a8;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.error-close-btn:hover {
+  color: #d4b2ff;
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.error-title {
+  color: #d4b2ff;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #e2e2e2;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.error-action-btn {
+  background: linear-gradient(90deg, #9c27b0 0%, #673ab7 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.error-action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .error-modal {
+    width: 85%;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .error-title {
+    font-size: 1.3rem;
+  }
+  
+  .error-message {
+    font-size: 0.9rem;
+  }
+}

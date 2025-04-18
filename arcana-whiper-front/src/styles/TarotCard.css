@@ -1,0 +1,169 @@
+/* Tarot Card Styles */
+.tarot-card {
+  position: relative;
+  height: 240px;
+  perspective: 1000px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 160px;
+  margin: 0 auto;
+}
+
+.tarot-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s, box-shadow 0.3s;
+  transform-style: preserve-3d;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.tarot-card.selected .tarot-card-inner {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 25px rgba(156, 39, 176, 0.5);
+  border: 2px solid #9c27b0;
+}
+
+.tarot-card-front,
+.tarot-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tarot-card-front {
+  background: linear-gradient(45deg, #2c0b3f, #590d82);
+  color: #d4b2ff;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.tarot-card-back {
+  background-color: #f0f0f0;
+  transform: rotateY(180deg);
+}
+
+.tarot-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tarot-card-name {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 7px 0;
+  font-size: 0.9rem;
+}
+
+.tarot-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tarot-card.disabled:hover .tarot-card-inner {
+  transform: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 타로 카드 뒷면 스타일 */
+.tarot-card-back-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.tarot-card-back-gradient {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(45deg, #2c0b3f, #590d82);
+  border-radius: 12px;
+  color: rgba(212, 178, 255, 0.2);
+  font-size: 3rem;
+}
+
+.tarot-card-back-symbol {
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 5px rgba(212, 178, 255, 0.5); }
+  to { text-shadow: 0 0 20px rgba(212, 178, 255, 0.8), 0 0 30px #9c27b0; }
+}
+
+/* 카드 앞면 플레이스홀더 스타일 개선 */
+.tarot-card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e1e2e, #2d2b42);
+  color: #d4b2ff;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.tarot-card-placeholder h3 {
+  font-size: 1.2rem;
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.tarot-card-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #d4b2ff, #9c27b0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 5px rgba(156, 39, 176, 0.3);
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+  .tarot-card-placeholder h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tarot-card-number {
+    font-size: 2rem;
+  }
+  
+  .tarot-card-back-symbol {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .tarot-card-placeholder h3 {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .tarot-card-number {
+    font-size: 1.5rem;
+  }
+  
+  .tarot-card-back-symbol {
+    font-size: 2rem;
+  }
+}

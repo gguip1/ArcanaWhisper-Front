@@ -1,0 +1,195 @@
+/* Page Transition Animation */
+.transition-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  background: radial-gradient(ellipse at center, #2a1b3d 0%, #1e1e2e 70%);
+  border-radius: 0; /* 모서리 제거 */
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.transition-container.initial {
+  opacity: 0;
+}
+
+.transition-container.animate {
+  opacity: 1;
+}
+
+.transition-container.final {
+  opacity: 1;
+}
+
+.mystical-orb-loader {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(156, 39, 176, 0.7) 0%, rgba(103, 58, 183, 0.3) 50%, rgba(0, 0, 0, 0) 70%);
+  filter: blur(8px);
+  animation: pulse-loader 1.5s infinite ease-in-out;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.mystical-orb-loader:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(212, 178, 255, 0.5);
+  filter: blur(5px);
+  animation: pulse-loader-inner 1.5s infinite ease-in-out alternate;
+}
+
+@keyframes pulse-loader {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.9; }
+  100% { transform: scale(0.8); opacity: 0.5; }
+}
+
+@keyframes pulse-loader-inner {
+  0% { transform: translate(-50%, -50%) scale(0.8); }
+  100% { transform: translate(-50%, -50%) scale(1.3); }
+}
+
+.transition-text {
+  position: relative;
+  color: #d4b2ff;
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(212, 178, 255, 0.6);
+  z-index: 10;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.transition-cards {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.transition-card {
+  position: absolute;
+  width: 140px;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(45deg, #2c0b3f, #590d82);
+  opacity: 0;
+  transform: scale(0.1) rotate(0deg);
+  transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.transition-container.animate .transition-card {
+  opacity: 0.8;
+}
+
+.transition-container.animate .transition-card.card1 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  animation: spreadCard1 1.5s forwards;
+}
+
+.transition-container.animate .transition-card.card2 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  animation: spreadCard2 1.5s forwards;
+}
+
+.transition-container.animate .transition-card.card3 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  animation: spreadCard3 1.5s forwards;
+}
+
+.transition-container.animate .transition-card.card4 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  animation: spreadCard4 1.5s forwards;
+}
+
+.transition-container.animate .transition-card.card5 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(720deg);
+  animation: spreadCard5 1.5s forwards;
+}
+
+@keyframes spreadCard1 {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
+  100% { top: 30%; left: 20%; transform: translate(-50%, -50%) scale(1) rotate(720deg); }
+}
+
+@keyframes spreadCard2 {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
+  100% { top: 20%; left: 70%; transform: translate(-50%, -50%) scale(1) rotate(740deg); }
+}
+
+@keyframes spreadCard3 {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
+  100% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1) rotate(720deg); }
+}
+
+@keyframes spreadCard4 {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
+  100% { top: 70%; left: 30%; transform: translate(-50%, -50%) scale(1) rotate(700deg); }
+}
+
+@keyframes spreadCard5 {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
+  100% { top: 70%; left: 80%; transform: translate(-50%, -50%) scale(1) rotate(760deg); }
+}
+
+.transition-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(30, 30, 46, 0.8) 70%);
+  z-index: 5;
+}
+
+/* Responsive styles for transition */
+@media (max-width: 768px) {
+  .transition-card {
+    width: 100px;
+    height: 160px;
+  }
+  
+  .transition-text {
+    font-size: 1.4rem;
+  }
+
+  .mystical-orb-loader {
+    width: 100px;
+    height: 100px;
+  }
+}

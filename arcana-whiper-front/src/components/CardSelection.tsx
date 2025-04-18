@@ -205,6 +205,17 @@ const CardSelection: React.FC<CardSelectionProps> = ({
               {index < selectedCards.length ? <span>✓</span> : index + 1}
             </div>
           ))}
+          
+          {/* 카드 섞기 버튼 - 인디케이터와 일관된 디자인 */}
+          <button 
+            className="card-indicator shuffle-indicator"
+            onClick={handleShuffleCards}
+            disabled={isSelectionComplete}
+            title="카드 섞기"
+            aria-label="카드 섞기"
+          >
+            <FiShuffle className="shuffle-icon" />
+          </button>
         </div>
         
         <h1 className="card-selection-title">타로 카드를 선택하세요</h1>
@@ -215,16 +226,6 @@ const CardSelection: React.FC<CardSelectionProps> = ({
             : '선택이 완료되었습니다'}
         </p>
       </div>
-      
-      {/* 카드 섞기 버튼 */}
-      <button 
-        className="shuffle-button"
-        onClick={handleShuffleCards}
-        disabled={isSelectionComplete}
-        title="카드 섞기"
-      >
-        <FiShuffle className="shuffle-icon" /> 카드 섞기
-      </button>
       
       <div className="tarot-cards-container" ref={containerRef}>
         {shuffledCards.map((card) => {
