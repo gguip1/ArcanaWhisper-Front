@@ -137,7 +137,6 @@ class AuthService {
             photoURL: res.properties?.profile_image || null,
             provider: 'kakao'
           };
-        //   // 카카오 로그인 성공 시 사용자 정보 로깅
         //   console.log('🔐 카카오 로그인 성공:', this._currentUser);
           this.notifyListeners();
         }).catch(console.error);
@@ -154,37 +153,37 @@ class AuthService {
       // 카카오 로그인 처리
       if (provider === 'kakao') {
         const user = await this.signInWithKakao();
-        console.log(`🔐 ${provider} 로그인 완료:`, user);
+        // console.log(`🔐 ${provider} 로그인 완료:`, user);
         return user;
       }
       
-      // Firebase 로그인 처리
-      let authProvider;
-      switch (provider) {
-        case 'google':
-          authProvider = new GoogleAuthProvider();
-          break;
-        case 'facebook':
-          authProvider = new FacebookAuthProvider();
-          break;
-        case 'github':
-          authProvider = new GithubAuthProvider();
-          break;
-        case 'microsoft':
-          authProvider = new OAuthProvider('microsoft.com');
-          break;
-        case 'apple':
-          authProvider = new OAuthProvider('apple.com');
-          break;
-        default:
-          throw new Error(`지원하지 않는 로그인 제공자: ${provider}`);
-      }
+    //   // Firebase 로그인 처리
+    //   let authProvider;
+    //   switch (provider) {
+    //     case 'google':
+    //       authProvider = new GoogleAuthProvider();
+    //       break;
+    //     case 'facebook':
+    //       authProvider = new FacebookAuthProvider();
+    //       break;
+    //     case 'github':
+    //       authProvider = new GithubAuthProvider();
+    //       break;
+    //     case 'microsoft':
+    //       authProvider = new OAuthProvider('microsoft.com');
+    //       break;
+    //     case 'apple':
+    //       authProvider = new OAuthProvider('apple.com');
+    //       break;
+    //     default:
+    //       throw new Error(`지원하지 않는 로그인 제공자: ${provider}`);
+    //   }
       
-      const result = await signInWithPopup(auth, authProvider);
-      this._currentUser = this.parseUserData(result.user);
-      console.log(`🔐 ${provider} 로그인 완료:`, this._currentUser);
-      this.notifyListeners();
-      return this._currentUser;
+    //   const result = await signInWithPopup(auth, authProvider);
+    //   this._currentUser = this.parseUserData(result.user);
+    // //   console.log(`🔐 ${provider} 로그인 완료:`, this._currentUser);
+    //   this.notifyListeners();
+    //   return this._currentUser;
     } catch (error) {
       console.error(`❌ 로그인 실패 (${provider}):`, error);
       throw error;
