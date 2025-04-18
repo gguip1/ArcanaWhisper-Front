@@ -27,11 +27,12 @@ export async function requestTarotReading(cardNumbers: number[]): Promise<TarotR
   
   try {
     // 5초 타임아웃 설정
+    const API_URL = import.meta.env.VITE_API_URL
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
     
     // API 호출
-    const response = await fetch('http://localhost:8000/tarot', {
+    const response = await fetch(`${API_URL}/tarot`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
