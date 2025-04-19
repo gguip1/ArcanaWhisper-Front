@@ -55,6 +55,34 @@ input, textarea, [contenteditable] {
   user-select: auto;
 }
 
+/* 텍스트 선택 가능하도록 설정 */
+.app-container {
+  user-select: auto !important;
+  -webkit-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+}
+
+/* 텍스트 요소들에 대해 명시적으로 선택 가능하도록 설정 */
+p, h1, h2, h3, h4, h5, h6, span, div, 
+li, a, blockquote, pre, code, 
+.reading-content, .markdown-content {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  cursor: auto;
+}
+
+/* 일부 인터랙티브 요소는 선택 불가능하게 유지 */
+button, .icon, .card-indicator, 
+.home-button, .shuffle-button {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

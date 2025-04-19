@@ -267,27 +267,26 @@
 }
 
 @media (max-width: 480px) {
-  .login-button-fixed,
-  .login-button-absolute {
-    top: 0.6rem;
-    right: 0.6rem;
-  }
-  
   .login-button {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.85rem;
+    top: 0.6rem;
+    left: 0.6rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
   }
   
-  .login-button.logged-in {
-    width: 2rem;
-    height: 2rem;
+  .login-icon {
+    font-size: 0.9rem;
   }
   
+  /* 모바일에서는 아이콘만 표시 */
   .login-text {
     display: none;
   }
   
-  .login-dropdown {
-    width: 220px;
+  .login-button {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    padding: 0;
   }
 }

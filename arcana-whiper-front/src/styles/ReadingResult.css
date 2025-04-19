@@ -47,6 +47,11 @@
   text-align: left;
   overflow-wrap: break-word;
   word-break: break-word;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  cursor: auto;
 }
 
 /* 마크다운 스타일 */
@@ -102,6 +107,29 @@
 
 .reading-content em {
   color: #a990fc;
+}
+
+/* 컨텐츠 내부 요소들도 선택 가능하도록 */
+.reading-content p,
+.reading-content h1,
+.reading-content h2,
+.reading-content h3,
+.reading-content h4,
+.reading-content h5,
+.reading-content h6,
+.reading-content ul,
+.reading-content ol,
+.reading-content li,
+.reading-content blockquote,
+.reading-content pre,
+.reading-content code,
+.reading-content strong,
+.reading-content em {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  cursor: auto;
 }
 
 .reading-actions {
