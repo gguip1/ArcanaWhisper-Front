@@ -1,33 +1,30 @@
-import React from 'react';
-import { TarotCard as TarotCardType, cardBackImage } from '../data/tarotData';
+// import React from 'react';
+// import { TarotCard as TarotCardType, cardBackImage } from '../data/tarotData';
 
-interface TarotCardProps {
-  card: TarotCardType;
-  isSelected: boolean;
-  onSelect: () => void;
-  disabled?: boolean;
-}
+// interface TarotCardProps {
+//   card: TarotCardType;
+//   isSelected: boolean;
+//   onSelect: () => void;
+//   disabled?: boolean;
+// }
 
-const TarotCard: React.FC<TarotCardProps> = ({ card, isSelected, onSelect, disabled = false }) => {
+const TarotCard = ({ card, isSelected, onSelect, disabled }) => {
   return (
     <div 
-      className={`tarot-card ${isSelected ? 'selected' : ''} ${disabled ? 'disabled' : ''}`}
-      onClick={disabled ? undefined : onSelect}
+      className={`tarot-card ${isSelected ? 'selected' : ''} ${disabled ? 'disabled' : ''}`} 
+      onClick={!disabled || isSelected ? onSelect : undefined}
     >
       <div className="tarot-card-inner">
+        {/* 카드 뒷면 개선 */}
         <div className="tarot-card-front">
-          {cardBackImage ? (
-            <img 
-              src={cardBackImage} 
-              alt="카드 뒷면" 
-              className="tarot-card-back-image"
-            />
-          ) : (
-            <div className="tarot-card-back-gradient">
-              <span className="tarot-card-back-symbol">✦</span>
-            </div>
-          )}
+          <div className="tarot-card-back-gradient">
+            <div className="tarot-card-back-pattern"></div>
+            <div className="tarot-card-back-border"></div>
+            <div className="tarot-card-back-circle"></div>
+            <div className="tarot-card-back-symbol">★</div>
+          </div>
         </div>
+        
         <div className="tarot-card-back">
           {card.image ? (
             <img 

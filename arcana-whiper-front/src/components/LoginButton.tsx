@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import authService, { AuthProvider, UserProfile } from '../services/authService';
-import { FaGoogle, FaFacebook, FaGithub } from 'react-icons/fa';
+import { FaGoogle, FaSignOutAlt, FaHistory } from 'react-icons/fa';
 import { SiKakao } from 'react-icons/si';
 import '../styles/LoginButton.css';
 
@@ -8,12 +8,16 @@ interface LoginButtonProps {
   className?: string;
   position?: 'fixed' | 'absolute' | 'static';
   providers?: AuthProvider[];
+  onViewHistory?: () => void; // 히스토리 보기 핸들러
+  currentPage?: string; // 현재 페이지 정보 추가
 }
 
 const LoginButton: React.FC<LoginButtonProps> = ({ 
   className = '',
   position = 'fixed',
-  providers = ['google', 'kakao']
+  providers = ['google', 'kakao'],
+  onViewHistory,
+  currentPage = 'home' // 기본값은 home
 }) => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
@@ -108,6 +112,17 @@ const LoginButton: React.FC<LoginButtonProps> = ({
   const positionClass = position === 'fixed' ? 'login-button-fixed' : 
                         position === 'absolute' ? 'login-button-absolute' : '';
 
+  // 히스토리 보기 버튼 클릭 핸들러
+  const handleViewHistory = () => {
+    if (onViewHistory) {
+      setShowDropdown(false); // 드롭다운 닫기
+      onViewHistory(); // 상위 컴포넌트의 핸들러 호출
+    }
+  };
+
+  // 히스토리 페이지인지 확인
+  const isHistoryPage = currentPage === 'history';
+
   return (
     <div className={`login-button-container ${positionClass} ${className}`} ref={dropdownRef}>
       <button 
@@ -128,6 +143,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
           ) : (
             <span className="user-initial">
               {user.displayName?.[0] || user.email?.[0] || '?'}
+
             </span>
           )
         ) : (
@@ -157,11 +173,24 @@ const LoginButton: React.FC<LoginButtonProps> = ({
                 </div>
               </div>
               <div className="dropdown-actions">
+                {/* 현재 페이지가 히스토리 페이지가 아닐 때만 히스토리 버튼 표시 */}
+                {!isHistoryPage && onViewHistory && (
+                  <button 
+                    className="history-button"
+                    onClick={handleViewHistory}
+                    disabled={loading}
+                  >
+                    <FaHistory className="button-icon" />
+                    타로 기록 보기
+                  </button>
+                )}
+                
                 <button 
                   className="logout-button"
                   onClick={handleLogout}
                   disabled={loading}
                 >
+                  <FaSignOutAlt className="button-icon" />
                   로그아웃
                 </button>
               </div>

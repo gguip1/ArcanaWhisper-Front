@@ -1,0 +1,417 @@
+/* 타로 히스토리 페이지 스타일 */
+.tarot-history-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e1e2e 0%, #2d2b42 100%);
+  padding: 2rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* 배경에 별자리 효과 추가 */
+.tarot-history-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 40px 70px, #d4b2ff, transparent),
+    radial-gradient(1px 1px at 120px 150px, #ffffff, transparent),
+    radial-gradient(1px 1px at 200px 80px, #a990fc, transparent),
+    radial-gradient(2px 2px at 300px 250px, #d4b2ff, transparent),
+    radial-gradient(1px 1px at 400px 350px, #ffffff, transparent),
+    radial-gradient(1px 1px at 500px 100px, #a990fc, transparent),
+    radial-gradient(1px 1px at 50px 350px, #ffffff, transparent),
+    radial-gradient(2px 2px at 150px 400px, #d4b2ff, transparent);
+  background-size: 600px 600px;
+  opacity: 0.2;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 헤더 스타일 */
+.history-header {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.history-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 0.5rem;
+  color: #d4b2ff;
+  text-shadow: 
+    0 0 15px rgba(212, 178, 255, 0.6),
+    0 0 30px rgba(156, 39, 176, 0.3);
+  font-weight: 700;
+  background: linear-gradient(45deg, #d4b2ff, #9c27b0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  position: relative;
+  display: inline-block;
+}
+
+.history-subtitle {
+  color: #a990fc;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+/* 정렬 관련 스타일 삭제 시작 */
+/* 정렬 버튼 컨테이너 스타일 삭제 */
+.history-sort-container {
+  display: none;
+}
+
+/* 정렬 버튼 스타일 삭제 */
+.sort-button {
+  display: none;
+}
+
+/* 기존 controls 클래스 삭제 */
+.history-controls {
+  display: none;
+}
+/* 정렬 관련 스타일 삭제 끝 */
+
+/* 히스토리 목록 */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* 히스토리 아이템 스타일 */
+.history-item {
+  background: rgba(30, 30, 46, 0.7);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(156, 39, 176, 0.2);
+  transition: all 0.3s ease;
+}
+
+.history-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(156, 39, 176, 0.2);
+}
+
+.history-item.expanded {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* 히스토리 아이템 헤더 */
+.history-item-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(30, 30, 46, 0.9);
+  cursor: pointer;
+  gap: 1rem;
+}
+
+.history-item-number {
+  width: 30px;
+  height: 30px;
+  background: rgba(156, 39, 176, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d4b2ff;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.history-item-summary {
+  flex: 1;
+}
+
+.history-item-question {
+  color: #d4b2ff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.history-item-date {
+  color: #a8a8a8;
+  font-size: 0.9rem;
+}
+
+.expand-button {
+  background: transparent;
+  border: none;
+  color: #a990fc;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.expand-button:hover {
+  background: rgba(156, 39, 176, 0.1);
+  transform: scale(1.1);
+}
+
+/* 미리보기 스타일 */
+.history-item-preview {
+  padding: 0.8rem 1.5rem 1rem;
+}
+
+.preview-cards {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.preview-card {
+  background: rgba(156, 39, 176, 0.1);
+  border: 1px solid rgba(156, 39, 176, 0.3);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  color: #d4b2ff;
+}
+
+.preview-result {
+  color: #e2e2e2;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-top: 0.8rem;
+  opacity: 0.8;
+}
+
+/* 상세 정보 */
+.history-item-details {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(156, 39, 176, 0.2);
+}
+
+.history-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.history-card-wrapper {
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.history-card-wrapper:hover {
+  transform: scale(0.95);
+}
+
+.history-result {
+  background: rgba(30, 30, 46, 0.5);
+  border-radius: 10px;
+  padding: 1.5rem;
+  border-left: 4px solid rgba(156, 39, 176, 0.5);
+}
+
+.result-title {
+  color: #d4b2ff;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.result-content {
+  color: #e2e2e2;
+  line-height: 1.7;
+}
+
+/* 로딩 스타일 */
+.history-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #d4b2ff;
+}
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(156, 39, 176, 0.3);
+  border-top-color: #d4b2ff;
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 에러 스타일 */
+.history-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #ff6b6b;
+  background: rgba(30, 30, 46, 0.7);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.retry-button {
+  margin-top: 1rem;
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retry-button:hover {
+  background: rgba(255, 107, 107, 0.3);
+  transform: translateY(-3px);
+}
+
+/* 비어있음 스타일 */
+.history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #a8a8a8;
+  background: rgba(30, 30, 46, 0.7);
+  border-radius: 10px;
+  border: 1px solid rgba(156, 39, 176, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.start-reading-button {
+  margin-top: 1.5rem;
+  background: linear-gradient(90deg, #9c27b0 0%, #673ab7 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.8rem 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.start-reading-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(156, 39, 176, 0.5);
+}
+
+/* 페이지네이션 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+.page-button {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: rgba(30, 30, 46, 0.8);
+  border: 1px solid rgba(156, 39, 176, 0.3);
+  color: #d4b2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.page-button:hover {
+  background: rgba(156, 39, 176, 0.2);
+  transform: translateY(-2px);
+}
+
+.page-button.active {
+  background: rgba(156, 39, 176, 0.3);
+  box-shadow: 0 0 10px rgba(156, 39, 176, 0.4);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .tarot-history-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .history-cards {
+    gap: 1rem;
+  }
+  
+  .history-item-header {
+    padding: 0.8rem 1.2rem;
+  }
+  
+  .history-item-question {
+    font-size: 1rem;
+  }
+  
+  .history-card-wrapper {
+    transform: scale(0.8);
+  }
+  
+  .history-card-wrapper:hover {
+    transform: scale(0.85);
+  }
+}
+
+@media (max-width: 480px) {
+  .tarot-history-container {
+    padding: 1rem 0.8rem;
+  }
+  
+  .history-item-header {
+    padding: 0.7rem 1rem;
+  }
+  
+  .history-item-number {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+  }
+  
+  .history-item-question {
+    font-size: 0.9rem;
+  }
+  
+  .button-icon {
+    font-size: 0.9rem;
+  }
+}

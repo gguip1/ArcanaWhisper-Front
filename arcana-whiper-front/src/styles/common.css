@@ -1,0 +1,32 @@
+/* 커서 스타일 유틸리티 클래스 */
+.cursor-pointer,
+.cursor-pointer * {
+  cursor: pointer !important;
+}
+
+.cursor-not-allowed,
+.cursor-not-allowed * {
+  cursor: not-allowed !important;
+}
+
+/* 인터랙티브 요소에 포인터 커서 적용 */
+[onclick],
+[role="button"],
+.clickable {
+  cursor: pointer !important;
+}
+
+[onclick] *,
+[role="button"] *,
+.clickable * {
+  cursor: pointer !important;
+}
+
+/* iOS Safari에서 터치 하이라이트 제거 */
+button, 
+[role="button"],
+.button,
+.tarot-card,
+.tarot-card-wrapper {
+  -webkit-tap-highlight-color: transparent;
+}

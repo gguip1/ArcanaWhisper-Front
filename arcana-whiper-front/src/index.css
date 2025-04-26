@@ -94,3 +94,45 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* 전역 버튼 커서 스타일 */
+button,
+[role="button"],
+.button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  cursor: pointer !important;
+}
+
+/* 버튼 내부의 모든 요소도 포인터 커서 적용 */
+button *,
+[role="button"] *,
+.button *,
+input[type="button"] *,
+input[type="submit"] *,
+input[type="reset"] * {
+  cursor: pointer !important;
+}
+
+/* 비활성화된 버튼은 not-allowed 커서 적용 */
+button:disabled,
+button[disabled],
+[role="button"][aria-disabled="true"],
+.button.disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+input[type="reset"]:disabled {
+  cursor: not-allowed !important;
+}
+
+/* 비활성화된 버튼 내부 요소도 동일한 커서 적용 */
+button:disabled *,
+button[disabled] *,
+[role="button"][aria-disabled="true"] *,
+.button.disabled *,
+input[type="button"]:disabled *,
+input[type="submit"]:disabled *,
+input[type="reset"]:disabled * {
+  cursor: not-allowed !important;
+}

@@ -290,3 +290,31 @@
     padding: 0;
   }
 }
+
+/* 히스토리 버튼 스타일 */
+.history-button {
+  width: 100%;
+  padding: 0.8rem;
+  background: rgba(156, 39, 176, 0.1);
+  color: #d4b2ff;
+  border: 1px solid rgba(156, 39, 176, 0.4);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.history-button:hover {
+  background: rgba(156, 39, 176, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(156, 39, 176, 0.2);
+}
+
+.button-icon {
+  font-size: 0.9rem;
+}

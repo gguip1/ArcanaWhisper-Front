@@ -4,6 +4,7 @@
 @import './styles/ReadingResult.css';
 @import './styles/TarotCard.css';
 @import './styles/ErrorModal.css';
+@import './styles/TarotHistory.css'; /* 히스토리 페이지 스타일 추가 */
 
 /* 기본 레이아웃 및 공통 스타일만 남기고 나머지는 분리 */
 
@@ -269,4 +270,32 @@ button, .icon, .card-indicator,
 }
 
 /* CSS 임포트 */
+
+/* 앱 전체 버튼 커서 스타일 설정 */
+.app-container button,
+.app-container [role="button"],
+.app-container .button {
+  cursor: pointer !important;
+}
+
+.app-container button *,
+.app-container [role="button"] *,
+.app-container .button * {
+  cursor: pointer !important;
+}
+
+/* 비활성화 버튼 스타일 */
+.app-container button:disabled,
+.app-container button[disabled],
+.app-container [role="button"][aria-disabled="true"],
+.app-container .button.disabled {
+  cursor: not-allowed !important;
+}
+
+.app-container button:disabled *,
+.app-container button[disabled] *,
+.app-container [role="button"][aria-disabled="true"] *,
+.app-container .button.disabled * {
+  cursor: not-allowed !important;
+}
 

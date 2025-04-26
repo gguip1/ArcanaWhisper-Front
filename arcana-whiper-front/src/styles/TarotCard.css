@@ -3,10 +3,15 @@
   position: relative;
   height: 240px;
   perspective: 1000px;
-  cursor: pointer;
+  cursor: pointer !important;
   width: 100%;
   max-width: 160px;
   margin: 0 auto;
+}
+
+/* 내부 모든 요소에 포인터 커서 적용 */
+.tarot-card * {
+  cursor: pointer !important;
 }
 
 .tarot-card-inner {
@@ -68,24 +73,18 @@
   font-size: 0.9rem;
 }
 
+/* 비활성화된 카드 커서 스타일 */
 .tarot-card.disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: not-allowed !important;
 }
 
-.tarot-card.disabled:hover .tarot-card-inner {
-  transform: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+/* 비활성화된 카드 내부 요소도 not-allowed 커서 적용 */
+.tarot-card.disabled * {
+  cursor: not-allowed !important;
 }
 
-/* 타로 카드 뒷면 스타일 */
-.tarot-card-back-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
+/* 타로 카드 뒷면 스타일 개선 */
 .tarot-card-back-gradient {
   width: 100%;
   height: 100%;
@@ -94,17 +93,74 @@
   justify-content: center;
   background: linear-gradient(45deg, #2c0b3f, #590d82);
   border-radius: 12px;
-  color: rgba(212, 178, 255, 0.2);
-  font-size: 3rem;
+  position: relative;
+  overflow: hidden;
 }
 
+/* 심볼 표시 개선 */
 .tarot-card-back-symbol {
-  animation: glow 2s infinite alternate;
+  position: relative;
+  z-index: 3;
+  color: rgba(212, 178, 255, 0.3);
+  font-size: 3rem;
+  /* animation: glow 2s infinite alternate; */
+}
+
+/* 카드 뒷면에 회전하는 패턴 추가 */
+.tarot-card-back-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at center, transparent 30%, rgba(156, 39, 176, 0.05) 60%, transparent 70%),
+    repeating-conic-gradient(rgba(156, 39, 176, 0.1) 0deg, rgba(156, 39, 176, 0) 15deg, rgba(156, 39, 176, 0.1) 30deg);
+  opacity: 0.5;
+  z-index: 1;
+  animation: rotate 120s linear infinite;
+}
+
+/* 카드 주변 빛나는 테두리 */
+.tarot-card-back-border {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-radius: 8px;
+  border: 1px solid rgba(156, 39, 176, 0.3);
+  z-index: 2;
+  box-shadow: inset 0 0 15px rgba(156, 39, 176, 0.2);
+}
+
+/* 중앙에 원형 장식 */
+.tarot-card-back-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 1px dashed rgba(212, 178, 255, 0.3);
+  z-index: 2;
 }
 
 @keyframes glow {
-  from { text-shadow: 0 0 5px rgba(212, 178, 255, 0.5); }
-  to { text-shadow: 0 0 20px rgba(212, 178, 255, 0.8), 0 0 30px #9c27b0; }
+  from { 
+    text-shadow: 0 0 5px rgba(212, 178, 255, 0.5);
+    color: rgba(212, 178, 255, 0.2);
+  }
+  to { 
+    text-shadow: 0 0 20px rgba(212, 178, 255, 0.8), 0 0 30px #9c27b0;
+    color: rgba(212, 178, 255, 0.4);
+  }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* 카드 앞면 플레이스홀더 스타일 개선 */
@@ -137,6 +193,23 @@
   text-shadow: 0 0 5px rgba(156, 39, 176, 0.3);
 }
 
+/* 타로 카드 래퍼 커서 스타일 */
+.tarot-card-wrapper {
+  cursor: pointer !important;
+}
+
+.tarot-card-wrapper * {
+  cursor: pointer !important;
+}
+
+.tarot-card-wrapper.disabled {
+  cursor: not-allowed !important;
+}
+
+.tarot-card-wrapper.disabled * {
+  cursor: not-allowed !important;
+}
+
 /* 반응형 조정 */
 @media (max-width: 768px) {
   .tarot-card-placeholder h3 {
@@ -150,6 +223,11 @@
   
   .tarot-card-back-symbol {
     font-size: 2.5rem;
+  }
+  
+  .tarot-card-back-circle {
+    width: 60px;
+    height: 60px;
   }
 }
 
@@ -165,5 +243,10 @@
   
   .tarot-card-back-symbol {
     font-size: 2rem;
+  }
+  
+  .tarot-card-back-circle {
+    width: 50px;
+    height: 50px;
   }
 }

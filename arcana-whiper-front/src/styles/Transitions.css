@@ -72,9 +72,20 @@
   font-weight: 600;
   text-shadow: 0 0 10px rgba(212, 178, 255, 0.6);
   z-index: 10;
-  animation: pulse 2s infinite;
+  /* 텍스트 애니메이션 변경 - 크기 변화 없이 투명도만 변경 */
+  animation: fade-pulse 2s infinite;
+  /* 크기 변화 방지 */
+  transform: none !important;
 }
 
+/* 투명도만 변하는 애니메이션으로 수정 */
+@keyframes fade-pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* 기존 pulse 애니메이션 제거 또는 다른 요소에만 사용 */
 @keyframes pulse {
   0% { opacity: 0.6; }
   50% { opacity: 1; }
@@ -186,10 +197,23 @@
   
   .transition-text {
     font-size: 1.4rem;
+    /* 반응형에서도 크기 변화 방지 */
+    transform: none !important;
   }
 
   .mystical-orb-loader {
     width: 100px;
     height: 100px;
+  }
+}
+
+/* 더 작은 화면 크기에 대한 추가 스타일 */
+@media (max-width: 480px) {
+  .transition-text {
+    font-size: 1.2rem;
+    padding: 0 1rem;
+    text-align: center;
+    /* 작은 화면에서도 크기 변화 방지 */
+    transform: none !important;
   }
 }

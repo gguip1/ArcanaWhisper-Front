@@ -1,18 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TarotCard from './TarotCard';
-// import { majorArcana, shuffleCards } from '../data/tarotData';
 import { shuffleCards } from '../data/tarotData';
-import { FaArrowRight, FaRedo, FaHome } from 'react-icons/fa';
+import { FaArrowRight, FaRedo, FaArrowLeft } from 'react-icons/fa'; // FaHome을 FaArrowLeft로 변경
 import { FiShuffle } from 'react-icons/fi';
 
-// props 인터페이스 업데이트
+// props 인터페이스 업데이트 - 질문 다시하기 추가
 interface CardSelectionProps {
   selectedCards: number[];
   onCardSelect: (cardId: number) => void;
   maxCards: number;
   onResetCards?: () => void;
-  onRequestReading?: (cardNumbers: number[]) => void; // API 요청 함수 추가
-  onGoHome?: () => void; // 홈으로 돌아가는 핸들러 추가
+  onRequestReading?: (cardNumbers: number[]) => void; 
+  onGoHome?: () => void;
+  onReQuestion?: () => void; // 질문 다시하기 핸들러 추가
+  question?: string;
 }
 
 const CardSelection: React.FC<CardSelectionProps> = ({ 
@@ -21,10 +22,12 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   maxCards,
   onResetCards,
   onRequestReading,
-  onGoHome
+  // onGoHome,
+  onReQuestion, // 질문 다시하기 핸들러
+  // question = ''
 }) => {
   const [cardPositions, setCardPositions] = useState<{[key: number]: {x: number, y: number, rotation: number, baseZIndex: number}}>({});
-  const remainingSelections = maxCards - selectedCards.length;
+  // const remainingSelections = maxCards - selectedCards.length;
   const containerRef = useRef<HTMLDivElement>(null);
   
   // 처음부터 섞인 카드로 초기화
@@ -150,14 +153,6 @@ const CardSelection: React.FC<CardSelectionProps> = ({
       return card ? card.number : -1;
     }).filter(num => num !== -1); // 유효하지 않은 번호 제거
     
-    // // 콘솔에 선택된 카드 정보 출력
-    // console.log('=== 선택된 카드 정보 ===');
-    // selectedCardNumbers.forEach((num, i) => {
-    //   const position = i === 0 ? '과거' : i === 1 ? '현재' : '미래';
-    //   const card = majorArcana.find(c => c.number === num);
-    //   console.log(`[${position}] ${card?.name} (${num}) - ${card?.description}`);
-    // });
-    
     // API 요청
     if (onRequestReading && selectedCardNumbers.length === maxCards) {
       onRequestReading(selectedCardNumbers);
@@ -165,15 +160,10 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   };
 
   // 홈 버튼 클릭 효과 처리
-  const handleHomeButtonClick = () => {
-    const homeButton = document.querySelector('.home-button');
-    if (homeButton) {
-      homeButton.classList.add('clicked');
-      
-      // 클릭 효과 후 홈으로 이동
-      if (onGoHome) {
-        onGoHome();
-      }
+  const handleBackButtonClick = () => {
+    // 뒤로가기 버튼 클릭 시 질문 페이지로 이동
+    if (onReQuestion) {
+      onReQuestion();
     }
   };
   
@@ -183,15 +173,15 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   
   return (
     <div className="card-selection-container">
-      {/* 홈으로 돌아가는 버튼 추가 */}
+      {/* 홈 버튼을 뒤로가기 버튼으로 변경 */}
       <button 
-        className="home-button"
-        onClick={handleHomeButtonClick}
-        title="홈으로 돌아가기"
-        aria-label="홈으로 돌아가기"
+        className="home-button" // 기존 CSS 클래스를 그대로 사용
+        onClick={handleBackButtonClick}
+        title="질문 페이지로 돌아가기"
+        aria-label="질문 페이지로 돌아가기"
       >
-        <FaHome className="home-icon" />
-        <span className="home-text">홈</span>
+        <FaArrowLeft className="home-icon" /> {/* 아이콘만 변경하고 클래스는 유지 */}
+        <span className="home-text">뒤로</span> {/* 텍스트만 "뒤로"로 변경 */}
       </button>
 
       <div className="card-selection-header">
@@ -219,12 +209,6 @@ const CardSelection: React.FC<CardSelectionProps> = ({
         </div>
         
         <h1 className="card-selection-title">타로 카드를 선택하세요</h1>
-        
-        <p className="selection-instruction">
-          {remainingSelections > 0 
-            ? `${remainingSelections}장 더 선택할 수 있습니다` 
-            : '선택이 완료되었습니다'}
-        </p>
       </div>
       
       <div className="tarot-cards-container" ref={containerRef}>
@@ -262,8 +246,16 @@ const CardSelection: React.FC<CardSelectionProps> = ({
               <h2 className="card-action-title">운명의 메시지를 확인할 준비가 되었습니다</h2>
               <div className="card-action-description-container">
                 <p className="card-action-description-line">
-                  선택하신 3장의 카드로 과거, 현재, 미래의 통찰력을 얻어보세요.
+                  선택하신 3장의 카드가 당신의 질문에 대한 통찰력을 제공합니다.
                 </p>
+                
+                {/* 질문 표시 추가
+                {question && (
+                  <p className="card-action-description-line question-highlight">
+                    <span className="question-small-label">질문:</span> {question}
+                  </p>
+                )} */}
+                
                 <p className="card-action-description-line">
                   카드를 통해 당신만의 특별한 운명의 메시지를 읽어드립니다.
                 </p>

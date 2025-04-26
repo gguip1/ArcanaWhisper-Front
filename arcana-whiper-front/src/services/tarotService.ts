@@ -3,9 +3,12 @@
  */
 
 // API 요청에 대한 타입 정의
-// interface TarotRequest {
-//   cards: number[];
-// }
+interface TarotRequest {
+  cards: number[];
+  question: string; // 질문 추가
+  user_id?: string; // 선택적 사용자 ID
+  provider?: string; // 선택적 제공자 정보
+}
 
 // API 응답에 대한 타입 정의
 interface TarotResponse {
@@ -16,17 +19,20 @@ interface TarotResponse {
 
 /**
  * 타로 카드 해석 API 요청
- * @param cardNumbers - 선택한 카드 번호 배열 (3개)
+ * @param requestData - 요청 데이터 (카드, 질문, 사용자ID, 제공자)
  * @returns API 응답 객체
  */
-export async function requestTarotReading(cardNumbers: number[]): Promise<TarotResponse> {
+export async function requestTarotReading(requestData: TarotRequest): Promise<TarotResponse> {
   // 요청 전 유효성 검사
-  if (!cardNumbers || cardNumbers.length !== 3) {
+  if (!requestData.cards || requestData.cards.length !== 3) {
     throw new Error('정확히 3장의 카드가 필요합니다');
   }
   
+  if (!requestData.question || requestData.question.trim() === '') {
+    throw new Error('타로 질문이 필요합니다');
+  }
+  
   try {
-    // 5초 타임아웃 설정
     const API_URL = import.meta.env.VITE_API_URL
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -37,7 +43,7 @@ export async function requestTarotReading(cardNumbers: number[]): Promise<TarotR
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ cards: cardNumbers }),
+      body: JSON.stringify(requestData),
       signal: controller.signal
     });
     

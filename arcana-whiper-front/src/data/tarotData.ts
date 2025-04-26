@@ -15,7 +15,7 @@ export const cardBackImage: string | null = null; // 이미지 경로를 여기�
 export const majorArcana: TarotCard[] = [
   { id: 1, number: 1, name: '바보', description: '새로운 시작, 순수함, 모험' },
   { id: 2, number: 2, name: '마술사', description: '창의력, 기술, 재주' },
-  { id: 3, number: 3, name: '여교황', description: '직관, 지혜, 내면의 지식' },
+  { id: 3, number: 3, name: '여사제', description: '직관, 지혜, 내면의 지식' },
   { id: 4, number: 4, name: '여제', description: '풍요, 모성, 자연' },
   { id: 5, number: 5, name: '황제', description: '권위, 리더십, 구조' },
   { id: 6, number: 6, name: '교황', description: '전통, 영성, 적합성' },
