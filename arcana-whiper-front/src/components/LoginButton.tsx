@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import authService, { AuthProvider, UserProfile } from '../services/authService';
+import errorService from '../services/errorService'; // 에러 서비스 추가
 import { FaGoogle, FaSignOutAlt, FaHistory } from 'react-icons/fa';
 import { SiKakao } from 'react-icons/si';
 import '../styles/LoginButton.css';
@@ -20,16 +21,29 @@ const LoginButton: React.FC<LoginButtonProps> = ({
   currentPage = 'home' // 기본값은 home
 }) => {
   const [user, setUser] = useState<UserProfile | null>(null);
+  const [initialLoading, setInitialLoading] = useState(true); // 초기 로딩 상태 추가
   const [loading, setLoading] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // 컴포넌트 마운트 시 즉시 로컬 스토리지에서 사용자 정보 확인
   useEffect(() => {
-    // 인증 서비스 구독
+    // 현재 사용자 확인 (로컬 스토리지에서 가져옴)
+    const currentUser = authService.currentUser;
+    if (currentUser) {
+      setUser(currentUser);
+    }
+    
+    // 인증 상태 변경 구독
     const unsubscribe = authService.subscribe(currentUser => {
       setUser(currentUser);
+      setInitialLoading(false); // 인증 상태 확인 완료
     });
+    
+    // 일정 시간 후 로딩 상태 해제 (최대 대기 시간)
+    const timeoutId = setTimeout(() => {
+      setInitialLoading(false);
+    }, 500);
     
     // 드롭다운 외부 클릭 처리
     const handleOutsideClick = (event: MouseEvent) => {
@@ -43,29 +57,20 @@ const LoginButton: React.FC<LoginButtonProps> = ({
     return () => {
       unsubscribe();
       document.removeEventListener('mousedown', handleOutsideClick);
+      clearTimeout(timeoutId);
     };
   }, []);
-
-  // 오류 메시지 자동 제거
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => {
-        setError(null);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
 
   // 로그인 처리
   const handleLogin = async (provider: AuthProvider) => {
     try {
       setLoading(true);
-      setError(null);
       await authService.signIn(provider);
       setShowDropdown(false);
     } catch (err) {
       console.error('로그인 실패:', err);
-      setError(err instanceof Error ? err.message : '로그인 중 오류가 발생했습니다');
+      // 에러 서비스를 통해 에러 표시
+      errorService.showError(err instanceof Error ? err.message : '로그인 중 오류가 발생했습니다');
     } finally {
       setLoading(false);
     }
@@ -79,7 +84,8 @@ const LoginButton: React.FC<LoginButtonProps> = ({
       setShowDropdown(false);
     } catch (err) {
       console.error('로그아웃 실패:', err);
-      setError(err instanceof Error ? err.message : '로그아웃 중 오류가 발생했습니다');
+      // 에러 서비스를 통해 에러 표시
+      errorService.showError(err instanceof Error ? err.message : '로그아웃 중 오류가 발생했습니다');
     } finally {
       setLoading(false);
     }
@@ -89,8 +95,8 @@ const LoginButton: React.FC<LoginButtonProps> = ({
   const renderProviderIcon = (provider: AuthProvider) => {
     switch (provider) {
       case 'google': return <FaGoogle className="provider-icon" />;
-      case 'facebook': return <FaFacebook className="provider-icon" />;
-      case 'github': return <FaGithub className="provider-icon" />;
+      // case 'facebook': return <FaFacebook className="provider-icon" />;
+      // case 'github': return <FaGithub className="provider-icon" />;
       case 'kakao': return <SiKakao className="provider-icon" />;
       default: return null;
     }
@@ -123,35 +129,54 @@ const LoginButton: React.FC<LoginButtonProps> = ({
   // 히스토리 페이지인지 확인
   const isHistoryPage = currentPage === 'history';
 
+  // 로그인 버튼 렌더링 최적화
+  const renderLoginButton = () => {
+    // 초기 로딩 중이면 원형 로더 표시
+    if (initialLoading) {
+      return <div className="initializing-button"></div>;
+    }
+    
+    // 작업 중 로딩
+    if (loading) {
+      return <span className="loading-spinner"></span>;
+    }
+    
+    // 로그인된 상태
+    if (user) {
+      return user.photoURL ? (
+        <img 
+          src={user.photoURL} 
+          alt={user.displayName || '사용자'} 
+          className="user-avatar" 
+        />
+      ) : (
+        <span className="user-initial">
+          {user.displayName?.[0] || user.email?.[0] || '?'}
+        </span>
+      );
+    }
+    
+    // 로그아웃 상태
+    return (
+      <>
+        <span className="login-icon"></span>
+        <span className="login-text">로그인</span>
+      </>
+    );
+  };
+
+  // 버튼 클래스 계산 - 항상 원형 유지
+  const buttonClass = `login-button ${user ? 'logged-in' : ''} ${initialLoading ? 'initializing' : ''}`;
+
   return (
     <div className={`login-button-container ${positionClass} ${className}`} ref={dropdownRef}>
       <button 
-        className={`login-button ${user ? 'logged-in' : ''}`}
+        className={buttonClass}
         onClick={() => setShowDropdown(!showDropdown)}
-        disabled={loading}
+        disabled={loading || initialLoading}
         aria-label={user ? '사용자 메뉴' : '로그인'}
       >
-        {loading ? (
-          <span className="loading-spinner"></span>
-        ) : user ? (
-          user.photoURL ? (
-            <img 
-              src={user.photoURL} 
-              alt={user.displayName || '사용자'} 
-              className="user-avatar" 
-            />
-          ) : (
-            <span className="user-initial">
-              {user.displayName?.[0] || user.email?.[0] || '?'}
-
-            </span>
-          )
-        ) : (
-          <>
-            <span className="login-icon"></span>
-            <span className="login-text">로그인</span>
-          </>
-        )}
+        {renderLoginButton()}
       </button>
 
       {showDropdown && (
@@ -216,8 +241,6 @@ const LoginButton: React.FC<LoginButtonProps> = ({
           )}
         </div>
       )}
-
-      {error && <div className="login-error">{error}</div>}
     </div>
   );
 };

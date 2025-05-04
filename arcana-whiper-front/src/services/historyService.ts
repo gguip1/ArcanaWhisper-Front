@@ -10,6 +10,12 @@ export interface HistoryItem {
   created_at: string;
 }
 
+// 히스토리 응답 타입 정의 (페이지네이션 지원)
+export interface HistoryResponse {
+  history: HistoryItem[];
+  next_cursor_doc_id: string | null;
+}
+
 /**
  * 타로 카드 히스토리 서비스 클래스
  */
@@ -28,27 +34,37 @@ export class HistoryService {
   }
 
   /**
-   * 타로 카드 히스토리 조회
+   * 타로 카드 히스토리 조회 (커서 기반 페이지네이션 지원)
    * @param userId OAuth 식별자
    * @param provider OAuth 제공자
-   * @returns 타로 카드 히스토리 목록
+   * @param cursorDocId 다음 페이지를 위한 커서 (옵션)
+   * @returns 타로 카드 히스토리 응답 (페이지네이션 정보 포함)
    */
-  async getTarotHistory(userId: string, provider: string): Promise<HistoryItem[]> {
+  async getTarotHistory(
+    userId: string, 
+    provider: string, 
+    cursorDocId?: string
+  ): Promise<HistoryResponse> {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), this.DEFAULT_TIMEOUT);
       
+      // URL 구성 - 커서가 있으면 포함
+      let url = `${this.API_URL}/tarot/history?user_id=${encodeURIComponent(userId)}&provider=${encodeURIComponent(provider)}`;
+      
+      // 만약 커서가 있으면 URL에 추가
+      if (cursorDocId) {
+        url += `&cursor_doc_id=${encodeURIComponent(cursorDocId)}`;
+      }
+      
       // API 호출
-      const response = await fetch(
-        `${this.API_URL}/tarot/history?user_id=${encodeURIComponent(userId)}&provider=${encodeURIComponent(provider)}`,
-        {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          },
-          signal: controller.signal
-        }
-      );
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+        signal: controller.signal
+      });
       
       clearTimeout(timeoutId);
       
@@ -59,9 +75,20 @@ export class HistoryService {
       }
       
       // 성공적인 응답 반환
-      return await response.json();
+      const data = await response.json();
+      
+      // 이전 API 호환성을 위한 처리 (배열 형태로 반환된 경우)
+      if (Array.isArray(data)) {
+        console.warn('서버가 이전 형식의 응답을 반환했습니다. 페이지네이션이 지원되지 않습니다.');
+        return {
+          history: data,
+          next_cursor_doc_id: null
+        };
+      }
+      
+      return data;
     } catch (error) {
-      this.handleApiError(error);
+      return this.handleApiError(error);
     }
   }
 

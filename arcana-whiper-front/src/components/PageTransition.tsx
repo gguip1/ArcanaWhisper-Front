@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import '../styles/Transitions.css';
 
 interface PageTransitionProps {
-  targetPage: 'home' | 'question' | 'cardSelection' | 'result';
+  targetPage: 'home' | 'question' | 'cardSelection' | 'result' | 'history';
   customMessage?: string;
   transitionType?: 'forward' | 'backward' | 'home' | 'newreading';
   isReturning?: boolean; // isReturning prop 추가
@@ -39,6 +40,8 @@ const PageTransition: React.FC<PageTransitionProps> = ({
             return '타로 카드를 펼쳐놓는 중...';
           case 'result':
             return '카드의 비밀을 해석하는 중...';
+          case 'history':
+            return '히스토리 페이지로 이동하는 중...';
           default: 
             return '페이지를 전환하는 중...';
         }

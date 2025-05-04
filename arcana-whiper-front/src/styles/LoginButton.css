@@ -15,6 +15,7 @@
   right: 1rem;
 }
 
+/* 로그인 버튼 스타일 - 항상 원형 유지하도록 수정 */
 .login-button {
   display: flex;
   align-items: center;
@@ -46,6 +47,7 @@
   background: rgba(156, 39, 176, 0.4);
 }
 
+/* 로그인한 상태일 때 버튼을 원형으로 */
 .login-button.logged-in {
   width: 2.5rem;
   height: 2.5rem;
@@ -53,6 +55,22 @@
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid rgba(156, 39, 176, 0.6);
+}
+
+/* 초기화 중인 상태의 버튼도 원형으로 수정 */
+.login-button.initializing {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(30, 30, 46, 0.8);
+  border: 2px solid rgba(156, 39, 176, 0.3);
+  overflow: hidden;
+  cursor: default;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login-icon {
@@ -218,6 +236,16 @@
   transform: translateY(-2px);
 }
 
+/* 초기화 중인 버튼 내부 로더 스타일 */
+.initializing-button {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid rgba(156, 39, 176, 0.2);
+  border-top-color: #d4b2ff;
+  animation: spin 1.2s linear infinite;
+}
+
 .loading-spinner {
   display: inline-block;
   width: 18px;
@@ -246,6 +274,13 @@
   width: 260px;
   max-width: 100%;
   animation: fadeIn 0.3s ease;
+}
+
+/* 초기화 중인 로그인 버튼 스타일 */
+@keyframes pulse {
+  0% { opacity: 0.5; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.5; transform: scale(0.8); }
 }
 
 @media (max-width: 768px) {

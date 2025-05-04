@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { 
+  FaChevronDown, 
+  FaChevronUp, 
+  FaClock, 
+  // FaCardsHeart, 
+  FaMagic
+} from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
 import { HistoryItem, HistoryService } from '../services/historyService';
 import { shuffleCards } from '../data/tarotData';
@@ -23,8 +29,8 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
     .filter(card => card !== undefined);
   
   // 결과 텍스트 요약 (접힌 상태에서 표시)
-  const previewText = item.result.length > 150
-    ? `${item.result.substring(0, 150)}...`
+  const previewText = item.result.length > 180
+    ? `${item.result.substring(0, 180)}...`
     : item.result;
   
   // 확장 토글
@@ -38,11 +44,18 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
         <div className="history-item-number">{index}</div>
         <div className="history-item-summary">
           <div className="history-item-question">{item.question}</div>
-          <div className="history-item-date">{formattedDate}</div>
+          <div className="history-item-date">
+            <FaClock className="history-item-date-icon" />
+            {formattedDate}
+          </div>
         </div>
         <button 
           className="expand-button" 
           aria-label={expanded ? '접기' : '펼치기'}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleExpand();
+          }}
         >
           {expanded ? <FaChevronUp /> : <FaChevronDown />}
         </button>
@@ -50,6 +63,9 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
       
       {!expanded ? (
         <div className="history-item-preview">
+          <div className="preview-label">
+            {/* <FaMagic /> 선택한 카드 */}
+          </div>
           <div className="preview-cards">
             {selectedCards.map((card, idx) => card && (
               <div key={idx} className="preview-card">
@@ -76,7 +92,10 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
           </div>
           
           <div className="history-result">
-            <h3 className="result-title">카드 해석 결과</h3>
+            <h3 className="result-title">
+              <FaMagic className="result-title-icon" />
+              카드 해석 결과
+            </h3>
             <div className="result-content">
               <ReactMarkdown>{item.result}</ReactMarkdown>
             </div>

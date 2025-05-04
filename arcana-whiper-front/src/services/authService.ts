@@ -61,29 +61,45 @@ export interface UserProfile {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// 로컬 스토리지 키 정의
+const USER_STORAGE_KEY = 'arcana_whisper_user';
+
 class AuthService {
-  private _currentUser: UserProfile | null = null;
-  private listeners: ((user: UserProfile | null) => void)[] = [];
+  private currentUserProfile: UserProfile | null = null;
+  private listeners: Array<(user: UserProfile | null) => void> = [];
 
   constructor() {
     // Kakao SDK 초기화
     this.initKakaoSdk();
     
+    // 로컬 스토리지에서 사용자 정보 복원
+    const savedUser = this.getSavedUser();
+    if (savedUser) {
+      this.currentUserProfile = savedUser;
+    }
+    
     // Firebase 인증 상태 변경 감지
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        this._currentUser = this.parseUserData(user);
-        // 로그인 성공 시 사용자 정보 로깅
-        // console.log('🔐 로그인 성공:', this._currentUser);
-        this.notifyListeners();
+        const userProfile: UserProfile = {
+          uid: user.uid,
+          displayName: user.displayName || '',
+          email: user.email || '',
+          photoURL: user.photoURL || '',
+          provider: user.providerData[0]?.providerId || 'unknown',
+        };
+        
+        this.currentUserProfile = userProfile;
+        this.saveUser(userProfile); // 로컬 스토리지에 저장
       } else {
-        // Firebase에서 로그아웃되었지만 카카오는 별도 확인 필요
-        if (this._currentUser?.provider !== 'kakao') {
-          this._currentUser = null;
-          this.notifyListeners();
+        if (this.currentUserProfile?.provider !== 'kakao') {
+          this.currentUserProfile = null;
+          this.clearSavedUser(); // 로컬 스토리지에서 삭제
         }
         this.checkKakaoLoginStatus();
       }
+      
+      this.notifyListeners();
     });
   }
 
@@ -130,34 +146,61 @@ class AuthService {
         window.Kakao.API.request({
           url: '/v2/user/me',
         }).then((res) => {
-          this._currentUser = {
+          this.currentUserProfile = {
             uid: `kakao:${res.id}`,
             displayName: res.properties?.nickname || null,
             email: res.kakao_account?.email || null,
             photoURL: res.properties?.profile_image || null,
             provider: 'kakao'
           };
-        //   console.log('🔐 카카오 로그인 성공:', this._currentUser);
+          this.saveUser(this.currentUserProfile); // 로컬 스토리지에 저장
           this.notifyListeners();
         }).catch(console.error);
-      } else if (this._currentUser?.provider === 'kakao') {
-        this._currentUser = null;
+      } else if (this.currentUserProfile?.provider === 'kakao') {
+        this.currentUserProfile = null;
+        this.clearSavedUser(); // 로컬 스토리지에서 삭제
         this.notifyListeners();
       }
     });
   }
 
+  // 사용자 정보 로컬 스토리지 저장
+  private saveUser(user: UserProfile): void {
+    try {
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+    } catch (error) {
+      console.error('사용자 정보 저장 실패:', error);
+    }
+  }
+
+  // 로컬 스토리지에서 사용자 정보 불러오기
+  private getSavedUser(): UserProfile | null {
+    try {
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (error) {
+      console.error('저장된 사용자 정보 로드 실패:', error);
+      return null;
+    }
+  }
+
+  // 로컬 스토리지에서 사용자 정보 삭제
+  private clearSavedUser(): void {
+    try {
+      localStorage.removeItem(USER_STORAGE_KEY);
+    } catch (error) {
+      console.error('사용자 정보 삭제 실패:', error);
+    }
+  }
+
   // 소셜 로그인 처리
   async signIn(provider: AuthProvider): Promise<UserProfile> {
     try {
-      // 카카오 로그인 처리
       if (provider === 'kakao') {
         const user = await this.signInWithKakao();
-        // console.log(`🔐 ${provider} 로그인 완료:`, user);
         return user;
       }
       
-      // Firebase 로그인 처리
       let authProvider;
       switch (provider) {
         case 'google':
@@ -180,10 +223,10 @@ class AuthService {
       }
       
       const result = await signInWithPopup(auth, authProvider);
-      this._currentUser = this.parseUserData(result.user);
-    //   console.log(`🔐 ${provider} 로그인 완료:`, this._currentUser);
+      this.currentUserProfile = this.parseUserData(result.user);
+      this.saveUser(this.currentUserProfile); // 로컬 스토리지에 저장
       this.notifyListeners();
-      return this._currentUser;
+      return this.currentUserProfile;
     } catch (error) {
       console.error(`❌ 로그인 실패 (${provider}):`, error);
       throw error;
@@ -211,7 +254,8 @@ class AuthService {
               photoURL: res.properties?.profile_image || null,
               provider: 'kakao'
             };
-            this._currentUser = userData;
+            this.currentUserProfile = userData;
+            this.saveUser(userData); // 로컬 스토리지에 저장
             this.notifyListeners();
             resolve(userData);
           })
@@ -225,17 +269,16 @@ class AuthService {
   // 로그아웃
   async signOut(): Promise<void> {
     try {
-      const currentProvider = this._currentUser?.provider;
+      const currentProvider = this.currentUserProfile?.provider;
       
-      // Firebase 로그아웃
       await firebaseSignOut(auth);
       
-      // 카카오 로그아웃 (카카오로 로그인한 경우)
       if (currentProvider === 'kakao' && window.Kakao?.Auth) {
         window.Kakao.Auth.logout();
       }
       
-      this._currentUser = null;
+      this.currentUserProfile = null;
+      this.clearSavedUser(); // 로컬 스토리지에서 삭제
       this.notifyListeners();
     } catch (error) {
       console.error('로그아웃 실패:', error);
@@ -245,22 +288,20 @@ class AuthService {
 
   // 현재 사용자 정보
   get currentUser(): UserProfile | null {
-    return this._currentUser;
+    return this.currentUserProfile || this.getSavedUser();
   }
 
   // 로그인 상태 확인
   get isLoggedIn(): boolean {
-    return this._currentUser !== null;
+    return this.currentUserProfile !== null;
   }
 
   // 인증 상태 변경 구독
   subscribe(listener: (user: UserProfile | null) => void): () => void {
     this.listeners.push(listener);
     
-    // 현재 상태 즉시 통지
-    listener(this._currentUser);
+    listener(this.currentUserProfile);
     
-    // 구독 취소 함수 반환
     return () => {
       this.listeners = this.listeners.filter(l => l !== listener);
     };
@@ -268,7 +309,7 @@ class AuthService {
 
   // 모든 리스너에게 변경 알림
   private notifyListeners(): void {
-    this.listeners.forEach(listener => listener(this._currentUser));
+    this.listeners.forEach(listener => listener(this.currentUserProfile));
   }
 }
 
