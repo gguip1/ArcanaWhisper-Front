@@ -197,7 +197,7 @@
   
   .transition-text {
     font-size: 1.4rem;
-    /* 반응형에서도 크기 변화 방지 */
+    /* 반응형에서도 크기 변화 방지 - !important 강화 */
     transform: none !important;
   }
 
@@ -213,7 +213,7 @@
     font-size: 1.2rem;
     padding: 0 1rem;
     text-align: center;
-    /* 작은 화면에서도 크기 변화 방지 */
+    /* 작은 화면에서도 크기 변화 방지 - !important 강화 */
     transform: none !important;
   }
 }

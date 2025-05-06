@@ -2,10 +2,16 @@
  * 타로 카드 히스토리 API 서비스
  */
 
+// 타로 카드 정보 타입 정의
+export interface TarotCards {
+  cards: number[];
+  reversed: boolean[];
+}
+
 // 히스토리 아이템 타입 정의
 export interface HistoryItem {
   question: string;
-  cards: number[];
+  cards: TarotCards; // 카드 배열에서 객체로 변경
   result: string;
   created_at: string;
 }

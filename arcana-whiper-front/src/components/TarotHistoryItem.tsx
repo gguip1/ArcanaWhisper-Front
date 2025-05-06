@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   FaChevronDown, 
   FaChevronUp, 
   FaClock, 
-  // FaCardsHeart, 
   FaMagic
 } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
@@ -22,11 +21,17 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
   // 날짜 포맷팅 - 정적 메서드 직접 호출
   const formattedDate = HistoryService.formatDate(item.created_at);
   
-  // 선택한 카드 정보 가져오기
-  const allCards = shuffleCards();
-  const selectedCards = item.cards
-    .map(cardNumber => allCards.find(card => card.number === cardNumber))
-    .filter(card => card !== undefined);
+  // 선택한 카드 정보 가져오기 - useMemo로 최적화
+  const selectedCards = useMemo(() => {
+    const allCards = shuffleCards();
+    return item.cards.cards.map((cardNumber, idx) => {
+      const card = allCards.find(c => c.number === cardNumber);
+      return card ? {
+        ...card,
+        reversed: item.cards.reversed ? item.cards.reversed[idx] : false
+      } : undefined;
+    }).filter(card => card !== undefined);
+  }, [item.cards]);
   
   // 결과 텍스트 요약 (접힌 상태에서 표시)
   const previewText = item.result.length > 180
@@ -70,6 +75,7 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
             {selectedCards.map((card, idx) => card && (
               <div key={idx} className="preview-card">
                 {card.name}
+                {card.reversed && <span className="reversed-tag"> (역)</span>}
               </div>
             ))}
           </div>
@@ -81,11 +87,13 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
             {selectedCards.map((card, idx) => card && (
               <div key={idx} className="history-card-wrapper">
                 <TarotResultCard
+                  key={`${card.number}-${expanded}`} // key에 expanded 상태 추가하여 재렌더링 방지
                   name={card.name}
                   number={card.number}
                   description={card.description || ''}
                   image={card.image}
                   position={['첫번째', '두번째', '세번째'][idx]}
+                  reversed={card.reversed} // 역방향 정보 전달
                 />
               </div>
             ))}

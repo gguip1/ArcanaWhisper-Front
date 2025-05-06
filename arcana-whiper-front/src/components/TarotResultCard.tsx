@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import '../styles/TarotResultCard.css';
 
 interface TarotResultCardProps {
@@ -7,18 +7,51 @@ interface TarotResultCardProps {
   description?: string;
   image?: string;
   position: string;
+  reversed?: boolean; // 역방향 여부 추가
 }
 
 const TarotResultCard: React.FC<TarotResultCardProps> = ({
   name,
   number,
-//   description,
   image,
-  position
+  position,
+  reversed = false // 기본값은 정방향
 }) => {
   const nameRef = useRef<HTMLHeadingElement>(null);
-  const [fontSize, setFontSize] = useState('1.4rem'); // 기본 글꼴 크기
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  // 폰트 사이즈를 즉시 계산하도록 useMemo 사용
+  const fontSize = useMemo(() => {
+    const nameLength = name.length;
+    
+    // 화면 너비에 따른 기본 크기 설정
+    let baseSize = '1.4rem';
+    if (windowWidth <= 360) {
+      baseSize = '0.6rem';
+    } else if (windowWidth <= 480) {
+      baseSize = '0.7rem';
+    } else if (windowWidth <= 600) {
+      baseSize = '0.8rem';
+    } else if (windowWidth <= 768) {
+      baseSize = '1.0rem';
+    } else if (windowWidth <= 900) {
+      baseSize = '1.2rem';
+    } else if (windowWidth <= 1100) {
+      baseSize = '1.3rem';
+    }
+    
+    // 이름 길이에 따른 추가 크기 조정
+    if (nameLength > 15) {
+      // 매우 긴 이름인 경우 더 작게
+      return `calc(${baseSize} * 0.8)`;
+    } else if (nameLength > 12) {
+      // 긴 이름인 경우 약간 작게
+      return `calc(${baseSize} * 0.9)`;
+    } else {
+      // 일반 길이 이름은 기본 크기 사용
+      return baseSize;
+    }
+  }, [name, windowWidth]);
 
   // 윈도우 크기 변경 감지를 위한 이벤트 리스너
   useEffect(() => {
@@ -31,41 +64,6 @@ const TarotResultCard: React.FC<TarotResultCardProps> = ({
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-  // 카드 이름 길이와 화면 크기에 따라 글꼴 크기 조절
-  useEffect(() => {
-    if (nameRef.current) {
-      const nameLength = name.length;
-      
-      // 화면 너비에 따른 기본 크기 설정
-      let baseSize = '1.4rem';
-      if (windowWidth <= 360) {
-        baseSize = '0.6rem';
-      } else if (windowWidth <= 480) {
-        baseSize = '0.7rem';
-      } else if (windowWidth <= 600) {
-        baseSize = '0.8rem';
-      } else if (windowWidth <= 768) {
-        baseSize = '1.0rem';
-      } else if (windowWidth <= 900) {
-        baseSize = '1.2rem';
-      } else if (windowWidth <= 1100) {
-        baseSize = '1.3rem';
-      }
-      
-      // 이름 길이에 따른 추가 크기 조정
-      if (nameLength > 15) {
-        // 매우 긴 이름인 경우 더 작게
-        setFontSize(`calc(${baseSize} * 0.8)`);
-      } else if (nameLength > 12) {
-        // 긴 이름인 경우 약간 작게
-        setFontSize(`calc(${baseSize} * 0.9)`);
-      } else {
-        // 일반 길이 이름은 기본 크기 사용
-        setFontSize(baseSize);
-      }
-    }
-  }, [name, windowWidth]);
 
   // 카드 번호에 따라 다양한 색상 생성
   const getCardStyle = () => {
@@ -85,9 +83,12 @@ const TarotResultCard: React.FC<TarotResultCardProps> = ({
 
   return (
     <div className="tarot-result-container">
-      <div className="tarot-position-label">{position}</div>
+      <div className="tarot-position-label">
+        {position}
+        {reversed && <span className="reversed-indicator"> (역방향)</span>}
+      </div>
       
-      <div className="tarot-result-card" style={getCardStyle()}>
+      <div className={`tarot-result-card ${reversed ? 'reversed' : ''}`} style={getCardStyle()}>
         {image ? (
           // 이미지가 있는 경우
           <div className="tarot-card-image-container">

@@ -1,18 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TarotCard from './TarotCard';
 import { shuffleCards } from '../data/tarotData';
-import { FaArrowRight, FaRedo, FaArrowLeft } from 'react-icons/fa'; // FaHome을 FaArrowLeft로 변경
+import { FaArrowRight, FaRedo, FaArrowLeft } from 'react-icons/fa';
 import { FiShuffle } from 'react-icons/fi';
 
-// props 인터페이스 업데이트 - 질문 다시하기 추가
+// props 인터페이스 업데이트
 interface CardSelectionProps {
-  selectedCards: number[];
-  onCardSelect: (cardId: number) => void;
+  selectedCards: number[]; // ID만 받아서 방향 정보는 숨김
+  onCardSelect: (cardId: number, cardNumber: number) => void; // 카드 번호도 함께 전달
   maxCards: number;
   onResetCards?: () => void;
-  onRequestReading?: (cardNumbers: number[]) => void; 
+  onRequestReading?: () => void; // 변경: 선택된 카드 정보는 App.tsx에서 관리
   onGoHome?: () => void;
-  onReQuestion?: () => void; // 질문 다시하기 핸들러 추가
+  onReQuestion?: () => void;
   question?: string;
 }
 
@@ -22,18 +22,13 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   maxCards,
   onResetCards,
   onRequestReading,
-  // onGoHome,
-  onReQuestion, // 질문 다시하기 핸들러
-  // question = ''
+  onReQuestion,
 }) => {
   const [cardPositions, setCardPositions] = useState<{[key: number]: {x: number, y: number, rotation: number, baseZIndex: number}}>({});
-  // const remainingSelections = maxCards - selectedCards.length;
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // 처음부터 섞인 카드로 초기화
   const [shuffledCards, setShuffledCards] = useState(() => shuffleCards());
   
-  // 카드 섞기 함수
   const shuffleCardsHandler = () => {
     setShuffledCards(shuffleCards());
   };
@@ -136,7 +131,6 @@ const CardSelection: React.FC<CardSelectionProps> = ({
     }
   };
   
-  // 카드 섞기 핸들러
   const handleShuffleCards = () => {
     if (selectedCards.length > 0) {
       if (onResetCards) {
@@ -146,22 +140,11 @@ const CardSelection: React.FC<CardSelectionProps> = ({
     shuffleCardsHandler();
   };
   
-  const handleViewReading = () => {
-    // 선택된 카드의 번호 추출
-    const selectedCardNumbers = selectedCards.map(cardId => {
-      const card = shuffledCards.find(c => c.id === cardId);
-      return card ? card.number : -1;
-    }).filter(num => num !== -1); // 유효하지 않은 번호 제거
-    
-    // API 요청
-    if (onRequestReading && selectedCardNumbers.length === maxCards) {
-      onRequestReading(selectedCardNumbers);
-    }
+  const handleCardClick = (cardId: number, cardNumber: number) => {
+    onCardSelect(cardId, cardNumber);
   };
 
-  // 홈 버튼 클릭 효과 처리
   const handleBackButtonClick = () => {
-    // 뒤로가기 버튼 클릭 시 질문 페이지로 이동
     if (onReQuestion) {
       onReQuestion();
     }
@@ -173,15 +156,14 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   
   return (
     <div className="card-selection-container">
-      {/* 홈 버튼을 뒤로가기 버튼으로 변경 */}
       <button 
-        className="home-button" // 기존 CSS 클래스를 그대로 사용
+        className="home-button"
         onClick={handleBackButtonClick}
         title="질문 페이지로 돌아가기"
         aria-label="질문 페이지로 돌아가기"
       >
-        <FaArrowLeft className="home-icon" /> {/* 아이콘만 변경하고 클래스는 유지 */}
-        <span className="home-text">뒤로</span> {/* 텍스트만 "뒤로"로 변경 */}
+        <FaArrowLeft className="home-icon" />
+        <span className="home-text">뒤로</span>
       </button>
 
       <div className="card-selection-header">
@@ -196,7 +178,6 @@ const CardSelection: React.FC<CardSelectionProps> = ({
             </div>
           ))}
           
-          {/* 카드 섞기 버튼 - 인디케이터와 일관된 디자인 */}
           <button 
             className="card-indicator shuffle-indicator"
             onClick={handleShuffleCards}
@@ -231,7 +212,7 @@ const CardSelection: React.FC<CardSelectionProps> = ({
               <TarotCard
                 card={card}
                 isSelected={isSelected}
-                onSelect={() => onCardSelect(card.id)}
+                onSelect={() => handleCardClick(card.id, card.number)}
                 disabled={selectedCards.length >= maxCards && !isSelected}
               />
             </div>
@@ -248,14 +229,6 @@ const CardSelection: React.FC<CardSelectionProps> = ({
                 <p className="card-action-description-line">
                   선택하신 3장의 카드가 당신의 질문에 대한 통찰력을 제공합니다.
                 </p>
-                
-                {/* 질문 표시 추가
-                {question && (
-                  <p className="card-action-description-line question-highlight">
-                    <span className="question-small-label">질문:</span> {question}
-                  </p>
-                )} */}
-                
                 <p className="card-action-description-line">
                   카드를 통해 당신만의 특별한 운명의 메시지를 읽어드립니다.
                 </p>
@@ -263,7 +236,7 @@ const CardSelection: React.FC<CardSelectionProps> = ({
               <div className="card-action-buttons">
                 <button 
                   className="card-action-button primary-button" 
-                  onClick={handleViewReading}
+                  onClick={onRequestReading}
                 >
                   <span className="btn-text">운명의 메시지 확인하기</span>
                   <FaArrowRight className="btn-icon" />

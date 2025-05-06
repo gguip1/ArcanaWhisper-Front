@@ -171,6 +171,13 @@
   display: none; /* 확장 버튼 숨김 */
 }
 
+/* 역방향 태그 스타일 */
+.reversed-tag {
+  color: #ff9800;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
 /* 미리보기 스타일 */
 .history-item-preview {
   padding: 0.8rem 1.5rem 1rem;

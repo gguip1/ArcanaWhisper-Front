@@ -15,7 +15,8 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc'); // 기본값: 최신순
+  // const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc'); // 기본값: 최신순
+  const [sortOrder] = useState<'desc' | 'asc'>('desc');
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState<boolean>(true); // 추가 데이터가 있는지 여부
   

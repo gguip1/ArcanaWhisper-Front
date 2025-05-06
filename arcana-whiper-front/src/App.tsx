@@ -12,12 +12,19 @@ import { requestTarotReading } from './services/tarotService'
 import authService from './services/authService'
 import errorService from './services/errorService'
 
+// 선택된 카드 정보를 저장하는 인터페이스 추가
+interface SelectedCardInfo {
+  id: number;      // 카드 ID
+  number: number;  // 카드 번호
+  reversed: boolean; // 역방향 여부
+}
+
 // 페이지 전환 타입 정의 (PageTransition 컴포넌트의 targetPage와 일치시킴)
 type PageType = 'home' | 'question' | 'cardSelection' | 'result' | 'history';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('home')
-  const [selectedCards, setSelectedCards] = useState<number[]>([])
+  const [selectedCards, setSelectedCards] = useState<SelectedCardInfo[]>([]) // 카드 정보 타입 변경
   const MAX_CARDS = 3
   const [isTransitioning, setIsTransitioning] = useState(false)
   
@@ -59,31 +66,44 @@ function App() {
     setCurrentPage('home');
   }
 
-  const handleCardSelect = (cardId: number) => {
-    if (selectedCards.includes(cardId)) {
-      setSelectedCards(selectedCards.filter(id => id !== cardId))
+  const handleCardSelect = (cardId: number, cardNumber: number) => {
+    if (selectedCards.find(card => card.id === cardId)) {
+      setSelectedCards(selectedCards.filter(card => card.id !== cardId));
     } else {
       if (selectedCards.length < MAX_CARDS) {
-        setSelectedCards([...selectedCards, cardId])
+        // 선택된 카드에 무작위로 정/역방향 부여 (사용자에게는 보이지 않음)
+        const newCard: SelectedCardInfo = {
+          id: cardId,
+          number: cardNumber,
+          reversed: Math.random() < 0.5 // 50% 확률로 역방향
+        };
+        setSelectedCards([...selectedCards, newCard]);
       }
     }
-  }
+  };
 
   const handleResetCards = () => {
     setSelectedCards([]);
   }
   
-  const handleRequestReading = async (cardNumbers: number[]) => {
+  const handleRequestReading = async (selectedCardInfos: SelectedCardInfo[]) => {
     setIsLoading(true);
     
     try {
       // 로그인 상태 확인
       const currentUser = authService.currentUser;
       
+      // 카드 번호와 방향 정보 추출
+      const cardNumbers = selectedCardInfos.map(card => card.number);
+      const cardDirections = selectedCardInfos.map(card => card.reversed);
+      
       // API 요청 데이터 구성
       const requestData = {
-        cards: cardNumbers,
-        question: tarotQuestion, // 질문 추가
+        cards: {
+          cards: cardNumbers,
+          reversed: cardDirections
+        },
+        question: tarotQuestion,
         // 로그인 상태일 때만 user_id, provider 추가
         ...(currentUser && {
           user_id: currentUser.uid,
@@ -137,6 +157,10 @@ function App() {
   };
 
   const handleHistoryGoHome = () => {
+    // 히스토리에서 홈으로 돌아갈 때 선택된 카드 상태 초기화
+    handleResetCards();
+    setReadingResult('');
+    setTarotQuestion('');
     // 로딩 없이 즉시 이동
     setCurrentPage('home');
   };
@@ -179,11 +203,11 @@ function App() {
       {currentPage === 'cardSelection' && !isLoading && (
         <div className={isTransitioning ? "page-hidden" : "page-visible"}>
           <CardSelection 
-            selectedCards={selectedCards} 
-            onCardSelect={handleCardSelect}
+            selectedCards={selectedCards.map(card => card.id)} // ID만 전달하여 방향 정보를 숨김
+            onCardSelect={(cardId, cardNumber) => handleCardSelect(cardId, cardNumber)}
             maxCards={MAX_CARDS}
             onResetCards={handleResetCards}
-            onRequestReading={handleRequestReading}
+            onRequestReading={() => handleRequestReading(selectedCards)}
             onGoHome={handleGoHome}
             onReQuestion={handleReQuestion}
             question={tarotQuestion}
@@ -198,7 +222,7 @@ function App() {
             onNewReading={handleNewReading}
             onGoHome={handleGoHome}
             question={tarotQuestion}
-            selectedCardNumbers={selectedCards}
+            selectedCardInfos={selectedCards} // 카드 방향 정보를 포함한 데이터 전달
           />
         </div>
       )}

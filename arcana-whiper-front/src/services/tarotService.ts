@@ -2,18 +2,24 @@
  * 타로 카드 해석 API 서비스
  */
 
+// 타로 카드 정보에 대한 타입 정의
+interface TarotCards {
+  cards: number[];
+  reversed: boolean[];
+}
+
 // API 요청에 대한 타입 정의
 interface TarotRequest {
-  cards: number[];
-  question: string; // 질문 추가
-  user_id?: string; // 선택적 사용자 ID
-  provider?: string; // 선택적 제공자 정보
+  cards: TarotCards; // 카드와 방향 정보를 포함하는 객체로 변경
+  question: string;
+  user_id?: string;
+  provider?: string;
 }
 
 // API 응답에 대한 타입 정의
 interface TarotResponse {
   message: string;
-  cards: number[];
+  cards: TarotCards; // 카드와 방향 정보를 포함하는 객체로 변경
   result: string;
 }
 
@@ -24,8 +30,12 @@ interface TarotResponse {
  */
 export async function requestTarotReading(requestData: TarotRequest): Promise<TarotResponse> {
   // 요청 전 유효성 검사
-  if (!requestData.cards || requestData.cards.length !== 3) {
+  if (!requestData.cards || !requestData.cards.cards || requestData.cards.cards.length !== 3) {
     throw new Error('정확히 3장의 카드가 필요합니다');
+  }
+  
+  if (!requestData.cards.reversed || requestData.cards.reversed.length !== 3) {
+    throw new Error('각 카드의 방향 정보가 필요합니다');
   }
   
   if (!requestData.question || requestData.question.trim() === '') {
@@ -69,4 +79,14 @@ export async function requestTarotReading(requestData: TarotRequest): Promise<Ta
     }
     throw new Error('알 수 없는 오류가 발생했습니다.');
   }
+}
+
+// 타로 카드 방향 생성 유틸리티 함수
+export function generateCardDirections(count: number): boolean[] {
+  const directions: boolean[] = [];
+  for (let i = 0; i < count; i++) {
+    // 각 카드마다 50% 확률로 정방향(false) 또는 역방향(true) 설정
+    directions.push(Math.random() < 0.5);
+  }
+  return directions;
 }
