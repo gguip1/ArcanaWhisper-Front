@@ -1,14 +1,14 @@
-// import React from 'react';
-// import { TarotCard as TarotCardType, cardBackImage } from '../data/tarotData';
+import React from 'react';
+import { TarotCard as TarotCardType } from '../data/tarotData';
 
-// interface TarotCardProps {
-//   card: TarotCardType;
-//   isSelected: boolean;
-//   onSelect: () => void;
-//   disabled?: boolean;
-// }
+interface TarotCardProps {
+  card: TarotCardType;
+  isSelected: boolean;
+  onSelect: () => void;
+  disabled?: boolean;
+}
 
-const TarotCard = ({ card, isSelected, onSelect, disabled }) => {
+const TarotCard: React.FC<TarotCardProps> = ({ card, isSelected, onSelect, disabled }) => {
   return (
     <div 
       className={`tarot-card ${isSelected ? 'selected' : ''} ${disabled ? 'disabled' : ''}`} 
