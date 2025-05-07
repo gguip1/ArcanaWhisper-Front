@@ -18,10 +18,9 @@ const TarotCard: React.FC<TarotCardProps> = ({ card, isSelected, onSelect, disab
         {/* 카드 뒷면 개선 */}
         <div className="tarot-card-front">
           <div className="tarot-card-back-gradient">
-            <div className="tarot-card-back-pattern"></div>
+            {/* <div className="tarot-card-back-pattern"></div> */}
             <div className="tarot-card-back-border"></div>
-            <div className="tarot-card-back-circle"></div>
-            <div className="tarot-card-back-symbol">★</div>
+            <div className="tarot-card-back-symbol">✦</div>
           </div>
         </div>
         
