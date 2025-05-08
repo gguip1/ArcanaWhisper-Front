@@ -11,6 +11,7 @@ import TarotHistory from './components/TarotHistory'
 import { requestTarotReading } from './services/tarotService'
 import authService from './services/authService'
 import errorService from './services/errorService'
+import PWAInstallPrompt from './components/PWAInstallPrompt'
 
 // 선택된 카드 정보를 저장하는 인터페이스 추가
 interface SelectedCardInfo {
@@ -244,6 +245,9 @@ function App() {
       
       {/* 기존 에러 모달 대신 글로벌 에러 모달 사용 */}
       <GlobalErrorModal />
+
+      {/* PWA 설치 프롬프트 추가 */}
+      <PWAInstallPrompt />
     </div>
   );
 }
