@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'prompt', // 'prompt'로 변경해서 사용자에게 설치 여부를 물어봅니다.
+      registerType: 'autoUpdate', // autoUpdate로 변경하여 자동 업데이트 활성화
       includeAssets: ['crystalball-svgrepo-com.svg', 'fonts/*.ttf', 'images/*.jpg'],
       manifest: {
         name: 'Arcana Whisper',
