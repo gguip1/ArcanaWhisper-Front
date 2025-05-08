@@ -3,8 +3,15 @@
 
 <head>
   <meta charset="UTF-8" />
-  <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
-  <link rel="icon" type="image/svg+xml" href="/crystalball-svgrepo-com.svg" />
+  <!-- PWA 아이콘 설정 -->
+  <link rel="icon" type="image/png" sizes="196x196" href="/favicon-196.png">
+  <link rel="apple-touch-icon" href="/apple-icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Arcana Whisper">
+  
+  <!-- 기본 메타태그 -->
   <link rel="manifest" href="/manifest.webmanifest" />
   <meta name="theme-color" content="#121212" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -12,6 +19,16 @@
   <meta name="msapplication-tap-highlight" content="no" />
   <title>AI 타로 리딩 - 인공지능으로 보는 오늘의 운세 | Arcanawhisper</title>
   <meta name="description" content="Arcanawhisper는 인공지능 기반의 타로 리딩 서비스입니다. 오늘의 운세를 AI로 확인해보세요.">
+  
+  <!-- iOS 스플래시 스크린 -->
+  <link rel="apple-touch-startup-image" href="/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="/apple-splash-1668-2388.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="/apple-splash-1536-2048.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="/apple-splash-1290-2796.jpg" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="/apple-splash-1179-2556.jpg" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="/apple-splash-1170-2532.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="/apple-splash-1125-2436.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="/apple-splash-1242-2688.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
 </head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZEJVGECF2"></script>
 <script>
@@ -29,10 +46,10 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', async () => {
         try {
-          const registration = await navigator.serviceWorker.register('/sw.js');
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          const reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+          console.log('Service worker registered!', reg);
         } catch (error) {
-          console.error('ServiceWorker registration failed: ', error);
+          console.error('Service Worker registration failed:', error);
         }
       });
     }
