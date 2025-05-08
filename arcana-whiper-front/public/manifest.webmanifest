@@ -1,14 +1,13 @@
 {
-  "name": "Arcana Whisper",
-  "short_name": "ArcanaWhisper",
-  "description": "AI 기반 타로 리딩 서비스",
-  "theme_color": "#121212",
-  "background_color": "#121212",
-  "display": "standalone",
+  "name": "Arcana Whisper - AI 타로 리딩",
+  "short_name": "타로 위스퍼",
+  "description": "AI가 해석하는 당신의 타로 운세",
   "start_url": "/",
-  "scope": "/",
-  "id": "/",
+  "display": "standalone",
+  "background_color": "#1e1e2e",
+  "theme_color": "#121212",
   "orientation": "portrait",
+  "categories": ["lifestyle", "entertainment"],
   "prefer_related_applications": false,
   "icons": [
     {
@@ -18,7 +17,7 @@
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png", 
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -26,9 +25,34 @@
   ],
   "screenshots": [
     {
-      "src": "/screenshot.jpg",
+      "src": "/screenshot1.png",
       "sizes": "1280x720",
-      "type": "image/jpeg"
+      "type": "image/png",
+      "platform": "wide",
+      "label": "타로 카드 선택 화면"
+    },
+    {
+      "src": "/screenshot2.png",
+      "sizes": "1280x720", 
+      "type": "image/png",
+      "platform": "wide",
+      "label": "타로 리딩 결과 화면"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "새 타로 리딩",
+      "url": "/?action=new",
+      "description": "새로운 타로 리딩 시작하기"
+    },
+    {
+      "name": "과거 리딩 보기",
+      "url": "/?page=history",
+      "description": "이전 타로 리딩 기록 보기"
+    }
+  ],
+  "scope": "/",
+  "id": "arcanawhisper",
+  "lang": "ko-KR",
+  "display_override": ["standalone", "fullscreen", "minimal-ui"]
 }

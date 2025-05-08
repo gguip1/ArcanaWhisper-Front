@@ -94,6 +94,39 @@
   box-shadow: 0 6px 12px rgba(156, 39, 176, 0.3);
 }
 
+/* iOS 설치 안내 스타일 */
+.pwa-ios-instructions {
+  text-align: left;
+  padding: 5px 0;
+}
+
+.pwa-instruction-step {
+  margin: 12px 0;
+  color: #e0e0e0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.pwa-icon-example {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 0 3px;
+}
+
+.share-icon {
+  font-size: 16px;
+  margin-left: 3px;
+  font-weight: bold;
+}
+
+.pwa-highlight {
+  color: #d4b2ff;
+  font-weight: bold;
+}
+
 @keyframes slide-up {
   from {
     transform: translate(-50%, 100%);
@@ -102,5 +135,25 @@
   to {
     transform: translate(-50%, 0);
     opacity: 1;
+  }
+}
+
+/* 모바일 반응형 스타일 */
+@media (max-width: 480px) {
+  .pwa-prompt-container {
+    bottom: 15px;
+    width: 95%;
+  }
+  
+  .pwa-prompt-content {
+    padding: 12px;
+  }
+  
+  .pwa-prompt-title strong {
+    font-size: 15px;
+  }
+  
+  .pwa-prompt-title span {
+    font-size: 13px;
   }
 }

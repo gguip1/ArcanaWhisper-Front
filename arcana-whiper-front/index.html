@@ -6,15 +6,18 @@
   <!-- PWA 아이콘 설정 -->
   <link rel="icon" type="image/png" sizes="196x196" href="/favicon-196.png">
   <link rel="apple-touch-icon" href="/apple-icon-180.png">
+  
+  <!-- iOS PWA 개선을 위한 메타태그 추가 및 기존 태그 수정 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Arcana Whisper">
+  <meta name="mobile-web-app-capable" content="yes">
   
   <!-- 기본 메타태그 -->
   <link rel="manifest" href="/manifest.webmanifest" />
-  <meta name="theme-color" content="#121212" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#9c27b0" media="(prefers-color-scheme: light)">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
   <title>AI 타로 리딩 - 인공지능으로 보는 오늘의 운세 | Arcanawhisper</title>
@@ -53,6 +56,20 @@
         }
       });
     }
+    
+    // iOS에서 홈 화면에 추가 이벤트 감지 (Safari에서는 beforeinstallprompt가 발생하지 않음)
+    window.addEventListener('DOMContentLoaded', () => {
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+      
+      // Safari 브라우저 감지
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      
+      if (isIOS && isSafari && !isStandalone) {
+        console.log('iOS Safari에서 실행 중이며 스탠드얼론 모드가 아님');
+        // Safari의 경우 자동 감지가 어려우므로 추가 로직이 필요할 수 있음
+      }
+    });
   </script>
 </body>
 
