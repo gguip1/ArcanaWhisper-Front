@@ -42,10 +42,11 @@ export async function requestTarotReading(requestData: TarotRequest): Promise<Ta
     throw new Error('타로 질문이 필요합니다');
   }
   
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+
   try {
     const API_URL = import.meta.env.VITE_API_URL
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000);
     
     // API 호출
     const response = await fetch(`${API_URL}/tarot`, {
@@ -56,8 +57,6 @@ export async function requestTarotReading(requestData: TarotRequest): Promise<Ta
       body: JSON.stringify(requestData),
       signal: controller.signal
     });
-    
-    clearTimeout(timeoutId);
     
     // 응답 오류 확인
     if (!response.ok) {
@@ -78,6 +77,8 @@ export async function requestTarotReading(requestData: TarotRequest): Promise<Ta
       throw error;
     }
     throw new Error('알 수 없는 오류가 발생했습니다.');
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 

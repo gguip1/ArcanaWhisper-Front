@@ -47,13 +47,14 @@ export class HistoryService {
    * @returns 타로 카드 히스토리 응답 (페이지네이션 정보 포함)
    */
   async getTarotHistory(
-    userId: string, 
-    provider: string, 
+    userId: string,
+    provider: string,
     cursorDocId?: string
   ): Promise<HistoryResponse> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.DEFAULT_TIMEOUT);
+
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), this.DEFAULT_TIMEOUT);
       
       // URL 구성 - 커서가 있으면 포함
       let url = `${this.API_URL}/tarot/history?user_id=${encodeURIComponent(userId)}&provider=${encodeURIComponent(provider)}`;
@@ -71,8 +72,6 @@ export class HistoryService {
         },
         signal: controller.signal
       });
-      
-      clearTimeout(timeoutId);
       
       // 응답 오류 확인
       if (!response.ok) {
@@ -95,6 +94,8 @@ export class HistoryService {
       return data;
     } catch (error) {
       return this.handleApiError(error);
+    } finally {
+      clearTimeout(timeoutId);
     }
   }
 
@@ -130,7 +131,7 @@ export class HistoryService {
         minute: '2-digit'
       }).format(date);
     } catch (error) {
-        return dateString; // 포맷팅 실패 시 원본 문자열 반환
+      return dateString; // 포맷팅 실패 시 원본 문자열 반환
     }
   }
 
