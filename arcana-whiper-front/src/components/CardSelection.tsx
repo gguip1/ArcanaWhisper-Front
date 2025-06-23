@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import TarotCard from './TarotCard';
 import { shuffleCards } from '../data/tarotData';
 import { FaArrowRight, FaRedo, FaArrowLeft } from 'react-icons/fa';
@@ -14,6 +14,7 @@ interface CardSelectionProps {
   onGoHome?: () => void;
   onReQuestion?: () => void;
   question?: string;
+  isLoadingReading?: boolean; // API 요청 로딩 상태
 }
 
 const CardSelection: React.FC<CardSelectionProps> = ({ 
@@ -23,86 +24,88 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   onResetCards,
   onRequestReading,
   onReQuestion,
+  isLoadingReading = false,
 }) => {
   const [cardPositions, setCardPositions] = useState<{[key: number]: {x: number, y: number, rotation: number, baseZIndex: number}}>({});
   const containerRef = useRef<HTMLDivElement>(null);
+    const [shuffledCards, setShuffledCards] = useState(() => shuffleCards());
   
-  const [shuffledCards, setShuffledCards] = useState(() => shuffleCards());
-  
-  const shuffleCardsHandler = () => {
+  // 카드 셔플링 핸들러 - 즉시 실행 (로딩 없음)
+  const shuffleCardsHandler = useCallback(() => {
     setShuffledCards(shuffleCards());
-  };
+  }, []);
+  
+  // 카드 포지션 계산 최적화
+  const calculateCardPositions = useCallback(() => {
+    if (!containerRef.current) return;
+    
+    const container = containerRef.current;
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
+    
+    let cardWidth = 140;
+    let cardHeight = 220;
+    
+    if (window.innerWidth <= 1200) {
+      cardWidth = 120;
+      cardHeight = 190;
+    }
+    if (window.innerWidth <= 768) {
+      cardWidth = 100;
+      cardHeight = 160;
+    }
+    if (window.innerWidth <= 576) {
+      cardWidth = 80;
+      cardHeight = 130;
+    }
+    
+    const safeMarginX = cardWidth / 2 + 20;
+    const safeMarginY = cardHeight / 2 + 20;
+    
+    const safeAreaWidth = containerWidth - (safeMarginX * 2);
+    const safeAreaHeight = containerHeight - (safeMarginY * 2);
+    
+    const totalCards = shuffledCards.length;
+    const newPositions: {[key: number]: {x: number, y: number, rotation: number, baseZIndex: number}} = {};
+    
+    const rows = Math.ceil(Math.sqrt(totalCards * containerHeight / containerWidth));
+    const cols = Math.ceil(totalCards / rows);
+    
+    shuffledCards.forEach((card, index) => {
+      const row = Math.floor(index / cols);
+      const col = index % cols;
+      
+      const baseX = safeMarginX + (col / (cols - 1 || 1)) * safeAreaWidth;
+      const baseY = safeMarginY + (row / (rows - 1 || 1)) * safeAreaHeight;
+      
+      const randomOffsetX = (Math.random() - 0.5) * (safeAreaWidth / cols) * 0.4;
+      const randomOffsetY = (Math.random() - 0.5) * (safeAreaHeight / rows) * 0.4;
+      
+      let x = baseX + randomOffsetX;
+      let y = baseY + randomOffsetY;
+      
+      x = Math.max(safeMarginX, Math.min(containerWidth - safeMarginX, x));
+      y = Math.max(safeMarginY, Math.min(containerHeight - safeMarginY, y));
+      
+      const xPercent = (x / containerWidth) * 100;
+      const yPercent = (y / containerHeight) * 100;
+      
+      const rotation = (Math.random() - 0.5) * 40;
+      
+      const baseZIndex = 10 + (rows - row) * cols + col;
+      
+      newPositions[card.id] = { 
+        x: xPercent, 
+        y: yPercent, 
+        rotation, 
+        baseZIndex 
+      };
+    });
+    
+    setCardPositions(newPositions);
+  }, [shuffledCards]);
   
   useEffect(() => {
-    const calculateCardPositions = () => {
-      if (!containerRef.current) return;
-      
-      const container = containerRef.current;
-      const containerWidth = container.clientWidth;
-      const containerHeight = container.clientHeight;
-      
-      let cardWidth = 140;
-      let cardHeight = 220;
-      
-      if (window.innerWidth <= 1200) {
-        cardWidth = 120;
-        cardHeight = 190;
-      }
-      if (window.innerWidth <= 768) {
-        cardWidth = 100;
-        cardHeight = 160;
-      }
-      if (window.innerWidth <= 576) {
-        cardWidth = 80;
-        cardHeight = 130;
-      }
-      
-      const safeMarginX = cardWidth / 2 + 20;
-      const safeMarginY = cardHeight / 2 + 20;
-      
-      const safeAreaWidth = containerWidth - (safeMarginX * 2);
-      const safeAreaHeight = containerHeight - (safeMarginY * 2);
-      
-      const totalCards = shuffledCards.length;
-      const newPositions: {[key: number]: {x: number, y: number, rotation: number, baseZIndex: number}} = {};
-      
-      const rows = Math.ceil(Math.sqrt(totalCards * containerHeight / containerWidth));
-      const cols = Math.ceil(totalCards / rows);
-      
-      shuffledCards.forEach((card, index) => {
-        const row = Math.floor(index / cols);
-        const col = index % cols;
-        
-        const baseX = safeMarginX + (col / (cols - 1 || 1)) * safeAreaWidth;
-        const baseY = safeMarginY + (row / (rows - 1 || 1)) * safeAreaHeight;
-        
-        const randomOffsetX = (Math.random() - 0.5) * (safeAreaWidth / cols) * 0.4;
-        const randomOffsetY = (Math.random() - 0.5) * (safeAreaHeight / rows) * 0.4;
-        
-        let x = baseX + randomOffsetX;
-        let y = baseY + randomOffsetY;
-        
-        x = Math.max(safeMarginX, Math.min(containerWidth - safeMarginX, x));
-        y = Math.max(safeMarginY, Math.min(containerHeight - safeMarginY, y));
-        
-        const xPercent = (x / containerWidth) * 100;
-        const yPercent = (y / containerHeight) * 100;
-        
-        const rotation = (Math.random() - 0.5) * 40;
-        
-        const baseZIndex = 10 + (rows - row) * cols + col;
-        
-        newPositions[card.id] = { 
-          x: xPercent, 
-          y: yPercent, 
-          rotation, 
-          baseZIndex 
-        };
-      });
-      
-      setCardPositions(newPositions);
-    };
-    
     const timer = setTimeout(calculateCardPositions, 100);
     
     window.addEventListener('resize', calculateCardPositions);
@@ -110,9 +113,10 @@ const CardSelection: React.FC<CardSelectionProps> = ({
       clearTimeout(timer);
       window.removeEventListener('resize', calculateCardPositions);
     };
-  }, [shuffledCards]);
+  }, [calculateCardPositions]);
   
-  const getCardZIndex = (cardId: number) => {
+  // 카드 Z-Index 계산 최적화
+  const getCardZIndex = useCallback((cardId: number) => {
     const position = cardPositions[cardId];
     if (!position) return 1;
     
@@ -121,37 +125,50 @@ const CardSelection: React.FC<CardSelectionProps> = ({
     }
     
     return position.baseZIndex;
-  };
+  }, [cardPositions, selectedCards]);
   
-  const isSelectionComplete = selectedCards.length === maxCards;
+  // 선택 완료 상태 메모화
+  const isSelectionComplete = useMemo(() => 
+    selectedCards.length === maxCards, 
+    [selectedCards.length, maxCards]
+  );
   
-  const handleReset = () => {
+  // 핸들러들 최적화
+  const handleReset = useCallback(() => {
     if (onResetCards) {
       onResetCards();
     }
-  };
-  
-  const handleShuffleCards = () => {
-    if (selectedCards.length > 0) {
-      if (onResetCards) {
-        onResetCards();
-      }
+  }, [onResetCards]);
+    const handleShuffleCards = useCallback(() => {
+    if (selectedCards.length > 0 && onResetCards) {
+      onResetCards();
     }
     shuffleCardsHandler();
-  };
+  }, [selectedCards.length, onResetCards, shuffleCardsHandler]);
   
-  const handleCardClick = (cardId: number, cardNumber: number) => {
+  const handleCardClick = useCallback((cardId: number, cardNumber: number) => {
     onCardSelect(cardId, cardNumber);
-  };
+  }, [onCardSelect]);
 
-  const handleBackButtonClick = () => {
+  const handleBackButtonClick = useCallback(() => {
     if (onReQuestion) {
       onReQuestion();
     }
-  };
+  }, [onReQuestion]);
   
-  if (shuffledCards.length === 0) {
-    return <div className="loading-container">카드를 준비하고 있습니다...</div>;
+  // 로딩 상태 확인 - API 요청 중이거나 카드가 없을 때
+  const isLoading = isLoadingReading || shuffledCards.length === 0;
+  
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <div className="loading-text">
+          {isLoadingReading ? '운명의 메시지를 읽고 있습니다...' : 
+           '카드를 준비하고 있습니다...'}
+        </div>
+      </div>
+    );
   }
   
   return (
@@ -176,9 +193,7 @@ const CardSelection: React.FC<CardSelectionProps> = ({
             >
               {index < selectedCards.length ? <span>✓</span> : index + 1}
             </div>
-          ))}
-          
-          <button 
+          ))}          <button 
             className="card-indicator shuffle-indicator"
             onClick={handleShuffleCards}
             disabled={isSelectionComplete}
@@ -232,18 +247,28 @@ const CardSelection: React.FC<CardSelectionProps> = ({
                 <p className="card-action-description-line">
                   카드를 통해 당신만의 특별한 운명의 메시지를 읽어드립니다.
                 </p>
-              </div>
-              <div className="card-action-buttons">
+              </div>              <div className="card-action-buttons">
                 <button 
-                  className="card-action-button primary-button" 
+                  className={`card-action-button primary-button ${isLoadingReading ? 'loading' : ''}`}
                   onClick={onRequestReading}
+                  disabled={isLoadingReading}
                 >
-                  <span className="btn-text">운명의 메시지 확인하기</span>
-                  <FaArrowRight className="btn-icon" />
+                  {isLoadingReading ? (
+                    <>
+                      <div className="btn-loading-spinner"></div>
+                      <span className="btn-text">메시지를 읽는 중...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="btn-text">운명의 메시지 확인하기</span>
+                      <FaArrowRight className="btn-icon" />
+                    </>
+                  )}
                 </button>
                 <button 
                   className="card-action-button secondary-button" 
                   onClick={handleReset}
+                  disabled={isLoadingReading}
                 >
                   <span className="btn-text">다시 뽑기</span>
                   <FaRedo className="btn-icon" />
@@ -258,3 +283,4 @@ const CardSelection: React.FC<CardSelectionProps> = ({
 };
 
 export default CardSelection;
+

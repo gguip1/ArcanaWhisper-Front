@@ -12,6 +12,7 @@ import { requestTarotReading } from './services/tarotService'
 import authService from './services/authService'
 import errorService from './services/errorService'
 import PWAInstallPrompt from './components/PWAInstallPrompt'
+import { useAsyncOperation } from './hooks/useAsyncOperation'
 
 // 선택된 카드 정보를 저장하는 인터페이스 추가
 interface SelectedCardInfo {
@@ -28,8 +29,13 @@ function App() {
   const [selectedCards, setSelectedCards] = useState<SelectedCardInfo[]>([]) // 카드 정보 타입 변경
   const MAX_CARDS = 3
   const [isTransitioning, setIsTransitioning] = useState(false)
+    // useAsyncOperation으로 API 요청 상태 관리
+  const {
+    loading: isLoading,
+    execute: executeReading,
+    reset: resetReading
+  } = useAsyncOperation<string>();
   
-  const [isLoading, setIsLoading] = useState(false)
   const [readingResult, setReadingResult] = useState<string>('')
   
   // 타로 질문 상태 추가
@@ -86,54 +92,52 @@ function App() {
   const handleResetCards = () => {
     setSelectedCards([]);
   }
-  
-  const handleRequestReading = async (selectedCardInfos: SelectedCardInfo[]) => {
-    setIsLoading(true);
-    
+    const handleRequestReading = async (selectedCardInfos: SelectedCardInfo[]) => {
     try {
-      // 로그인 상태 확인
-      const currentUser = authService.currentUser;
+      const result = await executeReading(async () => {
+        // 로그인 상태 확인
+        const currentUser = authService.currentUser;
+        
+        // 카드 번호와 방향 정보 추출
+        const cardNumbers = selectedCardInfos.map(card => card.number);
+        const cardDirections = selectedCardInfos.map(card => card.reversed);
+        
+        // API 요청 데이터 구성
+        const requestData = {
+          cards: {
+            cards: cardNumbers,
+            reversed: cardDirections
+          },
+          question: tarotQuestion,
+          // 로그인 상태일 때만 user_id, provider 추가
+          ...(currentUser && {
+            user_id: currentUser.uid,
+            provider: currentUser.provider
+          })
+        };
+        
+        const response = await requestTarotReading(requestData);
+        return response.result;
+      });
       
-      // 카드 번호와 방향 정보 추출
-      const cardNumbers = selectedCardInfos.map(card => card.number);
-      const cardDirections = selectedCardInfos.map(card => card.reversed);
-      
-      // API 요청 데이터 구성
-      const requestData = {
-        cards: {
-          cards: cardNumbers,
-          reversed: cardDirections
-        },
-        question: tarotQuestion,
-        // 로그인 상태일 때만 user_id, provider 추가
-        ...(currentUser && {
-          user_id: currentUser.uid,
-          provider: currentUser.provider
-        })
-      };
-      
-      const response = await requestTarotReading(requestData);
-      setReadingResult(response.result);
-      
+      setReadingResult(result);
       startTransition('result');
       
     } catch (error) {
       console.error('타로 해석 요청 실패:', error);
       
       if (error instanceof Error) {
-        errorService.showError(error.message); // errorService 사용
+        errorService.showError(error.message);
       } else {
-        errorService.showError('알 수 없는 오류가 발생했습니다'); // errorService 사용
+        errorService.showError('알 수 없는 오류가 발생했습니다');
       }
-      
-    } finally {
-      setIsLoading(false);
     }
   };
-  
-  const handleNewReading = () => {
+    const handleNewReading = () => {
     handleResetCards();
     setTarotQuestion(''); // 질문 초기화
+    setReadingResult(''); // 결과 초기화
+    resetReading(); // API 상태 초기화
     startTransition('question');
   };
   
@@ -142,6 +146,7 @@ function App() {
     handleResetCards();
     setReadingResult('');
     setTarotQuestion(''); // 질문 초기화
+    resetReading(); // API 상태 초기화
     setCurrentPage('home');
   };
 
@@ -200,8 +205,7 @@ function App() {
           />
         </div>
       )}
-      
-      {currentPage === 'cardSelection' && !isLoading && (
+        {currentPage === 'cardSelection' && (
         <div className={isTransitioning ? "page-hidden" : "page-visible"}>
           <CardSelection 
             selectedCards={selectedCards.map(card => card.id)} // ID만 전달하여 방향 정보를 숨김
@@ -212,6 +216,7 @@ function App() {
             onGoHome={handleGoHome}
             onReQuestion={handleReQuestion}
             question={tarotQuestion}
+            isLoadingReading={isLoading} // API 요청 로딩 상태 전달
           />
         </div>
       )}
