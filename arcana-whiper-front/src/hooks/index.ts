@@ -3,3 +3,4 @@ export { useTarot } from './useTarot';
 export { useAuth } from './useAuth';
 export { usePageTransition } from './usePageTransition';
 export { useAsyncOperation } from './useAsyncOperation';
+export { usePerformanceMonitor } from './usePerformanceMonitor';
