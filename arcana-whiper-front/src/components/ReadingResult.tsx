@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import { FaHome, FaMagic } from 'react-icons/fa';
 import { shuffleCards } from '../data/tarotData';
 import TarotResultCard from './TarotResultCard';
+import { useSEO } from '../hooks';
 
 // 카드 정보 타입 정의 (App.tsx와 일치해야 함)
 interface SelectedCardInfo {
@@ -27,8 +28,19 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
   question = '',
   selectedCardInfos = []
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // SEO 설정 - 질문과 결과를 포함한 동적 메타데이터
+  const truncatedQuestion = question.length > 50 ? question.substring(0, 50) + '...' : question;
+  useSEO({
+    title: i18n.language === 'ko' 
+      ? `타로 리딩 결과 - ${truncatedQuestion} | ArcanaWhisper`
+      : `Tarot Reading Result - ${truncatedQuestion} | ArcanaWhisper`,
+    description: i18n.language === 'ko'
+      ? `"${truncatedQuestion}"에 대한 AI 타로 리딩 결과를 확인하세요. 선택한 카드들이 전하는 운명의 메시지입니다.`
+      : `Check your AI Tarot Reading result for "${truncatedQuestion}". Discover the destiny message from your selected cards.`
+  });
 
   // 페이지 로드시 효과 적용
   useEffect(() => {

@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSEO } from '../hooks';
 
 interface HomeProps {
   onStartReading: () => void;
 }
 
 const Home: React.FC<HomeProps> = ({ onStartReading }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isAnimationReady, setIsAnimationReady] = useState(false);
   
+  // SEO 설정
+  useSEO({
+    title: i18n.language === 'ko' 
+      ? 'ArcanaWhisper - AI 타로 리딩으로 보는 운명의 메시지'
+      : 'ArcanaWhisper - AI Tarot Reading for Your Destiny',
+    description: i18n.language === 'ko'
+      ? 'AI 타로 리딩으로 당신의 운명을 알아보세요. 타로 카드와 인공지능이 속삭이는 운명의 메시지를 지금 확인하세요.'
+      : 'Discover your destiny with AI Tarot Reading. Experience mystical tarot wisdom through artificial intelligence.',
+    canonical: 'https://aitarot.site'
+  });
+
   useEffect(() => {
     // 짧은 시간 후 애니메이션 시작 (마운트 직후)
     const timer = setTimeout(() => {

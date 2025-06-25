@@ -1,6 +1,9 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { detectLanguage, updateLanguageInUrl } from '../utils/languageUtils';
+
+// ...existing translation resources...
 
 // 한국어 번역
 const ko = {
@@ -264,11 +267,13 @@ i18n
       ko,
       en
     },
-    fallbackLng: 'ko', // 기본 언어를 한국어로 설정
+    lng: detectLanguage(), // 커스텀 언어 감지 함수 사용
+    fallbackLng: 'en',
     debug: process.env.NODE_ENV === 'development',
     
     detection: {
-      order: ['localStorage', 'navigator', 'htmlTag'],
+      order: ['querystring', 'localStorage', 'navigator'],
+      lookupQuerystring: 'lang',
       caches: ['localStorage']
     },
     
@@ -276,5 +281,11 @@ i18n
       escapeValue: false
     }
   });
+
+// 언어 변경 시 URL 업데이트
+i18n.on('languageChanged', (lng: string) => {
+  updateLanguageInUrl(lng);
+  document.documentElement.lang = lng;
+});
 
 export default i18n;

@@ -3,37 +3,56 @@
 
 <head>
   <meta charset="UTF-8" />
-  <!-- <link rel="icon" type="image/png" sizes="196x196" href="/favicon-196.png"> -->
-  <!-- <link rel="apple-touch-icon" href="/apple-icon-180.png"> -->
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  <!-- <link rel="icon" href="/cristalball-svgrepo-com.svg" type="image/svg+xml"/> -->
-
-  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="manifest" href="/manifest.json" />
+  
+  <!-- 테마 색상 -->
   <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#9c27b0" media="(prefers-color-scheme: light)">
+  
+  <!-- 뷰포트 및 모바일 최적화 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
-  <title>AI 타로 리딩 - 인공지능으로 보는 오늘의 운세 | Arcanawhisper</title>
-  <meta name="description" content="AI 타로 리딩 - 인공지능으로 보는 오늘의 운세 | Arcanawhisper" />
-  <meta name="keywords" content="AI 타로, 인공지능 타로, 오늘의 운세, 타로 리딩, 타로 카드, 운세 보기" />
-
-  <meta property="og:site_name" content="Arcanawhisper" />
-  <meta property="og:title" content="AI 타로 리딩 - 인공지능으로 보는 오늘의 운세 | Arcanawhisper" />
-  <meta property="og:description" content="AI 타로 리딩 - 인공지능으로 보는 오늘의 운세 | Arcanawhisper" />
+  
+  <!-- 기본 SEO 메타데이터 (동적으로 업데이트됨) -->
+  <title>ArcanaWhisper - AI 타로 리딩으로 보는 운명의 메시지</title>
+  <meta name="description" content="AI 타로 리딩으로 당신의 운명을 알아보세요. 타로 카드와 인공지능이 속삭이는 운명의 메시지를 지금 확인하세요." />
+  <meta name="keywords" content="AI 타로, 인공지능 타로, 타로 리딩, 타로 카드, 운세, 운명, 점술, 미래 예측" />
+  
+  <!-- Open Graph 메타데이터 -->
+  <meta property="og:site_name" content="ArcanaWhisper" />
+  <meta property="og:title" content="ArcanaWhisper - AI 타로 리딩으로 보는 운명의 메시지" />
+  <meta property="og:description" content="AI 타로 리딩으로 당신의 운명을 알아보세요. 타로 카드와 인공지능이 속삭이는 운명의 메시지를 지금 확인하세요." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://aitarot.site" />
+  <meta property="og:locale" content="ko_KR" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ArcanaWhisper - AI 타로 리딩으로 보는 운명의 메시지" />
+  <meta name="twitter:description" content="AI 타로 리딩으로 당신의 운명을 알아보세요. 타로 카드와 인공지능이 속삭이는 운명의 메시지를 지금 확인하세요." />
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://aitarot.site" />
+  
+  <!-- 다국어 지원 -->
+  <link rel="alternate" hreflang="ko" href="https://aitarot.site/?lang=ko" />
+  <link rel="alternate" hreflang="en" href="https://aitarot.site/?lang=en" />
+  <link rel="alternate" hreflang="x-default" href="https://aitarot.site/" />
 
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZEJVGECF2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-QZEJVGECF2');
+  </script>
+  
+  <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5481609101634854" crossorigin="anonymous"></script>
 </head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-QZEJVGECF2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-
-  gtag('config', 'G-QZEJVGECF2');
-</script>
 
 <body>
   <div id="root"></div>

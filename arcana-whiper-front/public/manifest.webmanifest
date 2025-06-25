@@ -1,58 +1,59 @@
 {
-  "name": "Arcana Whisper - AI 타로 리딩",
-  "short_name": "타로 위스퍼",
-  "description": "AI가 해석하는 당신의 타로 운세",
+  "name": "ArcanaWhisper - AI Tarot Reading",
+  "short_name": "ArcanaWhisper",
+  "description": "Discover your destiny with AI Tarot Reading",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1e1e2e",
+  "background_color": "#1a1a2e",
   "theme_color": "#121212",
   "orientation": "portrait",
   "categories": ["lifestyle", "entertainment"],
   "prefer_related_applications": false,
+  "lang": "ko-KR",
+  "scope": "/",
+  "id": "arcanawhisper",
+  "display_override": ["standalone", "fullscreen", "minimal-ui"],
   "icons": [
     {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
+      "src": "/crystalball-svgrepo-com.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
     }
   ],
   "screenshots": [
     {
-      "src": "/screenshot1.png",
+      "src": "/screenshot-wide.png",
       "sizes": "1280x720",
       "type": "image/png",
       "platform": "wide",
-      "label": "타로 카드 선택 화면"
+      "label": "Tarot Card Selection Screen"
     },
     {
-      "src": "/screenshot2.png",
-      "sizes": "1280x720", 
+      "src": "/screenshot-mobile.png",
+      "sizes": "540x720",
       "type": "image/png",
-      "platform": "wide",
-      "label": "타로 리딩 결과 화면"
+      "platform": "narrow",
+      "label": "Tarot Reading Result"
     }
   ],
   "shortcuts": [
     {
-      "name": "새 타로 리딩",
+      "name": "New Tarot Reading",
+      "short_name": "New Reading",
       "url": "/?action=new",
-      "description": "새로운 타로 리딩 시작하기"
+      "description": "Start a new tarot reading session"
     },
     {
-      "name": "과거 리딩 보기",
+      "name": "Reading History",
+      "short_name": "History",
       "url": "/?page=history",
-      "description": "이전 타로 리딩 기록 보기"
+      "description": "View your past tarot readings"
     }
-  ],
-  "scope": "/",
-  "id": "arcanawhisper",
-  "lang": "ko-KR",
-  "display_override": ["standalone", "fullscreen", "minimal-ui"]
+  ]
 }

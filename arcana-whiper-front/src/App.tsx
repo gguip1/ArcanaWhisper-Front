@@ -12,7 +12,7 @@ import { requestTarotReading } from './services/tarotService'
 import authService from './services/authService'
 import errorService from './services/errorService'
 import PWAInstallPrompt from './components/PWAInstallPrompt'
-import { useAsyncOperation } from './hooks/useAsyncOperation'
+import { useAsyncOperation, useStructuredData } from './hooks'
 
 // 선택된 카드 정보를 저장하는 인터페이스 추가
 interface SelectedCardInfo {
@@ -25,6 +25,9 @@ interface SelectedCardInfo {
 type PageType = 'home' | 'question' | 'cardSelection' | 'result' | 'history';
 
 function App() {
+  // 구조화 데이터 적용
+  useStructuredData();
+  
   const [currentPage, setCurrentPage] = useState<PageType>('home')
   const [selectedCards, setSelectedCards] = useState<SelectedCardInfo[]>([]) // 카드 정보 타입 변경
   const MAX_CARDS = 3

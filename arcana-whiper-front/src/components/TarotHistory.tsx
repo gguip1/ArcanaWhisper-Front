@@ -5,6 +5,7 @@ import authService from '../services/authService';
 import historyService, { HistoryItem } from '../services/historyService';
 import errorService from '../services/errorService';
 import TarotHistoryItem from './TarotHistoryItem';
+import { useSEO } from '../hooks';
 import '../styles/TarotHistory.css';
 
 interface TarotHistoryProps {
@@ -12,7 +13,18 @@ interface TarotHistoryProps {
 }
 
 const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  
+  // SEO 설정
+  useSEO({
+    title: i18n.language === 'ko' 
+      ? '타로 기록 - 나의 타로 리딩 히스토리 | ArcanaWhisper'
+      : 'Tarot History - My Tarot Reading History | ArcanaWhisper',
+    description: i18n.language === 'ko'
+      ? '지난 타로 리딩 기록들을 확인하세요. 당신의 질문과 타로 카드가 전한 운명의 메시지들을 다시 살펴보세요.'
+      : 'Check your past tarot reading records. Revisit your questions and the destiny messages delivered by tarot cards.'
+  });
+
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);

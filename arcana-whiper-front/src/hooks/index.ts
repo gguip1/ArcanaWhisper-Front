@@ -3,3 +3,5 @@ export { useTarot } from './useTarot';
 export { useAuth } from './useAuth';
 export { usePageTransition } from './usePageTransition';
 export { useAsyncOperation } from './useAsyncOperation';
+export { default as useSEO } from './useSEO';
+export { default as useStructuredData } from './useStructuredData';
