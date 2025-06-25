@@ -228,7 +228,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
           ) : (
             // 로그아웃 상태 - 로그인 옵션 목록
             <>
-              <div className="dropdown-header">로그인 방법</div>
+              <div className="dropdown-header">{t('auth.loginMethod')}</div>
               <div className="dropdown-providers">
                 {providers.map(provider => (
                   <button
@@ -238,7 +238,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
                     disabled={loading}
                   >
                     {renderProviderIcon(provider)}
-                    <span>{getProviderName(provider)}로 로그인</span>
+                    <span>{t('auth.loginWith', { provider: getProviderName(provider) })}</span>
                   </button>
                 ))}
               </div>

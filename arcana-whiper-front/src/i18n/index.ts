@@ -84,6 +84,7 @@ const ko = {
     auth: {
       loginButton: "로그인",
       logoutButton: "로그아웃",
+      loginMethod: "로그인 방법",
       loginWith: "{{provider}}로 로그인",
       profile: "프로필",
       historyButton: "타로 기록 보기",
@@ -209,6 +210,7 @@ const en = {
     auth: {
       loginButton: "Login",
       logoutButton: "Logout",
+      loginMethod: "Login Method",
       loginWith: "Login with {{provider}}",
       profile: "Profile",
       historyButton: "View Tarot History",

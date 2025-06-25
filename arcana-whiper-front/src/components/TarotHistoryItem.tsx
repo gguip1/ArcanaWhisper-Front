@@ -7,7 +7,7 @@ import {
   FaMagic
 } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
-import { HistoryItem, HistoryService } from '../services/historyService';
+import { HistoryItem } from '../services/historyService';
 import { shuffleCards } from '../data/tarotData';
 import TarotResultCard from './TarotResultCard';
 
@@ -17,11 +17,25 @@ interface TarotHistoryItemProps {
 }
 
 const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   
-  // 날짜 포맷팅 - 정적 메서드 직접 호출
-  const formattedDate = HistoryService.formatDate(item.created_at);
+  // 날짜 포맷팅 - 현재 언어에 따라 동적으로 포맷
+  const formattedDate = useMemo(() => {
+    try {
+      const date = new Date(item.created_at);
+      const locale = i18n.language === 'ko' ? 'ko-KR' : 'en-US';
+      return new Intl.DateTimeFormat(locale, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(date);
+    } catch {
+      return item.created_at; // 포맷팅 실패 시 원본 문자열 반환
+    }
+  }, [item.created_at, i18n.language]);
   
   // 선택한 카드 정보 가져오기 - useMemo로 최적화
   const selectedCards = useMemo(() => {
