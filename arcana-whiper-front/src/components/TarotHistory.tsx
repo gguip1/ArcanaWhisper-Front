@@ -190,7 +190,6 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
               <TarotHistoryItem 
                 key={`${item.question}-${item.created_at}-${index}`}
                 item={item}
-                index={index + 1}
               />
             ))}
             

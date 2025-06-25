@@ -13,10 +13,9 @@ import TarotResultCard from './TarotResultCard';
 
 interface TarotHistoryItemProps {
   item: HistoryItem;
-  index: number;
 }
 
-const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
+const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item }) => {
   const { t, i18n } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   
@@ -49,11 +48,6 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
     }).filter(card => card !== undefined);
   }, [item.cards]);
   
-  // 결과 텍스트 요약 (접힌 상태에서 표시)
-  const previewText = item.result.length > 180
-    ? `${item.result.substring(0, 180)}...`
-    : item.result;
-  
   // 확장 토글
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -62,12 +56,17 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
   return (
     <div className={`history-item ${expanded ? 'expanded' : ''}`}>
       <div className="history-item-header" onClick={toggleExpand}>
-        <div className="history-item-number">{index}</div>
-        <div className="history-item-summary">
+        <div className="history-item-main">
           <div className="history-item-question">{item.question}</div>
-          <div className="history-item-date">
-            <FaClock className="history-item-date-icon" />
-            {formattedDate}
+          <div className="history-item-meta">
+            <span className="history-item-date">
+              <FaClock className="date-icon" />
+              {formattedDate}
+            </span>
+            <span className="history-item-cards">
+              <FaMagic className="cards-icon" />
+              {t('history.selectedCount', { count: selectedCards.length })}
+            </span>
           </div>
         </div>
         <button 
@@ -82,22 +81,7 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
         </button>
       </div>
       
-      {!expanded ? (
-        <div className="history-item-preview">
-          <div className="preview-label">
-            {/* <FaMagic /> 선택한 카드 */}
-          </div>
-          <div className="preview-cards">
-            {selectedCards.map((card, idx) => card && (
-              <div key={idx} className="preview-card">
-                {card.name}
-                {card.reversed && <span className="reversed-tag"> ({t('history.reversed')})</span>}
-              </div>
-            ))}
-          </div>
-          <div className="preview-result">{previewText}</div>
-        </div>
-      ) : (
+      {expanded && (
         <div className="history-item-details">
           <div className="history-cards">
             {selectedCards.map((card, idx) => card && (

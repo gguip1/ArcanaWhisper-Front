@@ -44,18 +44,26 @@ function App() {
   // 현재 진행 중인 페이지 전환의 목표 페이지 - 타입 수정
   const [targetPage, setTargetPage] = useState<PageType>('home');
 
-  // 페이지 전환 시작 함수 - 타이밍 최적화
+  // 페이지 전환 시작 함수 - 로딩 중일 때는 페이지 변경하지 않음
   const startTransition = (nextPage: PageType) => {
     setTargetPage(nextPage);
     setIsTransitioning(true);
     
-    // 목표 페이지를 먼저 설정하고, 약간의 지연 후에 전환 애니메이션을 종료
-    setCurrentPage(nextPage); // 즉시 페이지 변경
+    // 로딩 중이 아닐 때만 즉시 페이지 변경
+    if (!isLoading) {
+      setCurrentPage(nextPage);
+    }
     
-    // 애니메이션 효과를 위한 타이머만 유지
+    // 애니메이션 효과를 위한 타이머
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 2000); // 전체 애니메이션 시간
+    }, 2000);
+  };
+
+  // 로딩 완료 시 페이지 변경하는 함수 추가
+  const completeTransitionToResult = () => {
+    setCurrentPage('result');
+    setIsTransitioning(false);
   };
 
   const handleStartReading = () => {
@@ -92,8 +100,12 @@ function App() {
   const handleResetCards = () => {
     setSelectedCards([]);
   }
-    const handleRequestReading = async (selectedCardInfos: SelectedCardInfo[]) => {
+  const handleRequestReading = async (selectedCardInfos: SelectedCardInfo[]) => {
     try {
+      // 로딩 시작 - 이때 transition도 시작됨
+      setTargetPage('result');
+      setIsTransitioning(true);
+      
       const result = await executeReading(async () => {
         // 로그인 상태 확인
         const currentUser = authService.currentUser;
@@ -121,10 +133,14 @@ function App() {
       });
       
       setReadingResult(result);
-      startTransition('result');
+      // 로딩 완료 후 페이지 변경
+      completeTransitionToResult();
       
     } catch (error) {
       console.error('타로 해석 요청 실패:', error);
+      
+      // 에러 발생 시 transition 상태 초기화
+      setIsTransitioning(false);
       
       if (error instanceof Error) {
         errorService.showError(error.message);
@@ -173,11 +189,8 @@ function App() {
 
   // PageTransition이 필요한지 결정하는 함수 수정
   const shouldShowTransition = () => {
-    // 로딩 중일 때는 항상 표시
-    if (isLoading) return true;
-    
-    // 전환 중일 때만 표시 (페이지는 이미 변경되어 있음)
-    return isTransitioning;
+    // 로딩 중이거나 전환 중일 때 표시
+    return isLoading || isTransitioning;
   };
 
   return (
@@ -204,7 +217,7 @@ function App() {
           />
         </div>
       )}
-        {currentPage === 'cardSelection' && (
+      {currentPage === 'cardSelection' && !isLoading && (
         <div className={isTransitioning ? "page-hidden" : "page-visible"}>
           <CardSelection 
             selectedCards={selectedCards.map(card => card.id)} // ID만 전달하여 방향 정보를 숨김
@@ -240,9 +253,9 @@ function App() {
       )}
       
       {/* 페이지 전환 및 로딩 상태일 때 PageTransition 표시 */}
-      {(shouldShowTransition() || isLoading) && (
+      {shouldShowTransition() && (
         <PageTransition 
-          targetPage={isLoading ? 'result' : targetPage}
+          targetPage={targetPage}
           customMessage={isLoading ? '타로 카드의 지혜를 듣고 있습니다...' : undefined}
         />
       )}

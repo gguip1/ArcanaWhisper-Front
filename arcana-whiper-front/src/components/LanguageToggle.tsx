@@ -26,7 +26,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = '' }) => {
     >
       <div className="language-toggle-container">
         <span className={`language-option ${isKorean ? 'active' : ''}`}>
-          한
+          KO
         </span>
         <div className="language-divider" />
         <span className={`language-option ${!isKorean ? 'active' : ''}`}>

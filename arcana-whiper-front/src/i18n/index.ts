@@ -77,7 +77,8 @@ const ko = {
       loadMore: "더 불러오는 중...",
       allLoaded: "모든 타로 카드 기록을 불러왔습니다.",
       homeButton: "홈으로",
-      reversed: "역"
+      reversed: "역",
+      selectedCount: "{{count}}장 선택됨"
     },
     
     // 로그인 관련
@@ -203,7 +204,8 @@ const en = {
       loadMore: "Loading more...",
       allLoaded: "All tarot records have been loaded.",
       homeButton: "Home",
-      reversed: "Reversed"
+      reversed: "Reversed",
+      selectedCount: "{{count}} cards selected"
     },
     
     // Authentication
