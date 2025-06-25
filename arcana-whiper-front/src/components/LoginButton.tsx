@@ -11,12 +11,14 @@ interface LoginButtonProps {
   className?: string;
   position?: 'fixed' | 'absolute' | 'static';
   providers?: AuthProvider[];
+  onViewHistory?: () => void;
 }
 
 const LoginButton: React.FC<LoginButtonProps> = ({ 
   className = '',
   position = 'fixed',
-  providers = ['google', 'kakao']
+  providers = ['google', 'kakao'],
+  onViewHistory
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -122,7 +124,11 @@ const LoginButton: React.FC<LoginButtonProps> = ({
   // 히스토리 보기 버튼 클릭 핸들러
   const handleViewHistory = () => {
     setShowDropdown(false); // 드롭다운 닫기
-    navigate('/history');
+    if (onViewHistory) {
+      onViewHistory();
+    } else {
+      navigate('/history');
+    }
   };
 
   // 히스토리 페이지인지 확인

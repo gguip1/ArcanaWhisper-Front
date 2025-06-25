@@ -182,12 +182,11 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* 로그인 버튼에 히스토리 보기 핸들러와 현재 페이지 정보 전달 */}
+      {/* 로그인 버튼에 히스토리 보기 핸들러 전달 */}
       <LoginButton 
         position="fixed" 
         providers={['google', 'kakao']} 
         onViewHistory={handleViewHistory}
-        currentPage={currentPage}
       />
       
       {currentPage === 'home' && !isLoading && (
