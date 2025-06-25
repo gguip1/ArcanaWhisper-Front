@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import TarotCard from './TarotCard';
 import { shuffleCards } from '../data/tarotData';
 import { FaArrowRight, FaRedo, FaArrowLeft } from 'react-icons/fa';
@@ -26,6 +27,7 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   onReQuestion,
   isLoadingReading = false,
 }) => {
+  const { t } = useTranslation();
   const [cardPositions, setCardPositions] = useState<{[key: number]: {x: number, y: number, rotation: number, baseZIndex: number}}>({});
   const containerRef = useRef<HTMLDivElement>(null);
     const [shuffledCards, setShuffledCards] = useState(() => shuffleCards());
@@ -164,8 +166,8 @@ const CardSelection: React.FC<CardSelectionProps> = ({
       <div className="loading-container">
         <div className="loading-spinner"></div>
         <div className="loading-text">
-          {isLoadingReading ? '운명의 메시지를 읽고 있습니다...' : 
-           '카드를 준비하고 있습니다...'}
+          {isLoadingReading ? t('cardSelection.loading.reading') : 
+           t('cardSelection.loading.preparing')}
         </div>
       </div>
     );
@@ -176,11 +178,11 @@ const CardSelection: React.FC<CardSelectionProps> = ({
       <button 
         className="home-button"
         onClick={handleBackButtonClick}
-        title="질문 페이지로 돌아가기"
-        aria-label="질문 페이지로 돌아가기"
+        title={t('common.back')}
+        aria-label={t('common.back')}
       >
         <FaArrowLeft className="home-icon" />
-        <span className="home-text">뒤로</span>
+        <span className="home-text">{t('common.back')}</span>
       </button>
 
       <div className="card-selection-header">
@@ -189,7 +191,7 @@ const CardSelection: React.FC<CardSelectionProps> = ({
             <div 
               key={index} 
               className={`card-indicator ${index < selectedCards.length ? 'selected' : ''}`}
-              title={`카드 ${index + 1}`}
+              title={t('cardSelection.selectedCount', { count: index + 1 })}
             >
               {index < selectedCards.length ? <span>✓</span> : index + 1}
             </div>
@@ -197,14 +199,14 @@ const CardSelection: React.FC<CardSelectionProps> = ({
             className="card-indicator shuffle-indicator"
             onClick={handleShuffleCards}
             disabled={isSelectionComplete}
-            title="카드 섞기"
-            aria-label="카드 섞기"
+            title={t('cardSelection.shuffleButton')}
+            aria-label={t('cardSelection.shuffleButton')}
           >
             <FiShuffle className="shuffle-icon" />
           </button>
         </div>
         
-        <h1 className="card-selection-title">타로 카드를 선택하세요</h1>
+        <h1 className="card-selection-title">{t('cardSelection.title')}</h1>
       </div>
       
       <div className="tarot-cards-container" ref={containerRef}>
@@ -239,13 +241,10 @@ const CardSelection: React.FC<CardSelectionProps> = ({
         <div className="card-action-overlay">
           <div className="card-action-panel">
             <div className="card-action-content">
-              <h2 className="card-action-title">운명의 메시지를 확인할 준비가 되었습니다</h2>
+              <h2 className="card-action-title">{t('cardSelection.subtitle')}</h2>
               <div className="card-action-description-container">
                 <p className="card-action-description-line">
-                  선택하신 3장의 카드가 당신의 질문에 대한 통찰력을 제공합니다.
-                </p>
-                <p className="card-action-description-line">
-                  카드를 통해 당신만의 특별한 운명의 메시지를 읽어드립니다.
+                  {t('cardSelection.selectedCount', { count: selectedCards.length })}
                 </p>
               </div>              <div className="card-action-buttons">
                 <button 
@@ -256,11 +255,11 @@ const CardSelection: React.FC<CardSelectionProps> = ({
                   {isLoadingReading ? (
                     <>
                       <div className="btn-loading-spinner"></div>
-                      <span className="btn-text">메시지를 읽는 중...</span>
+                      <span className="btn-text">{t('cardSelection.loading.reading')}</span>
                     </>
                   ) : (
                     <>
-                      <span className="btn-text">운명의 메시지 확인하기</span>
+                      <span className="btn-text">{t('cardSelection.readingButton')}</span>
                       <FaArrowRight className="btn-icon" />
                     </>
                   )}
@@ -270,7 +269,7 @@ const CardSelection: React.FC<CardSelectionProps> = ({
                   onClick={handleReset}
                   disabled={isLoadingReading}
                 >
-                  <span className="btn-text">다시 뽑기</span>
+                  <span className="btn-text">{t('cardSelection.resetButton')}</span>
                   <FaRedo className="btn-icon" />
                 </button>
               </div>

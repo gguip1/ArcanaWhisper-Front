@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import LoadingScreen from '../components/LoadingScreen';
 import { ROUTES } from '../constants';
 
@@ -12,19 +12,17 @@ const HistoryPage = lazy(() => import('../pages/HistoryPage'));
 
 const AppRouter: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingScreen />}>
-        <Routes>
-          <Route path={ROUTES.HOME} element={<HomePage />} />
-          <Route path={ROUTES.QUESTION} element={<QuestionPage />} />
-          <Route path={ROUTES.CARDS} element={<CardSelectionPage />} />
-          <Route path={ROUTES.RESULT} element={<ResultPage />} />
-          <Route path={ROUTES.HISTORY} element={<HistoryPage />} />
-          {/* 404 페이지 - 홈으로 리다이렉트 */}
-          <Route path="*" element={<HomePage />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <Suspense fallback={<LoadingScreen />}>
+      <Routes>
+        <Route path={ROUTES.HOME} element={<HomePage />} />
+        <Route path={ROUTES.QUESTION} element={<QuestionPage />} />
+        <Route path={ROUTES.CARDS} element={<CardSelectionPage />} />
+        <Route path={ROUTES.RESULT} element={<ResultPage />} />
+        <Route path={ROUTES.HISTORY} element={<HistoryPage />} />
+        {/* 404 페이지 - 홈으로 리다이렉트 */}
+        <Route path="*" element={<HomePage />} />
+      </Routes>
+    </Suspense>
   );
 };
 

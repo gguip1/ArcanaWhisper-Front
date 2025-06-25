@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import '../styles/QuestionInput.css';
 
@@ -8,6 +9,7 @@ interface QuestionInputProps {
 }
 
 const QuestionInput: React.FC<QuestionInputProps> = ({ onSubmit, onCancel }) => {
+  const { t } = useTranslation();
   const [question, setQuestion] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(false);
   const [animateIn, setAnimateIn] = useState<boolean>(false);
@@ -35,15 +37,15 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ onSubmit, onCancel }) => 
       </div>
       
       <div className="question-card">
-        <h1 className="question-title">운명에 질문하세요</h1>
-        <p className="question-subtitle">타로 카드가 당신의 질문에 답할 준비가 되어있습니다</p>
+        <h1 className="question-title">{t('question.title')}</h1>
+        <p className="question-subtitle">{t('question.subtitle')}</p>
         
         <form onSubmit={handleSubmit} className="question-form">
           <div className="textarea-wrapper">
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="타로에게 묻고 싶은 질문을 입력하세요..."
+              placeholder={t('question.placeholder')}
               className="question-textarea"
               maxLength={200}
               autoFocus
@@ -51,7 +53,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ onSubmit, onCancel }) => 
             <div className="character-count">
               <span className={question.length < 5 ? "warning" : ""}>
                 {question.length}/200
-                {question.length < 5 && question.length > 0 && " (최소 5자)"}
+                {question.length < 5 && question.length > 0 && ` (${t('question.validation.minLength')})`}
               </span>
             </div>
           </div>
@@ -62,14 +64,14 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ onSubmit, onCancel }) => 
               className="back-button" 
               onClick={onCancel}
             >
-              <FaArrowLeft /> 돌아가기
+              <FaArrowLeft /> {t('question.cancelButton')}
             </button>
             <button 
               type="submit" 
               className={`continue-button ${isValid ? '' : 'disabled'}`} 
               disabled={!isValid}
             >
-              카드 선택하기 <FaArrowRight />
+              {t('question.submitButton')} <FaArrowRight />
             </button>
           </div>
         </form>

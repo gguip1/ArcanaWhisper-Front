@@ -157,14 +157,17 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   
-  // API 요청은 네트워크 우선, 실패하면 캐시
+  // API 요청은 네트워크 우선, 실패하면 캐시 (GET 요청만 캐시)
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        const responseClone = response.clone();
-        caches.open(DYNAMIC_CACHE).then(cache => {
-          cache.put(event.request, responseClone);
-        });
+        // GET 요청이고 응답이 성공적일 때만 캐시에 저장
+        if (event.request.method === 'GET' && response.status === 200) {
+          const responseClone = response.clone();
+          caches.open(DYNAMIC_CACHE).then(cache => {
+            cache.put(event.request, responseClone);
+          });
+        }
         return response;
       })
       .catch(() => caches.match(event.request))

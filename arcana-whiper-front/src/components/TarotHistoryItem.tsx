@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   FaChevronDown, 
   FaChevronUp, 
@@ -16,6 +17,7 @@ interface TarotHistoryItemProps {
 }
 
 const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   
   // 날짜 포맷팅 - 정적 메서드 직접 호출
@@ -56,7 +58,7 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
         </div>
         <button 
           className="expand-button" 
-          aria-label={expanded ? '접기' : '펼치기'}
+          aria-label={expanded ? t('common.close') : t('common.expand')}
           onClick={(e) => {
             e.stopPropagation();
             toggleExpand();
@@ -75,7 +77,7 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
             {selectedCards.map((card, idx) => card && (
               <div key={idx} className="preview-card">
                 {card.name}
-                {card.reversed && <span className="reversed-tag"> (역)</span>}
+                {card.reversed && <span className="reversed-tag"> ({t('history.reversed')})</span>}
               </div>
             ))}
           </div>
@@ -92,7 +94,7 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
                   number={card.number}
                   description={card.description || ''}
                   image={card.image}
-                  position={['첫번째', '두번째', '세번째'][idx]}
+                  position={[t('result.positions.first'), t('result.positions.second'), t('result.positions.third')][idx]}
                   reversed={card.reversed} // 역방향 정보 전달
                 />
               </div>
@@ -102,7 +104,7 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item, index }) => {
           <div className="history-result">
             <h3 className="result-title">
               <FaMagic className="result-title-icon" />
-              카드 해석 결과
+              {t('result.title')}
             </h3>
             <div className="result-content">
               <ReactMarkdown>{item.result}</ReactMarkdown>

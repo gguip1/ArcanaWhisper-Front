@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaRedo, FaArrowLeft } from 'react-icons/fa';
 import authService from '../services/authService';
 import historyService, { HistoryItem } from '../services/historyService';
@@ -11,6 +12,7 @@ interface TarotHistoryProps {
 }
 
 const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
+  const { t } = useTranslation();
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
@@ -143,21 +145,21 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
       <button 
         className="home-button"
         onClick={onGoHome}
-        title="홈으로 돌아가기"
+        title={t('history.homeButton')}
       >
         <FaArrowLeft className="button-icon" />
-        <span className="home-text">돌아가기</span>
+        <span className="home-text">{t('history.homeButton')}</span>
       </button>
       
       <div className="history-header">
-        <h1 className="history-title">타로 카드 기록</h1>
-        <p className="history-subtitle">당신의 질문과 타로의 지혜를 모아봤어요</p>
+        <h1 className="history-title">{t('history.title')}</h1>
+        <p className="history-subtitle">{t('history.subtitle')}</p>
       </div>
       
       {loading ? (
         <div className="history-loading">
           <div className="loader"></div>
-          <p>기록을 불러오는 중...</p>
+          <p>{t('common.loading')}</p>
         </div>
       ) : error ? (
         <div className="history-error">
@@ -167,18 +169,18 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
             onClick={() => loadHistory()}
           >
             <FaRedo className="button-icon" />
-            다시 시도
+            {t('common.retry')}
           </button>
         </div>
       ) : sortedItems.length === 0 ? (
         <div className="history-empty">
-          <p>아직 타로 카드 기록이 없습니다.</p>
-          <p>질문하고 타로 카드의 지혜를 들어보세요.</p>
+          <p>{t('history.empty.main')}</p>
+          <p>{t('history.empty.sub')}</p>
           <button 
             className="start-reading-button"
             onClick={onGoHome}
           >
-            첫 타로 카드 읽기 시작하기
+            {t('history.empty.startButton')}
           </button>
         </div>
       ) : (
@@ -201,7 +203,7 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
                 {loadingMore && (
                   <>
                     <div className="loader small-loader"></div>
-                    <p>더 불러오는 중...</p>
+                    <p>{t('history.loadMore')}</p>
                   </>
                 )}
               </div>
@@ -210,7 +212,7 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
             {/* 모든 기록을 불러왔을 때 표시할 메시지 */}
             {!hasMore && sortedItems.length > 0 && (
               <div className="history-end-message">
-                <p>모든 타로 카드 기록을 불러왔습니다.</p>
+                <p>{t('history.allLoaded')}</p>
               </div>
             )}
           </div>

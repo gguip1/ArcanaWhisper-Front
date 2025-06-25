@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoMdClose } from 'react-icons/io';
 import { MdError } from 'react-icons/md';
 import errorService from '../services/errorService';
@@ -10,6 +11,7 @@ interface ErrorModalProps {
 }
 
 const ErrorModal: React.FC<ErrorModalProps> = ({ message, onClose }) => {
+  const { t } = useTranslation();
   useEffect(() => {
     // ESC 키로 모달 닫기
     const handleEscKey = (event: KeyboardEvent) => {
@@ -30,7 +32,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ message, onClose }) => {
       <div className="error-modal" onClick={e => e.stopPropagation()}>
         <div className="error-modal-header">
           <MdError className="error-icon" />
-          <h3>오류 발생</h3>
+          <h3>{t('common.error')}</h3>
           <button className="close-button" onClick={onClose}>
             <IoMdClose />
           </button>

@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import authService, { AuthProvider, UserProfile } from '../services/authService';
 import errorService from '../services/errorService'; // 에러 서비스 추가
 import { FaGoogle, FaSignOutAlt, FaHistory } from 'react-icons/fa';
@@ -9,17 +11,16 @@ interface LoginButtonProps {
   className?: string;
   position?: 'fixed' | 'absolute' | 'static';
   providers?: AuthProvider[];
-  onViewHistory?: () => void; // 히스토리 보기 핸들러
-  currentPage?: string; // 현재 페이지 정보 추가
 }
 
 const LoginButton: React.FC<LoginButtonProps> = ({ 
   className = '',
   position = 'fixed',
-  providers = ['google', 'kakao'],
-  onViewHistory,
-  currentPage = 'home' // 기본값은 home
+  providers = ['google', 'kakao']
 }) => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [initialLoading, setInitialLoading] = useState(true); // 초기 로딩 상태 추가
   const [loading, setLoading] = useState(false);
@@ -120,14 +121,12 @@ const LoginButton: React.FC<LoginButtonProps> = ({
 
   // 히스토리 보기 버튼 클릭 핸들러
   const handleViewHistory = () => {
-    if (onViewHistory) {
-      setShowDropdown(false); // 드롭다운 닫기
-      onViewHistory(); // 상위 컴포넌트의 핸들러 호출
-    }
+    setShowDropdown(false); // 드롭다운 닫기
+    navigate('/history');
   };
 
   // 히스토리 페이지인지 확인
-  const isHistoryPage = currentPage === 'history';
+  const isHistoryPage = location.pathname === '/history';
 
   // 로그인 버튼 렌더링 최적화
   const renderLoginButton = () => {
@@ -146,7 +145,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
       return user.photoURL ? (
         <img 
           src={user.photoURL} 
-          alt={user.displayName || '사용자'} 
+          alt={user.displayName || t('auth.profile')} 
           className="user-avatar" 
         />
       ) : (
@@ -160,7 +159,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
     return (
       <>
         <span className="login-icon"></span>
-        <span className="login-text">로그인</span>
+        <span className="login-text">{t('auth.loginButton')}</span>
       </>
     );
   };
@@ -174,7 +173,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
         className={buttonClass}
         onClick={() => setShowDropdown(!showDropdown)}
         disabled={loading || initialLoading}
-        aria-label={user ? '사용자 메뉴' : '로그인'}
+        aria-label={user ? t('auth.profile') : t('auth.loginButton')}
       >
         {renderLoginButton()}
       </button>
@@ -186,27 +185,27 @@ const LoginButton: React.FC<LoginButtonProps> = ({
             <>
               <div className="dropdown-header">
                 <div className="user-info">
-                  <div className="user-name">{user.displayName || '사용자'}</div>
+                  <div className="user-name">{user.displayName || t('auth.profile')}</div>
                   {user.email && <div className="user-email">{user.email}</div>}
                   <div className="user-provider">
                     {user.provider === 'google.com' ? 'Google' : 
                      user.provider === 'facebook.com' ? 'Facebook' : 
                      user.provider === 'github.com' ? 'GitHub' :
-                     user.provider === 'kakao' ? '카카오' : 
+                     user.provider === 'kakao' ? 'Kakao' : 
                      user.provider}
                   </div>
                 </div>
               </div>
               <div className="dropdown-actions">
                 {/* 현재 페이지가 히스토리 페이지가 아닐 때만 히스토리 버튼 표시 */}
-                {!isHistoryPage && onViewHistory && (
+                {!isHistoryPage && (
                   <button 
                     className="history-button"
                     onClick={handleViewHistory}
                     disabled={loading}
                   >
                     <FaHistory className="button-icon" />
-                    타로 기록 보기
+                    {t('auth.historyButton')}
                   </button>
                 )}
                 
@@ -216,7 +215,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
                   disabled={loading}
                 >
                   <FaSignOutAlt className="button-icon" />
-                  로그아웃
+                  {t('auth.logoutButton')}
                 </button>
               </div>
             </>

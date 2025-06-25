@@ -1,27 +1,25 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import { TarotProvider } from './contexts/TarotContext';
 import { AuthProvider } from './contexts/AuthContext';
 import AppRouter from './components/AppRouter';
 import { GlobalErrorModal } from './components/ErrorModal';
 import LoginButton from './components/LoginButton';
+import LanguageToggle from './components/LanguageToggle';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 
-// 메인 앱 콘텐츠 컴포넌트
+// 메인 앱 콘텐츠 컴포넌트 (Router 컨텍스트 내부)
 const AppContent: React.FC = () => {
-  const handleViewHistory = () => {
-    // 히스토리 페이지로 이동하는 로직은 라우터에서 처리
-    window.location.href = '/history';
-  };
-
   return (
     <div className="app-container">
-      {/* 로그인 버튼 */}
+      {/* 언어 전환 버튼 */}
+      <LanguageToggle />
+      
+      {/* 로그인 버튼 - Router 컨텍스트 내부에서 렌더링 */}
       <LoginButton 
         position="fixed" 
         providers={['google', 'kakao']} 
-        onViewHistory={handleViewHistory}
-        currentPage="home" // 라우터를 사용하므로 현재 페이지는 라우터에서 관리
       />
       
       {/* 메인 라우터 */}
@@ -41,7 +39,9 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <TarotProvider>
-        <AppContent />
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
       </TarotProvider>
     </AuthProvider>
   );

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import { FaHome, FaMagic } from 'react-icons/fa';
 import { shuffleCards } from '../data/tarotData';
@@ -26,6 +27,7 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
   question = '',
   selectedCardInfos = []
 }) => {
+  const { t } = useTranslation();
   const contentRef = useRef<HTMLDivElement>(null);
 
   // 페이지 로드시 효과 적용
@@ -48,7 +50,11 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
   };
 
   // 카드 포지션 정의
-  const positions = ["첫번째", "두번째", "세번째"];
+  const positions = [
+    t('result.positions.first'),
+    t('result.positions.second'),
+    t('result.positions.third')
+  ];
   
   // 전체 카드 데이터 가져오기
   const allCards = shuffleCards();
@@ -65,21 +71,21 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
       <button 
         className="home-button"
         onClick={handleHomeButtonClick}
-        title="홈으로 돌아가기"
-        aria-label="홈으로 돌아가기"
+        title={t('result.homeButton')}
+        aria-label={t('result.homeButton')}
       >
         <FaHome className="home-icon" />
-        <span className="home-text">홈</span>
+        <span className="home-text">{t('result.homeButton')}</span>
       </button>
 
       <div className="reading-header">
-        <h1 className="reading-title">타로 카드 해석</h1>
+        <h1 className="reading-title">{t('result.title')}</h1>
       </div>
       
       {/* 질문 영역 */}
       {question && (
         <div className="content-card question-section fade-in">
-          <h2 className="section-title">당신의 질문</h2>
+          <h2 className="section-title">{t('result.question')}</h2>
           <div className="reading-question">
             <div className="question-text">{question}</div>
           </div>
@@ -91,7 +97,7 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
       
       {/* 카드 영역 - 테두리 제거 */}
       <div className="content-card card-section fade-in" style={{animationDelay: '0.2s'}}>
-        <h2 className="section-title">선택한 카드</h2>
+        <h2 className="section-title">{t('result.selectedCards')}</h2>
         <div className="cards-container">
           {selectedCards.length > 0 && (
             <div className="selected-tarot-cards">
@@ -116,7 +122,7 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
       
       {/* 결과 영역 - 이중 테두리 제거 */}
       <div className="content-card result-section fade-in" style={{animationDelay: '0.4s'}}>
-        <h2 className="section-title">카드 해석 결과</h2>
+        <h2 className="section-title">{t('result.title')}</h2>
         <div className="reading-content" ref={contentRef}>
           <ReactMarkdown>{markdown}</ReactMarkdown>
         </div>
@@ -126,9 +132,9 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
         <button 
           className="reading-action-btn primary-action" 
           onClick={onNewReading}
-          aria-label="새로운 타로 카드 리딩 시작하기"
+          aria-label={t('result.newReadingButton')}
         >
-          <FaMagic /> <span className="btn-text">새로운 운명 읽기</span>
+          <FaMagic /> <span className="btn-text">{t('result.newReadingButton')}</span>
         </button>
       </div>
     </div>

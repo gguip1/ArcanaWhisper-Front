@@ -96,3 +96,12 @@ export const TarotProvider: React.FC<TarotProviderProps> = ({ children }) => {
     </TarotContext.Provider>
   );
 };
+
+// 커스텀 훅 - TarotContext를 쉽게 사용하기 위한 훅
+export const useTarot = (): TarotContextType => {
+  const context = React.useContext(TarotContext);
+  if (context === undefined) {
+    throw new Error('useTarot must be used within a TarotProvider');
+  }
+  return context;
+};
