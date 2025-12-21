@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { FaRedo, FaArrowLeft } from 'react-icons/fa';
 import authService from '../services/authService';
 import historyService, { HistoryItem } from '../services/historyService';
@@ -13,16 +12,10 @@ interface TarotHistoryProps {
 }
 
 const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
-  const { t, i18n } = useTranslation();
-  
   // SEO 설정
   useSEO({
-    title: i18n.language === 'ko' 
-      ? '타로 기록 - 나의 타로 리딩 히스토리 | ArcanaWhisper'
-      : 'Tarot History - My Tarot Reading History | ArcanaWhisper',
-    description: i18n.language === 'ko'
-      ? '지난 타로 리딩 기록들을 확인하세요. 당신의 질문과 타로 카드가 전한 운명의 메시지들을 다시 살펴보세요.'
-      : 'Check your past tarot reading records. Revisit your questions and the destiny messages delivered by tarot cards.'
+    title: '타로 기록 - 나의 타로 리딩 히스토리 | ArcanaWhisper',
+    description: '지난 타로 리딩 기록들을 확인하세요. 당신의 질문과 타로 카드가 전한 운명의 메시지들을 다시 살펴보세요.'
   });
 
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
@@ -154,76 +147,76 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
 
   return (
     <div className="tarot-history-container">
-      <button 
+      <button
         className="home-button"
         onClick={onGoHome}
-        title={t('history.homeButton')}
+        title="홈으로"
       >
         <FaArrowLeft className="button-icon" />
-        <span className="home-text">{t('history.homeButton')}</span>
+        <span className="home-text">홈으로</span>
       </button>
-      
+
       <div className="history-header">
-        <h1 className="history-title">{t('history.title')}</h1>
-        <p className="history-subtitle">{t('history.subtitle')}</p>
+        <h1 className="history-title">타로 기록</h1>
+        <p className="history-subtitle">나의 타로 리딩 히스토리</p>
       </div>
-      
+
       {loading ? (
         <div className="history-loading">
           <div className="loader"></div>
-          <p>{t('common.loading')}</p>
+          <p>로딩 중...</p>
         </div>
       ) : error ? (
         <div className="history-error">
           <p>{error}</p>
-          <button 
+          <button
             className="retry-button"
             onClick={() => loadHistory()}
           >
             <FaRedo className="button-icon" />
-            {t('common.retry')}
+            다시 시도
           </button>
         </div>
       ) : sortedItems.length === 0 ? (
         <div className="history-empty">
-          <p>{t('history.empty.main')}</p>
-          <p>{t('history.empty.sub')}</p>
-          <button 
+          <p>아직 타로 기록이 없습니다</p>
+          <p>첫 번째 타로 리딩을 시작해보세요</p>
+          <button
             className="start-reading-button"
             onClick={onGoHome}
           >
-            {t('history.empty.startButton')}
+            타로 리딩 시작
           </button>
         </div>
       ) : (
         <>
           <div className="history-list">
             {sortedItems.map((item, index) => (
-              <TarotHistoryItem 
+              <TarotHistoryItem
                 key={`${item.question}-${item.created_at}-${index}`}
                 item={item}
               />
             ))}
-            
+
             {/* 스크롤 로딩을 위한 관찰 대상 요소 */}
             {hasMore && (
-              <div 
-                ref={loadingRef} 
+              <div
+                ref={loadingRef}
                 className={`scroll-loader ${loadingMore ? 'visible' : ''}`}
               >
                 {loadingMore && (
                   <>
                     <div className="loader small-loader"></div>
-                    <p>{t('history.loadMore')}</p>
+                    <p>더 불러오는 중...</p>
                   </>
                 )}
               </div>
             )}
-            
+
             {/* 모든 기록을 불러왔을 때 표시할 메시지 */}
             {!hasMore && sortedItems.length > 0 && (
               <div className="history-end-message">
-                <p>{t('history.allLoaded')}</p>
+                <p>모든 기록을 불러왔습니다</p>
               </div>
             )}
           </div>

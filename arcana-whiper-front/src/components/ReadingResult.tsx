@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import { FaHome, FaMagic } from 'react-icons/fa';
 import { shuffleCards } from '../data/tarotData';
@@ -21,25 +20,20 @@ interface ReadingResultProps {
   selectedCardInfos?: SelectedCardInfo[]; // 방향 정보를 포함한 카드 정보
 }
 
-const ReadingResult: React.FC<ReadingResultProps> = ({ 
-  markdown, 
+const ReadingResult: React.FC<ReadingResultProps> = ({
+  markdown,
   onNewReading,
   onGoHome,
   question = '',
   selectedCardInfos = []
 }) => {
-  const { t, i18n } = useTranslation();
   const contentRef = useRef<HTMLDivElement>(null);
 
   // SEO 설정 - 질문과 결과를 포함한 동적 메타데이터
   const truncatedQuestion = question.length > 50 ? question.substring(0, 50) + '...' : question;
   useSEO({
-    title: i18n.language === 'ko' 
-      ? `타로 리딩 결과 - ${truncatedQuestion} | ArcanaWhisper`
-      : `Tarot Reading Result - ${truncatedQuestion} | ArcanaWhisper`,
-    description: i18n.language === 'ko'
-      ? `"${truncatedQuestion}"에 대한 AI 타로 리딩 결과를 확인하세요. 선택한 카드들이 전하는 운명의 메시지입니다.`
-      : `Check your AI Tarot Reading result for "${truncatedQuestion}". Discover the destiny message from your selected cards.`
+    title: `타로 리딩 결과 - ${truncatedQuestion} | ArcanaWhisper`,
+    description: `"${truncatedQuestion}"에 대한 AI 타로 리딩 결과를 확인하세요. 선택한 카드들이 전하는 운명의 메시지입니다.`
   });
 
   // 페이지 로드시 효과 적용
@@ -62,11 +56,7 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
   };
 
   // 카드 포지션 정의
-  const positions = [
-    t('result.positions.first'),
-    t('result.positions.second'),
-    t('result.positions.third')
-  ];
+  const positions = ['첫 번째 카드', '두 번째 카드', '세 번째 카드'];
   
   // 전체 카드 데이터 가져오기
   const allCards = shuffleCards();
@@ -80,24 +70,24 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
   return (
     <div className="reading-result-container">
       {/* 홈으로 돌아가는 버튼 */}
-      <button 
+      <button
         className="home-button"
         onClick={handleHomeButtonClick}
-        title={t('result.homeButton')}
-        aria-label={t('result.homeButton')}
+        title="홈으로"
+        aria-label="홈으로"
       >
         <FaHome className="home-icon" />
-        <span className="home-text">{t('result.homeButton')}</span>
+        <span className="home-text">홈으로</span>
       </button>
 
       <div className="reading-header">
-        <h1 className="reading-title">{t('result.title')}</h1>
+        <h1 className="reading-title">리딩 결과</h1>
       </div>
-      
+
       {/* 질문 영역 */}
       {question && (
         <div className="content-card question-section fade-in">
-          <h2 className="section-title">{t('result.question')}</h2>
+          <h2 className="section-title">질문</h2>
           <div className="reading-question">
             <div className="question-text">{question}</div>
           </div>
@@ -109,7 +99,7 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
       
       {/* 카드 영역 - 테두리 제거 */}
       <div className="content-card card-section fade-in" style={{animationDelay: '0.2s'}}>
-        <h2 className="section-title">{t('result.selectedCards')}</h2>
+        <h2 className="section-title">선택한 카드</h2>
         <div className="cards-container">
           {selectedCards.length > 0 && (
             <div className="selected-tarot-cards">
@@ -134,19 +124,19 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
       
       {/* 결과 영역 - 이중 테두리 제거 */}
       <div className="content-card result-section fade-in" style={{animationDelay: '0.4s'}}>
-        <h2 className="section-title">{t('result.title')}</h2>
+        <h2 className="section-title">리딩 결과</h2>
         <div className="reading-content" ref={contentRef}>
           <ReactMarkdown>{markdown}</ReactMarkdown>
         </div>
       </div>
       
       <div className="reading-actions fade-in" style={{animationDelay: '0.5s'}}>
-        <button 
-          className="reading-action-btn primary-action" 
+        <button
+          className="reading-action-btn primary-action"
           onClick={onNewReading}
-          aria-label={t('result.newReadingButton')}
+          aria-label="새로운 리딩"
         >
-          <FaMagic /> <span className="btn-text">{t('result.newReadingButton')}</span>
+          <FaMagic /> <span className="btn-text">새로운 리딩</span>
         </button>
       </div>
     </div>

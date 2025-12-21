@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import '../styles/QuestionInput.css';
 
@@ -9,16 +8,12 @@ interface QuestionInputProps {
 }
 
 const QuestionInput: React.FC<QuestionInputProps> = ({ onSubmit, onCancel }) => {
-  const { t } = useTranslation();
   const [question, setQuestion] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(false);
   const [animateIn, setAnimateIn] = useState<boolean>(false);
 
   useEffect(() => {
-    // 입장 애니메이션 효과
     setTimeout(() => setAnimateIn(true), 100);
-    
-    // 질문 유효성 검사 (최소 5자)
     setIsValid(question.trim().length >= 5);
   }, [question]);
 
@@ -35,17 +30,17 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ onSubmit, onCancel }) => 
         <div className="stars"></div>
         <div className="moon"></div>
       </div>
-      
+
       <div className="question-card">
-        <h1 className="question-title">{t('question.title')}</h1>
-        <p className="question-subtitle">{t('question.subtitle')}</p>
-        
+        <h1 className="question-title">타로에게 질문하기</h1>
+        <p className="question-subtitle">마음속에 품고 있던 질문을 입력해주세요</p>
+
         <form onSubmit={handleSubmit} className="question-form">
           <div className="textarea-wrapper">
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder={t('question.placeholder')}
+              placeholder="예: 나의 연애운은 어떨까요?"
               className="question-textarea"
               maxLength={200}
               autoFocus
@@ -53,25 +48,25 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ onSubmit, onCancel }) => 
             <div className="character-count">
               <span className={question.length < 5 ? "warning" : ""}>
                 {question.length}/200
-                {question.length < 5 && question.length > 0 && ` (${t('question.validation.minLength')})`}
+                {question.length < 5 && question.length > 0 && ' (질문은 최소 5글자 이상 입력해주세요.)'}
               </span>
             </div>
           </div>
-          
+
           <div className="action-buttons">
-            <button 
-              type="button" 
-              className="back-button" 
+            <button
+              type="button"
+              className="back-button"
               onClick={onCancel}
             >
-              <FaArrowLeft /> {t('question.cancelButton')}
+              <FaArrowLeft /> 취소
             </button>
-            <button 
-              type="submit" 
-              className={`continue-button ${isValid ? '' : 'disabled'}`} 
+            <button
+              type="submit"
+              className={`continue-button ${isValid ? '' : 'disabled'}`}
               disabled={!isValid}
             >
-              {t('question.submitButton')} <FaArrowRight />
+              질문 완료 <FaArrowRight />
             </button>
           </div>
         </form>

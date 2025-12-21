@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { 
-  FaChevronDown, 
-  FaChevronUp, 
-  FaClock, 
+import {
+  FaChevronDown,
+  FaChevronUp,
+  FaClock,
   FaMagic
 } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
@@ -16,15 +15,13 @@ interface TarotHistoryItemProps {
 }
 
 const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item }) => {
-  const { t, i18n } = useTranslation();
   const [expanded, setExpanded] = useState(false);
-  
-  // 날짜 포맷팅 - 현재 언어에 따라 동적으로 포맷
+
+  // 날짜 포맷팅 (한국어)
   const formattedDate = useMemo(() => {
     try {
       const date = new Date(item.created_at);
-      const locale = i18n.language === 'ko' ? 'ko-KR' : 'en-US';
-      return new Intl.DateTimeFormat(locale, {
+      return new Intl.DateTimeFormat('ko-KR', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -34,7 +31,7 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item }) => {
     } catch {
       return item.created_at; // 포맷팅 실패 시 원본 문자열 반환
     }
-  }, [item.created_at, i18n.language]);
+  }, [item.created_at]);
   
   // 선택한 카드 정보 가져오기 - useMemo로 최적화
   const selectedCards = useMemo(() => {
@@ -65,13 +62,13 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item }) => {
             </span>
             <span className="history-item-cards">
               <FaMagic className="cards-icon" />
-              {t('history.selectedCount', { count: selectedCards.length })}
+              {selectedCards.length}장의 카드
             </span>
           </div>
         </div>
-        <button 
-          className="expand-button" 
-          aria-label={expanded ? t('common.close') : t('common.expand')}
+        <button
+          className="expand-button"
+          aria-label={expanded ? '닫기' : '펼치기'}
           onClick={(e) => {
             e.stopPropagation();
             toggleExpand();
@@ -92,17 +89,17 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item }) => {
                   number={card.number}
                   description={card.description || ''}
                   image={card.image}
-                  position={[t('result.positions.first'), t('result.positions.second'), t('result.positions.third')][idx]}
+                  position={['첫 번째 카드', '두 번째 카드', '세 번째 카드'][idx]}
                   reversed={card.reversed} // 역방향 정보 전달
                 />
               </div>
             ))}
           </div>
-          
+
           <div className="history-result">
             <h3 className="result-title">
               <FaMagic className="result-title-icon" />
-              {t('result.title')}
+              리딩 결과
             </h3>
             <div className="result-content">
               <ReactMarkdown>{item.result}</ReactMarkdown>

@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { IoMdClose } from 'react-icons/io';
-import { MdError } from 'react-icons/md';
+import { FaTimes, FaExclamationCircle } from 'react-icons/fa';
 import errorService from '../services/errorService';
 import '../styles/ErrorModal.css';
 
@@ -11,7 +9,6 @@ interface ErrorModalProps {
 }
 
 const ErrorModal: React.FC<ErrorModalProps> = ({ message, onClose }) => {
-  const { t } = useTranslation();
   useEffect(() => {
     // ESC 키로 모달 닫기
     const handleEscKey = (event: KeyboardEvent) => {
@@ -19,9 +16,9 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ message, onClose }) => {
         onClose();
       }
     };
-    
+
     document.addEventListener('keydown', handleEscKey);
-    
+
     return () => {
       document.removeEventListener('keydown', handleEscKey);
     };
@@ -31,10 +28,10 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ message, onClose }) => {
     <div className="error-modal-overlay" onClick={onClose}>
       <div className="error-modal" onClick={e => e.stopPropagation()}>
         <div className="error-modal-header">
-          <MdError className="error-icon" />
-          <h3>{t('common.error')}</h3>
+          <FaExclamationCircle className="error-icon" />
+          <h3>오류</h3>
           <button className="close-button" onClick={onClose}>
-            <IoMdClose />
+            <FaTimes />
           </button>
         </div>
         <div className="error-modal-body">
