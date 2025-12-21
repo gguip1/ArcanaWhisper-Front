@@ -175,18 +175,10 @@
   color: #1877F2;
 }
 
-.provider-github .provider-icon { 
+.provider-github .provider-icon {
   width: 16px;
   height: 16px;
   color: #ffffff;
-}
-
-.provider-kakao .provider-icon {
-  color: #3A2929;
-  background: #FEE500;
-  padding: 2px;
-  border-radius: 4px;
-  font-size: 1rem;
 }
 
 .user-info {

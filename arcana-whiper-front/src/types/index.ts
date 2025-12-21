@@ -38,14 +38,8 @@ export type TarotAction =
   | { type: 'SET_CURRENT_PAGE'; payload: PageType }
   | { type: 'RESET_STATE' };
 
-// 인증 관련 타입 (기존 authService.ts에서 가져옴)
-export type AuthProvider = 
-  | 'google'
-  | 'facebook'
-  | 'github'
-  | 'kakao'
-  | 'microsoft'
-  | 'apple';
+// 인증 관련 타입 (Google만 지원)
+export type AuthProvider = 'google';
 
 export interface UserProfile {
   uid: string;
