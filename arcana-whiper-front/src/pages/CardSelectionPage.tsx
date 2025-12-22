@@ -1,3 +1,4 @@
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CardSelection from '../components/CardSelection';
 import { useTarot } from '../contexts/TarotContext';
@@ -9,17 +10,25 @@ import { MAX_CARDS } from '../constants';
 
 const CardSelectionPage: React.FC = () => {
   const navigate = useNavigate();
-  const { 
-    state: { selectedCards, question }, 
-    setSelectedCards, 
+  const {
+    state: { selectedCards, question },
+    setSelectedCards,
     setReadingResult,
-    resetState 
+    resetState
   } = useTarot();
 
   const {
     loading: isLoading,
     execute: executeReading,
   } = useAsyncOperation<string>();
+
+  // API 응답 완료 상태 (로딩바 애니메이션용)
+  const [isReadingComplete, setIsReadingComplete] = useState(false);
+
+  // 로딩바 100% 도달 후 화면 전환
+  const handleLoadingComplete = useCallback(() => {
+    navigate('/result');
+  }, [navigate]);
 
   const handleCardSelect = (cardNumber: number) => {
     const cardIndex = selectedCards.findIndex(card => card.number === cardNumber);
@@ -54,7 +63,7 @@ const CardSelectionPage: React.FC = () => {
       const result = await executeReading(async () => {
         // 로그인 상태 확인
         const currentUser = authService.currentUser;
-        
+
         // API 요청 데이터 구성
         const requestData = {
           cards: {
@@ -68,17 +77,18 @@ const CardSelectionPage: React.FC = () => {
             provider: currentUser.provider
           })
         };
-        
+
         const response = await requestTarotReading(requestData);
         return response.result;
       });
-      
+
       setReadingResult(result);
-      navigate('/result');
-      
+      // 바로 navigate하지 않고, 로딩바 완료 애니메이션 시작
+      setIsReadingComplete(true);
+
     } catch (error) {
       console.error('타로 해석 요청 실패:', error);
-      
+
       if (error instanceof Error) {
         errorService.showError(error.message);
       } else {
@@ -108,6 +118,8 @@ const CardSelectionPage: React.FC = () => {
       onReQuestion={handleReQuestion}
       question={question}
       isLoadingReading={isLoading}
+      isReadingComplete={isReadingComplete}
+      onLoadingComplete={handleLoadingComplete}
     />
   );
 };

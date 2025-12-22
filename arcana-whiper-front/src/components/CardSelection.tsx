@@ -15,6 +15,8 @@ interface CardSelectionProps {
   onReQuestion?: () => void;
   question?: string;
   isLoadingReading?: boolean;
+  isReadingComplete?: boolean;
+  onLoadingComplete?: () => void;
 }
 
 const CardSelection: React.FC<CardSelectionProps> = ({
@@ -25,6 +27,8 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   onRequestReading,
   onReQuestion,
   isLoadingReading = false,
+  isReadingComplete = false,
+  onLoadingComplete,
 }) => {
   const [cardPositions, setCardPositions] = useState<{[key: number]: {x: number, y: number, rotation: number, baseZIndex: number}}>({});
   const containerRef = useRef<HTMLDivElement>(null);
@@ -161,9 +165,15 @@ const CardSelection: React.FC<CardSelectionProps> = ({
     return <LoadingScreen message="카드 준비 중..." />;
   }
 
-  // API 요청 중일 때 타로 리딩 로딩 화면
-  if (isLoadingReading) {
-    return <LoadingScreen type="reading" />;
+  // API 요청 중이거나 완료 애니메이션 중일 때 타로 리딩 로딩 화면
+  if (isLoadingReading || isReadingComplete) {
+    return (
+      <LoadingScreen
+        type="reading"
+        isComplete={isReadingComplete}
+        onComplete={onLoadingComplete}
+      />
+    );
   }
   
   return (
