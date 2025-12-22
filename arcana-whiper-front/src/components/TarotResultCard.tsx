@@ -1,21 +1,18 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import '../styles/TarotResultCard.css';
 
 interface TarotResultCardProps {
   name: string;
   number: number;
-  description?: string;
-  image?: string;
   position: string;
-  reversed?: boolean; // 역방향 여부 추가
+  reversed?: boolean;
 }
 
 const TarotResultCard: React.FC<TarotResultCardProps> = ({
   name,
   number,
-  image,
   position,
-  reversed = false // 기본값은 정방향
+  reversed = false
 }) => {
   const nameRef = useRef<HTMLHeadingElement>(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -75,9 +72,9 @@ const TarotResultCard: React.FC<TarotResultCardProps> = ({
     } as React.CSSProperties;
   };
 
-  // 카드 번호별 심볼 선택
+  // 카드 번호별 심볼 선택 (이모지 대신 CSS 특수문자 사용)
   const getCardSymbol = (): string => {
-    const symbols = ["✦", "★", "☀", "☽", "⚔️", "🔮", "♥", "⚖️", "∞", "🌙"];
+    const symbols = ["*", "+", "o", "-", "x", "#", "@", "~", "=", "^"];
     return symbols[number % symbols.length];
   };
 
@@ -89,37 +86,26 @@ const TarotResultCard: React.FC<TarotResultCardProps> = ({
       </div>
       
       <div className={`tarot-result-card ${reversed ? 'reversed' : ''}`} style={getCardStyle()}>
-        {image ? (
-          // 이미지가 있는 경우
-          <div className="tarot-card-image-container">
-            <img src={image} alt={name} className="tarot-card-image" />
-            <div className="tarot-card-name-overlay">{name}</div>
+        <div className="tarot-card-generated">
+          <h2
+            ref={nameRef}
+            className="tarot-card-name"
+            title={name}
+            style={{ fontSize }}
+          >
+            {name}
+          </h2>
+
+          <div className="tarot-card-symbol-container">
+            <div className="tarot-card-pattern"></div>
+            <div className="tarot-card-glow"></div>
+            <div className="tarot-card-symbol">{getCardSymbol()}</div>
+
+            <div className="tarot-card-decoration d1"></div>
+            <div className="tarot-card-decoration d2"></div>
+            <div className="tarot-card-decoration d3"></div>
           </div>
-        ) : (
-          // 이미지가 없는 경우 자동 생성 디자인
-          <div className="tarot-card-generated">
-            
-            <h2 
-              ref={nameRef} 
-              className="tarot-card-name" 
-              title={name} // 툴팁으로 전체 이름 표시
-              style={{ fontSize }}
-            >
-              {name}
-            </h2>
-            
-            <div className="tarot-card-symbol-container">
-              <div className="tarot-card-pattern"></div>
-              <div className="tarot-card-glow"></div>
-              <div className="tarot-card-symbol">{getCardSymbol()}</div>
-              
-              {/* 장식 요소들 */}
-              <div className="tarot-card-decoration d1"></div>
-              <div className="tarot-card-decoration d2"></div>
-              <div className="tarot-card-decoration d3"></div>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

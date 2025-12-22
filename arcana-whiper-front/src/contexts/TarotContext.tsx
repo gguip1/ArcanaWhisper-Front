@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, ReactNode } from 'react';
+import { createContext, useReducer, useContext, ReactNode, Dispatch, FC } from 'react';
 import { TarotState, TarotAction, PageType, SelectedCardInfo } from '../types';
 
 // 초기 상태 정의
@@ -33,7 +33,7 @@ const tarotReducer = (state: TarotState, action: TarotAction): TarotState => {
 // Context 타입 정의
 interface TarotContextType {
   state: TarotState;
-  dispatch: React.Dispatch<TarotAction>;
+  dispatch: Dispatch<TarotAction>;
   // 편의 함수들
   setSelectedCards: (cards: SelectedCardInfo[]) => void;
   setQuestion: (question: string) => void;
@@ -52,7 +52,7 @@ interface TarotProviderProps {
 }
 
 // Provider 컴포넌트
-export const TarotProvider: React.FC<TarotProviderProps> = ({ children }) => {
+export const TarotProvider: FC<TarotProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(tarotReducer, initialState);
 
   // 편의 함수들
@@ -99,7 +99,7 @@ export const TarotProvider: React.FC<TarotProviderProps> = ({ children }) => {
 
 // 커스텀 훅 - TarotContext를 쉽게 사용하기 위한 훅
 export const useTarot = (): TarotContextType => {
-  const context = React.useContext(TarotContext);
+  const context = useContext(TarotContext);
   if (context === undefined) {
     throw new Error('useTarot must be used within a TarotProvider');
   }

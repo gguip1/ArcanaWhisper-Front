@@ -9,9 +9,6 @@ export const TRANSITION_DURATION = 2000; // 2초
 // 로컬 스토리지 키 상수
 export const STORAGE_KEYS = {
   USER: 'arcana_whisper_user',
-  PWA_INSTALLED: 'pwaInstalled',
-  PWA_PROMPT_DISMISSED: 'pwaPromptDismissed',
-  PWA_IOS_DISMISSED: 'pwaIOSDismissed',
 } as const;
 
 // API 관련 상수
@@ -40,17 +37,6 @@ export const BREAKPOINTS = {
   TABLET: 768,
   DESKTOP: 1024,
   LARGE_DESKTOP: 1200,
-} as const;
-
-// PWA 관련 상수
-export const PWA_DISPLAY_DELAYS = {
-  INSTALL_PROMPT: 3000, // 3초
-  IOS_GUIDE: 5000, // 5초
-} as const;
-
-export const PWA_STORAGE_DURATIONS = {
-  INSTALL_DISMISS: 14 * 24 * 60 * 60 * 1000, // 14일
-  IOS_DISMISS: 3 * 24 * 60 * 60 * 1000, // 3일
 } as const;
 
 // 에러 메시지 상수

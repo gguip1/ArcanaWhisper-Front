@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import CardSelection from '../components/CardSelection';
 import { useTarot } from '../contexts/TarotContext';
@@ -22,18 +21,17 @@ const CardSelectionPage: React.FC = () => {
     execute: executeReading,
   } = useAsyncOperation<string>();
 
-  const handleCardSelect = (cardId: number, cardNumber: number) => {
-    const cardIndex = selectedCards.findIndex(card => card.id === cardId);
-    
+  const handleCardSelect = (cardNumber: number) => {
+    const cardIndex = selectedCards.findIndex(card => card.number === cardNumber);
+
     if (cardIndex !== -1) {
       // 카드가 이미 선택되어 있으면 제거
-      const newCards = selectedCards.filter(card => card.id !== cardId);
+      const newCards = selectedCards.filter(card => card.number !== cardNumber);
       setSelectedCards(newCards);
     } else {
       // 새 카드 추가 (최대 3장까지)
       if (selectedCards.length < MAX_CARDS) {
         const newCard = {
-          id: cardId,
           number: cardNumber,
           reversed: Math.random() < 0.5 // 50% 확률로 역방향
         };
@@ -101,7 +99,7 @@ const CardSelectionPage: React.FC = () => {
 
   return (
     <CardSelection
-      selectedCards={selectedCards.map(card => card.id)}
+      selectedCards={selectedCards.map(card => card.number)}
       onCardSelect={handleCardSelect}
       maxCards={MAX_CARDS}
       onResetCards={handleResetCards}

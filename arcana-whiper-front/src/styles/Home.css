@@ -7,7 +7,7 @@
   justify-content: center;
   height: 100vh;
   width: 100%;
-  background: radial-gradient(ellipse at top, #2a1b3d 0%, #1e1e2e 70%);
+  background: var(--bg-gradient);
   overflow: hidden;
   max-width: 100vw;
   box-sizing: border-box;
@@ -19,11 +19,11 @@
   max-width: 800px;
   width: 90%;
   padding: clamp(1.5rem, 5vw, 2.5rem);
-  background: rgba(30, 30, 46, 0.7);
+  background: var(--bg-card);
   backdrop-filter: blur(10px);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-default);
   display: flex;
   flex-direction: column;
 }
@@ -31,13 +31,13 @@
 .home-title {
   font-size: clamp(2.5rem, 8vw, 4.5rem);
   margin-bottom: 0.5rem;
-  color: #d4b2ff;
-  text-shadow: 
-    0 0 15px rgba(212, 178, 255, 0.6),
-    0 0 30px rgba(156, 39, 176, 0.3);
+  color: var(--accent-light);
+  text-shadow:
+    0 0 15px var(--accent-glow),
+    0 0 30px var(--accent-glow);
   font-weight: 700;
   letter-spacing: 2px;
-  background: linear-gradient(45deg, #d4b2ff, #9c27b0);
+  background: linear-gradient(45deg, var(--accent-light), var(--accent-primary));
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -51,7 +51,7 @@
 
 .home-tagline {
   font-size: clamp(1rem, 3vw, 1.5rem);
-  color: #a990fc;
+  color: var(--text-accent);
   margin-bottom: clamp(1rem, 3vw, 2rem);
   font-weight: 500;
   letter-spacing: 1px;
@@ -64,7 +64,7 @@
   margin: 0 auto clamp(1.5rem, 4vw, 2.5rem);
   line-height: 1.5;
   font-size: clamp(1rem, 2.5vw, 1.2rem);
-  color: #e2e2e2;
+  color: var(--text-primary);
   padding: 0;
 }
 
@@ -76,16 +76,16 @@
 }
 
 .start-button {
-  background: linear-gradient(90deg, #9c27b0 0%, #673ab7 100%);
-  color: white;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: var(--text-primary);
   font-size: clamp(1rem, 2.5vw, 1.3rem);
   font-weight: 600;
   padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 4vw, 3rem);
-  border-radius: 50px;
+  border-radius: var(--radius-full);
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-button);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -104,12 +104,12 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: all 0.5s ease;
+  transition: all var(--transition-slow);
 }
 
 .start-button:hover {
   transform: translateY(-5px);
-  box-shadow: 0 7px 20px rgba(156, 39, 176, 0.6);
+  box-shadow: var(--shadow-button-hover);
 }
 
 .start-button:hover:before {
@@ -130,12 +130,12 @@
 .disclaimer {
   margin-top: clamp(1rem, 3vw, 1.5rem);
   padding: clamp(1rem, 2.5vw, 1.5rem);
-  background: rgba(156, 39, 176, 0.1);
-  border-radius: 12px;
-  color: #a8a8a8;
+  background: var(--accent-glow);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
   font-size: clamp(0.7rem, 2vw, 0.9rem);
   line-height: 1.5;
-  border-left: 3px solid #9c27b0;
+  border-left: 3px solid var(--accent-primary);
 }
 
 .disclaimer p {
@@ -207,7 +207,7 @@
 .card-1 {
   top: 15%;
   right: 15%;
-  background: linear-gradient(45deg, #2c0b3f, #590d82);
+  background: linear-gradient(45deg, var(--bg-tertiary), var(--accent-dark));
   background-size: 200% 200%;
   animation-delay: 0s;
   transform: rotate(10deg);
@@ -217,7 +217,7 @@
 .card-2 {
   bottom: 15%;
   left: 10%;
-  background: linear-gradient(45deg, #330b3f, #5d0d82);
+  background: linear-gradient(45deg, var(--bg-tertiary), var(--accent-secondary));
   background-size: 200% 200%;
   animation-delay: 2s;
   transform: rotate(-15deg);
@@ -227,7 +227,7 @@
 .card-3 {
   top: 30%;
   left: 15%;
-  background: linear-gradient(45deg, #380b3f, #4a0d82);
+  background: linear-gradient(45deg, var(--bg-elevated), var(--accent-dark));
   background-size: 200% 200%;
   animation-delay: 4s;
   transform: rotate(5deg);
@@ -253,8 +253,8 @@
   position: absolute;
   width: 300px;
   height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(156, 39, 176, 0.3) 0%, rgba(103, 58, 183, 0.1) 50%, rgba(0, 0, 0, 0) 70%);
+  border-radius: var(--radius-circle);
+  background: radial-gradient(circle, var(--accent-glow) 0%, rgba(99, 102, 241, 0.1) 50%, rgba(0, 0, 0, 0) 70%);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

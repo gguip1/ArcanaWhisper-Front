@@ -1,17 +1,12 @@
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const useStructuredData = () => {
-  const { i18n } = useTranslation();
-  
   useEffect(() => {
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": i18n.language === 'ko' ? "ArcanaWhisper - AI 타로 리딩" : "ArcanaWhisper - AI Tarot Reading",
-      "description": i18n.language === 'ko' 
-        ? "AI 타로 리딩으로 당신의 운명을 알아보세요. 타로 카드와 인공지능이 속삭이는 운명의 메시지를 지금 확인하세요."
-        : "Discover your destiny with AI Tarot Reading. Experience mystical tarot wisdom through artificial intelligence.",
+      "name": "ArcanaWhisper - AI 타로 리딩",
+      "description": "AI 타로 리딩으로 당신의 운명을 알아보세요. 타로 카드와 인공지능이 속삭이는 운명의 메시지를 지금 확인하세요.",
       "url": "https://aitarot.site",
       "applicationCategory": "LifestyleApplication",
       "operatingSystem": "Any",
@@ -27,8 +22,8 @@ export const useStructuredData = () => {
       "inLanguage": [
         {
           "@type": "Language",
-          "name": i18n.language === 'ko' ? "Korean" : "English",
-          "alternateName": i18n.language === 'ko' ? "ko" : "en"
+          "name": "Korean",
+          "alternateName": "ko"
         }
       ],
       "aggregateRating": {
@@ -39,10 +34,10 @@ export const useStructuredData = () => {
         "worstRating": "1"
       },
       "featureList": [
-        i18n.language === 'ko' ? "AI 기반 타로 카드 해석" : "AI-powered tarot card interpretation",
-        i18n.language === 'ko' ? "실시간 카드 선택" : "Real-time card selection",
-        i18n.language === 'ko' ? "개인화된 운세 분석" : "Personalized fortune analysis",
-        i18n.language === 'ko' ? "히스토리 관리" : "History management"
+        "AI 기반 타로 카드 해석",
+        "실시간 카드 선택",
+        "개인화된 운세 분석",
+        "히스토리 관리"
       ]
     };
 
@@ -64,7 +59,7 @@ export const useStructuredData = () => {
         scriptToRemove.remove();
       }
     };
-  }, [i18n.language]);
+  }, []);
 };
 
 export default useStructuredData;
