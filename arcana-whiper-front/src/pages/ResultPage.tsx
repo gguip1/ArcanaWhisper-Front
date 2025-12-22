@@ -1,13 +1,21 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReadingResult from '../components/ReadingResult';
 import { useTarot } from '../contexts/TarotContext';
 
 const ResultPage: React.FC = () => {
   const navigate = useNavigate();
-  const { 
-    state: { readingResult, question, selectedCards }, 
+  const {
+    state: { readingResult, question, selectedCards },
     resetState
   } = useTarot();
+
+  // 결과가 없으면 홈으로 리다이렉트
+  useEffect(() => {
+    if (!readingResult) {
+      navigate('/');
+    }
+  }, [readingResult, navigate]);
 
   const handleNewReading = () => {
     resetState();
@@ -19,9 +27,7 @@ const ResultPage: React.FC = () => {
     navigate('/');
   };
 
-  // 결과가 없으면 홈으로 리다이렉트
   if (!readingResult) {
-    navigate('/');
     return null;
   }
 
