@@ -53,6 +53,13 @@ export async function requestTarotReading(requestData: TarotRequest): Promise<Ta
     // Firebase ID Token 획득 (로그인된 경우에만)
     const idToken = await auth.currentUser?.getIdToken();
 
+    // 디버깅: 요청 데이터 확인
+    console.log('🔍 타로 API 요청 데이터:', {
+      url: `${API_URL}/tarot`,
+      hasToken: !!idToken,
+      requestData: JSON.stringify(requestData)
+    });
+
     // API 호출
     const response = await fetch(`${API_URL}/tarot`, {
       method: 'POST',
