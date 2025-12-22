@@ -18,3 +18,8 @@ samconfig.toml
 # 로컬 문서/스크립트
 docs/
 scripts/
+
+# Playwright 테스트 관련
+.playwright-mcp
+
+claude.md
