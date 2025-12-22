@@ -8,29 +8,29 @@
 
 /* 포지션 라벨 */
 .tarot-position-label {
-  color: #d4b2ff;
+  color: var(--accent-light);
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.8rem;
-  text-shadow: 0 0 10px rgba(156, 39, 176, 0.4);
+  text-shadow: var(--shadow-glow-indigo);
 }
 
 /* 타로 카드 기본 스타일 */
 .tarot-result-card {
   width: 220px;
   height: 340px;
-  border-radius: 15px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.6s ease;
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 0 1px var(--border-default);
   background: linear-gradient(
-    135deg, 
-    var(--card-primary, #9c27b0) 0%,
-    var(--card-secondary, #673ab7) 100%
+    135deg,
+    var(--card-primary, var(--accent-primary)) 0%,
+    var(--card-secondary, var(--accent-secondary)) 100%
   );
 }
 
@@ -176,7 +176,7 @@
 
 /* 역방향 텍스트 표시 */
 .reversed-indicator {
-  color: #ff9800;
+  color: var(--status-warning);
   font-size: 0.85rem;
   margin-left: 0.5rem;
   font-style: italic;

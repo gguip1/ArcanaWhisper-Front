@@ -1,13 +1,91 @@
 @import './App.css';
 
 :root {
+  /* === Celestial 팔레트 - 배경 === */
+  --bg-primary: #0C0C1E;
+  --bg-secondary: #1A1A2E;
+  --bg-tertiary: #2D2D44;
+  --bg-elevated: #3D3D5C;
+  --bg-overlay: rgba(26, 26, 46, 0.85);
+  --bg-gradient: radial-gradient(ellipse at top, #1A1A2E 0%, #0C0C1E 70%);
+  --bg-card: rgba(26, 26, 46, 0.7);
+
+  /* === 텍스트 === */
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #A1A1AA;
+  --text-accent: #A5B4FC;
+  --text-link: #818CF8;
+
+  /* === 액센트 (인디고) === */
+  --accent-primary: #6366F1;
+  --accent-secondary: #4F46E5;
+  --accent-light: #A5B4FC;
+  --accent-dark: #4338CA;
+  --accent-glow: rgba(99, 102, 241, 0.4);
+
+  /* === 따뜻한 액센트 (코퍼) === */
+  --warm-primary: #B76E79;
+  --warm-secondary: #C9848E;
+  --warm-dark: #9F5A64;
+  --warm-glow: rgba(183, 110, 121, 0.4);
+
+  /* === 테두리 === */
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-accent: rgba(99, 102, 241, 0.5);
+  --border-warm: rgba(183, 110, 121, 0.5);
+  --border-focus: #6366F1;
+
+  /* === 상태 === */
+  --status-success: #10B981;
+  --status-success-bg: rgba(16, 185, 129, 0.15);
+  --status-warning: #F59E0B;
+  --status-warning-bg: rgba(245, 158, 11, 0.15);
+  --status-error: #EF4444;
+  --status-error-bg: rgba(239, 68, 68, 0.15);
+  --status-info: #3B82F6;
+  --status-info-bg: rgba(59, 130, 246, 0.15);
+
+  /* === 간격 === */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* === 모서리 === */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-full: 50px;
+  --radius-circle: 50%;
+
+  /* === 그림자 === */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow-indigo: 0 0 20px rgba(99, 102, 241, 0.5);
+  --shadow-glow-copper: 0 0 20px rgba(183, 110, 121, 0.5);
+  --shadow-button: 0 4px 15px rgba(99, 102, 241, 0.4);
+  --shadow-button-hover: 0 7px 20px rgba(99, 102, 241, 0.6);
+
+  /* === 트랜지션 === */
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease-in-out;
+
+  /* === 기본 스타일 === */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #121212;
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -34,12 +112,12 @@ html, body {
 
 a {
   font-weight: 500;
-  color: #9c27b0;
+  color: var(--text-link);
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #7209b7;
+  color: var(--accent-primary);
 }
 
 body {
@@ -60,40 +138,27 @@ body {
 }
 
 button {
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--bg-secondary);
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all var(--transition-normal);
 }
 
 button:hover {
-  border-color: #9c27b0;
+  border-color: var(--accent-primary);
 }
 
 button:focus,
 button:focus-visible {
-  outline: 4px auto #9c27b0;
+  outline: 4px auto var(--border-focus);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  
-  a:hover {
-    color: #7209b7;
-  }
-  
-  button {
-    background-color: #f9f9f9;
-  }
-}
+/* 다크모드 전용 - 라이트모드 미지원 */
 
 /* 전역 버튼 커서 스타일 */
 button,

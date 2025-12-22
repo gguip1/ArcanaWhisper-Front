@@ -21,30 +21,30 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: rgba(30, 30, 46, 0.8);
-  color: #d4b2ff;
-  border: 1px solid rgba(156, 39, 176, 0.5);
+  background: var(--bg-overlay);
+  color: var(--accent-light);
+  border: 1px solid var(--border-accent);
   padding: 0.7rem 1.2rem;
-  border-radius: 50px;
+  border-radius: var(--radius-full);
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);
   backdrop-filter: blur(5px);
   -webkit-tap-highlight-color: transparent;
 }
 
 .login-button:hover {
-  background: rgba(156, 39, 176, 0.2);
-  box-shadow: 0 6px 15px rgba(156, 39, 176, 0.3);
+  background: var(--accent-glow);
+  box-shadow: var(--shadow-button-hover);
   transform: translateY(-2px);
 }
 
 .login-button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  background: rgba(156, 39, 176, 0.4);
+  box-shadow: var(--shadow-sm);
+  background: var(--accent-glow);
 }
 
 /* 로그인한 상태일 때 버튼을 원형으로 */
@@ -52,9 +52,9 @@
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   overflow: hidden;
-  border: 2px solid rgba(156, 39, 176, 0.6);
+  border: 2px solid var(--border-accent);
 }
 
 /* 초기화 중인 상태의 버튼도 원형으로 수정 */
@@ -62,9 +62,9 @@
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
-  border-radius: 50%;
-  background: rgba(30, 30, 46, 0.8);
-  border: 2px solid rgba(156, 39, 176, 0.3);
+  border-radius: var(--radius-circle);
+  background: var(--bg-overlay);
+  border: 2px solid var(--border-accent);
   overflow: hidden;
   cursor: default;
   pointer-events: none;
@@ -95,8 +95,8 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #9c27b0, #673ab7);
-  color: white;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: var(--text-primary);
   font-weight: bold;
   font-size: 1.2rem;
 }
@@ -106,13 +106,13 @@
   top: calc(100% + 10px);
   right: 0;
   width: 260px;
-  background: rgba(30, 30, 46, 0.95);
+  background: var(--bg-overlay);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  z-index: 1001; /* 높은 z-index 값으로 수정 (카드 z-index 500보다 훨씬 높게) */
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-default);
+  z-index: 1001;
   overflow: hidden;
   animation: fadeIn 0.3s ease;
 }
@@ -124,10 +124,10 @@
 
 .dropdown-header {
   padding: 1rem;
-  color: #d4b2ff;
+  color: var(--accent-light);
   font-weight: 600;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(156, 39, 176, 0.1);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--accent-glow);
 }
 
 .dropdown-providers {
@@ -140,13 +140,13 @@
   width: 100%;
   padding: 0.8rem;
   margin-bottom: 0.5rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--border-subtle);
   border: none;
-  border-radius: 8px;
-  color: #e2e2e2;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
   text-align: left;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
 }
 
 .provider-button:last-child {
@@ -154,7 +154,7 @@
 }
 
 .provider-button:hover {
-  background: rgba(156, 39, 176, 0.2);
+  background: var(--accent-glow);
   transform: translateY(-2px);
 }
 
@@ -178,7 +178,7 @@
 .provider-github .provider-icon {
   width: 16px;
   height: 16px;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .user-info {
@@ -187,13 +187,13 @@
 
 .user-name {
   font-size: 1.1rem;
-  color: white;
+  color: var(--text-primary);
   margin-bottom: 0.3rem;
 }
 
 .user-email {
   font-size: 0.85rem;
-  color: #a8a8a8;
+  color: var(--text-muted);
   margin-bottom: 0.5rem;
   word-break: break-all;
 }
@@ -201,9 +201,9 @@
 .user-provider {
   display: inline-block;
   padding: 0.3rem 0.8rem;
-  background: rgba(156, 39, 176, 0.2);
-  border-radius: 20px;
-  color: #d4b2ff;
+  background: var(--accent-glow);
+  border-radius: var(--radius-xl);
+  color: var(--accent-light);
   font-size: 0.8rem;
 }
 
@@ -214,17 +214,17 @@
 .logout-button {
   width: 100%;
   padding: 0.8rem;
-  background: rgba(220, 53, 69, 0.2);
-  color: #ff6b6b;
-  border: 1px solid rgba(220, 53, 69, 0.4);
-  border-radius: 8px;
+  background: var(--status-error-bg);
+  color: var(--status-error);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
   font-weight: 500;
 }
 
 .logout-button:hover {
-  background: rgba(220, 53, 69, 0.3);
+  background: rgba(239, 68, 68, 0.3);
   transform: translateY(-2px);
 }
 
@@ -232,9 +232,9 @@
 .initializing-button {
   width: 1.5rem;
   height: 1.5rem;
-  border-radius: 50%;
-  border: 2px solid rgba(156, 39, 176, 0.2);
-  border-top-color: #d4b2ff;
+  border-radius: var(--radius-circle);
+  border: 2px solid var(--border-accent);
+  border-top-color: var(--accent-light);
   animation: spin 1.2s linear infinite;
 }
 
@@ -242,9 +242,9 @@
   display: inline-block;
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(212, 178, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: #d4b2ff;
+  border: 2px solid var(--border-accent);
+  border-radius: var(--radius-circle);
+  border-top-color: var(--accent-light);
   animation: spin 1s linear infinite;
 }
 
@@ -322,12 +322,12 @@
 .history-button {
   width: 100%;
   padding: 0.8rem;
-  background: rgba(156, 39, 176, 0.1);
-  color: #d4b2ff;
-  border: 1px solid rgba(156, 39, 176, 0.4);
-  border-radius: 8px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
   font-weight: 500;
   margin-bottom: 0.8rem;
   display: flex;
@@ -337,9 +337,9 @@
 }
 
 .history-button:hover {
-  background: rgba(156, 39, 176, 0.2);
+  background: rgba(99, 102, 241, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(156, 39, 176, 0.2);
+  box-shadow: var(--shadow-button);
 }
 
 .button-icon {

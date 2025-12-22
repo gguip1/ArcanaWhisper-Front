@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1e1e2e 0%, #2d2b42 100%);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   padding: 2rem;
   box-sizing: border-box;
   overflow-y: auto;
@@ -21,15 +21,15 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    radial-gradient(2px 2px at 40px 70px, #d4b2ff, transparent),
-    radial-gradient(1px 1px at 120px 150px, #ffffff, transparent),
-    radial-gradient(1px 1px at 200px 80px, #a990fc, transparent),
-    radial-gradient(2px 2px at 300px 250px, #d4b2ff, transparent),
-    radial-gradient(1px 1px at 400px 350px, #ffffff, transparent),
-    radial-gradient(1px 1px at 500px 100px, #a990fc, transparent),
-    radial-gradient(1px 1px at 50px 350px, #ffffff, transparent),
-    radial-gradient(2px 2px at 150px 400px, #d4b2ff, transparent);
+  background-image:
+    radial-gradient(2px 2px at 40px 70px, var(--accent-light), transparent),
+    radial-gradient(1px 1px at 120px 150px, var(--text-primary), transparent),
+    radial-gradient(1px 1px at 200px 80px, var(--text-accent), transparent),
+    radial-gradient(2px 2px at 300px 250px, var(--accent-light), transparent),
+    radial-gradient(1px 1px at 400px 350px, var(--text-primary), transparent),
+    radial-gradient(1px 1px at 500px 100px, var(--text-accent), transparent),
+    radial-gradient(1px 1px at 50px 350px, var(--text-primary), transparent),
+    radial-gradient(2px 2px at 150px 400px, var(--accent-light), transparent);
   background-size: 600px 600px;
   opacity: 0.2;
   z-index: 0;
@@ -46,12 +46,12 @@
 .reading-title {
   font-size: clamp(2rem, 5vw, 3.5rem);
   margin-bottom: 0.5rem;
-  color: #d4b2ff;
-  text-shadow: 
-    0 0 15px rgba(212, 178, 255, 0.6),
-    0 0 30px rgba(156, 39, 176, 0.3);
+  color: var(--accent-light);
+  text-shadow:
+    0 0 15px var(--accent-glow),
+    0 0 30px var(--accent-glow);
   font-weight: 700;
-  background: linear-gradient(45deg, #d4b2ff, #9c27b0);
+  background: linear-gradient(45deg, var(--accent-light), var(--accent-primary));
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -68,36 +68,36 @@
   transform: translateX(-50%);
   width: 120px;
   height: 3px;
-  background: linear-gradient(to right, transparent, rgba(156, 39, 176, 0.7), transparent);
+  background: linear-gradient(to right, transparent, var(--accent-glow), transparent);
   border-radius: 3px;
 }
 
 /* 공통 카드 컨테이너 스타일 - 모든 영역에 통일된 디자인 적용 */
 .content-card {
-  background: rgba(30, 30, 46, 0.7);
+  background: var(--bg-card);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(156, 39, 176, 0.2);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-accent);
   padding: 2rem;
   margin: 0 auto 2rem;
   width: 100%;
   max-width: min(900px, calc(100vw - 2rem));
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
   z-index: 1;
 }
 
 .content-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(156, 39, 176, 0.2);
+  box-shadow: var(--shadow-lg), var(--shadow-glow-indigo);
 }
 
 /* 질문 영역 스타일 통합 */
 .reading-question {
   position: relative;
-  color: #e2e2e2;
+  color: var(--text-primary);
 }
 
 /* 영역 제목 스타일 */

@@ -17,10 +17,10 @@
 .error-modal {
   width: 90%;
   max-width: 450px;
-  background: rgba(30, 30, 46, 0.95);
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 107, 107, 0.3);
+  background: var(--bg-overlay);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   overflow: hidden;
   animation: slideUp 0.3s ease;
 }
@@ -29,9 +29,9 @@
   display: flex;
   align-items: center;
   padding: 1rem 1.5rem;
-  background: rgba(220, 53, 69, 0.2);
-  color: #ff6b6b;
-  border-bottom: 1px solid rgba(255, 107, 107, 0.3);
+  background: var(--status-error-bg);
+  color: var(--status-error);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .error-icon {
@@ -48,17 +48,17 @@
 .close-button {
   background: transparent;
   border: none;
-  color: #ff6b6b;
+  color: var(--status-error);
   font-size: 1.2rem;
   cursor: pointer;
   padding: 0.3rem;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   width: 28px;
   height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: background var(--transition-fast);
 }
 
 .close-button:hover {
@@ -67,7 +67,7 @@
 
 .error-modal-body {
   padding: 1.5rem;
-  color: #f8f8f8;
+  color: var(--text-primary);
 }
 
 .error-modal-body p {
@@ -109,13 +109,13 @@
   transform: translateX(-50%);
   min-width: 300px;
   max-width: 80%;
-  background: rgba(220, 53, 69, 0.95);
-  color: white;
-  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.95);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
   padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-lg);
   animation: slideUp 0.3s ease, fadeOut 0.3s 4.7s ease forwards;
   z-index: 2000;
 }
