@@ -2,6 +2,8 @@
  * 타로 카드 해석 API 서비스
  */
 
+import { auth } from './authService';
+
 // 타로 카드 정보에 대한 타입 정의
 interface TarotCards {
   cards: number[];
@@ -46,13 +48,17 @@ export async function requestTarotReading(requestData: TarotRequest): Promise<Ta
   const timeoutId = setTimeout(() => controller.abort(), 30000);
 
   try {
-    const API_URL = import.meta.env.VITE_API_URL
-    
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    // Firebase ID Token 획득 (로그인된 경우에만)
+    const idToken = await auth.currentUser?.getIdToken();
+
     // API 호출
     const response = await fetch(`${API_URL}/tarot`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...(idToken && { Authorization: `Bearer ${idToken}` }),
       },
       body: JSON.stringify(requestData),
       signal: controller.signal

@@ -2,6 +2,8 @@
  * 타로 카드 히스토리 API 서비스
  */
 
+import { auth } from './authService';
+
 // 타로 카드 정보 타입 정의
 export interface TarotCards {
   cards: number[];
@@ -41,34 +43,37 @@ export class HistoryService {
 
   /**
    * 타로 카드 히스토리 조회 (커서 기반 페이지네이션 지원)
-   * @param userId OAuth 식별자
-   * @param provider OAuth 제공자
+   * Firebase ID Token을 통해 사용자 인증
    * @param cursorDocId 다음 페이지를 위한 커서 (옵션)
    * @returns 타로 카드 히스토리 응답 (페이지네이션 정보 포함)
    */
   async getTarotHistory(
-    userId: string,
-    provider: string,
     cursorDocId?: string
   ): Promise<HistoryResponse> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.DEFAULT_TIMEOUT);
 
     try {
-      
+      // Firebase ID Token 획득
+      const idToken = await auth.currentUser?.getIdToken();
+      if (!idToken) {
+        throw new Error('로그인이 필요합니다.');
+      }
+
       // URL 구성 - 커서가 있으면 포함
-      let url = `${this.API_URL}/tarot/history?user_id=${encodeURIComponent(userId)}&provider=${encodeURIComponent(provider)}`;
-      
+      let url = `${this.API_URL}/tarot/history`;
+
       // 만약 커서가 있으면 URL에 추가
       if (cursorDocId) {
-        url += `&cursor_doc_id=${encodeURIComponent(cursorDocId)}`;
+        url += `?cursor_doc_id=${encodeURIComponent(cursorDocId)}`;
       }
-      
+
       // API 호출
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
+          'Authorization': `Bearer ${idToken}`,
         },
         signal: controller.signal
       });
