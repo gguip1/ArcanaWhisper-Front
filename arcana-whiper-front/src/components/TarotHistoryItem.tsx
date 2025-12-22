@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import {
   FaChevronDown,
   FaChevronUp,
@@ -82,15 +82,12 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item }) => {
         <div className="history-item-details">
           <div className="history-cards">
             {selectedCards.map((card, idx) => card && (
-              <div key={idx} className="history-card-wrapper">
+              <div key={card.number} className="history-card-wrapper">
                 <TarotResultCard
-                  key={`${card.number}-${expanded}`} // key에 expanded 상태 추가하여 재렌더링 방지
                   name={card.name}
                   number={card.number}
-                  description={card.description || ''}
-                  image={card.image}
                   position={['첫 번째 카드', '두 번째 카드', '세 번째 카드'][idx]}
-                  reversed={card.reversed} // 역방향 정보 전달
+                  reversed={card.reversed}
                 />
               </div>
             ))}

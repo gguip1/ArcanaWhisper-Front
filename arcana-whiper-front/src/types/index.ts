@@ -5,18 +5,14 @@ export type PageType = 'home' | 'question' | 'cardSelection' | 'result' | 'histo
 
 // 선택된 카드 정보 인터페이스
 export interface SelectedCardInfo {
-  id: number;      // 카드 ID
-  number: number;  // 카드 번호
+  number: number;    // 카드 번호 (고유 식별자)
   reversed: boolean; // 역방향 여부
 }
 
-// 타로 카드 인터페이스 (기존 tarotData.ts에서 가져옴)
+// 타로 카드 인터페이스
 export interface TarotCard {
-  id: number;
   number: number;
   name: string;
-  image?: string;
-  description?: string;
   reversed?: boolean;
 }
 

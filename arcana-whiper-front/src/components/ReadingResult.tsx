@@ -1,13 +1,12 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { FaHome, FaMagic } from 'react-icons/fa';
 import { shuffleCards } from '../data/tarotData';
 import TarotResultCard from './TarotResultCard';
 import { useSEO } from '../hooks';
 
-// 카드 정보 타입 정의 (App.tsx와 일치해야 함)
+// 카드 정보 타입 정의
 interface SelectedCardInfo {
-  id: number;
   number: number;
   reversed: boolean;
 }
@@ -60,12 +59,12 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
   
   // 전체 카드 데이터 가져오기
   const allCards = shuffleCards();
-  
+
   // 선택한 카드 정보 가져오기
   const selectedCards = selectedCardInfos.map(cardInfo => {
-    const card = allCards.find(c => c.id === cardInfo.id);
+    const card = allCards.find(c => c.number === cardInfo.number);
     return card ? { ...card, reversed: cardInfo.reversed } : undefined;
-  }).filter(card => card !== undefined); // undefined 필터링
+  }).filter(card => card !== undefined);
 
   return (
     <div className="reading-result-container">
@@ -105,13 +104,11 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
             <div className="selected-tarot-cards">
               {selectedCards.map((card, index) => card && (
                 <TarotResultCard
-                  key={card.id}
+                  key={card.number}
                   name={card.name}
                   number={card.number}
-                  description={card.description}
-                  image={card.image}
                   position={positions[index % positions.length]}
-                  reversed={card.reversed} // 역방향 정보 전달
+                  reversed={card.reversed}
                 />
               ))}
             </div>

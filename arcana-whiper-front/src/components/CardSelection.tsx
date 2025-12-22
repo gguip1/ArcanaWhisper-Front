@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import TarotCard from './TarotCard';
+import LoadingScreen from './LoadingScreen';
 import { shuffleCards } from '../data/tarotData';
-import { FaArrowRight, FaRedo, FaArrowLeft } from 'react-icons/fa';
-import { FiShuffle } from 'react-icons/fi';
+import { FaArrowRight, FaRedo, FaArrowLeft, FaRandom, FaCheck } from 'react-icons/fa';
 
 // props 인터페이스 업데이트
 interface CardSelectionProps {
-  selectedCards: number[]; // ID만 받아서 방향 정보는 숨김
-  onCardSelect: (cardId: number, cardNumber: number) => void; // 카드 번호도 함께 전달
+  selectedCards: number[]; // 선택된 카드 번호 배열
+  onCardSelect: (cardNumber: number) => void;
   maxCards: number;
   onResetCards?: () => void;
-  onRequestReading?: () => void; // 변경: 선택된 카드 정보는 App.tsx에서 관리
+  onRequestReading?: () => void;
   onGoHome?: () => void;
   onReQuestion?: () => void;
   question?: string;
-  isLoadingReading?: boolean; // API 요청 로딩 상태
+  isLoadingReading?: boolean;
 }
 
 const CardSelection: React.FC<CardSelectionProps> = ({
@@ -94,11 +94,11 @@ const CardSelection: React.FC<CardSelectionProps> = ({
       
       const baseZIndex = 10 + (rows - row) * cols + col;
       
-      newPositions[card.id] = { 
-        x: xPercent, 
-        y: yPercent, 
-        rotation, 
-        baseZIndex 
+      newPositions[card.number] = {
+        x: xPercent,
+        y: yPercent,
+        rotation,
+        baseZIndex
       };
     });
     
@@ -116,14 +116,14 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   }, [calculateCardPositions]);
   
   // 카드 Z-Index 계산 최적화
-  const getCardZIndex = useCallback((cardId: number) => {
-    const position = cardPositions[cardId];
+  const getCardZIndex = useCallback((cardNumber: number) => {
+    const position = cardPositions[cardNumber];
     if (!position) return 1;
-    
-    if (selectedCards.includes(cardId)) {
-      return 1000 + selectedCards.indexOf(cardId);
+
+    if (selectedCards.includes(cardNumber)) {
+      return 1000 + selectedCards.indexOf(cardNumber);
     }
-    
+
     return position.baseZIndex;
   }, [cardPositions, selectedCards]);
   
@@ -146,8 +146,8 @@ const CardSelection: React.FC<CardSelectionProps> = ({
     shuffleCardsHandler();
   }, [selectedCards.length, onResetCards, shuffleCardsHandler]);
   
-  const handleCardClick = useCallback((cardId: number, cardNumber: number) => {
-    onCardSelect(cardId, cardNumber);
+  const handleCardClick = useCallback((cardNumber: number) => {
+    onCardSelect(cardNumber);
   }, [onCardSelect]);
 
   const handleBackButtonClick = useCallback(() => {
@@ -156,18 +156,14 @@ const CardSelection: React.FC<CardSelectionProps> = ({
     }
   }, [onReQuestion]);
   
-  // 로딩 상태 확인 - API 요청 중이거나 카드가 없을 때
-  const isLoading = isLoadingReading || shuffledCards.length === 0;
-  
-  if (isLoading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <div className="loading-text">
-          {isLoadingReading ? '리딩 중...' : '카드 준비 중...'}
-        </div>
-      </div>
-    );
+  // 카드가 없을 때만 기본 로딩 표시
+  if (shuffledCards.length === 0) {
+    return <LoadingScreen message="카드 준비 중..." />;
+  }
+
+  // API 요청 중일 때 타로 리딩 로딩 화면
+  if (isLoadingReading) {
+    return <LoadingScreen type="reading" />;
   }
   
   return (
@@ -190,7 +186,7 @@ const CardSelection: React.FC<CardSelectionProps> = ({
               className={`card-indicator ${index < selectedCards.length ? 'selected' : ''}`}
               title={`${index + 1}번째 카드`}
             >
-              {index < selectedCards.length ? <span>✓</span> : index + 1}
+              {index < selectedCards.length ? <FaCheck /> : index + 1}
             </div>
           ))}
           <button
@@ -200,7 +196,7 @@ const CardSelection: React.FC<CardSelectionProps> = ({
             title="카드 섞기"
             aria-label="카드 섞기"
           >
-            <FiShuffle className="shuffle-icon" />
+            <FaRandom className="shuffle-icon" />
           </button>
         </div>
 
@@ -209,25 +205,24 @@ const CardSelection: React.FC<CardSelectionProps> = ({
       
       <div className="tarot-cards-container" ref={containerRef}>
         {shuffledCards.map((card) => {
-          const isSelected = selectedCards.includes(card.id);
-          
+          const isSelected = selectedCards.includes(card.number);
+
           return (
-            <div 
-              key={card.id}
+            <div
+              key={card.number}
               className={`tarot-card-wrapper ${isSelected ? 'selected' : ''}`}
               style={{
-                left: `${cardPositions[card.id]?.x ?? 50}%`,
-                top: `${cardPositions[card.id]?.y ?? 50}%`,
-                transform: `translate(-50%, -50%) rotate(${cardPositions[card.id]?.rotation ?? 0}deg)`,
-                zIndex: getCardZIndex(card.id)
+                left: `${cardPositions[card.number]?.x ?? 50}%`,
+                top: `${cardPositions[card.number]?.y ?? 50}%`,
+                transform: `translate(-50%, -50%) rotate(${cardPositions[card.number]?.rotation ?? 0}deg)`,
+                zIndex: getCardZIndex(card.number)
               }}
-              data-card-id={card.id}
               data-card-number={card.number}
             >
               <TarotCard
                 card={card}
                 isSelected={isSelected}
-                onSelect={() => handleCardClick(card.id, card.number)}
+                onSelect={() => handleCardClick(card.number)}
                 disabled={selectedCards.length >= maxCards && !isSelected}
               />
             </div>
