@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, useEffect, ReactNode } from 'react';
 import { UserProfile, AuthProvider as AuthProviderType } from '../types';
 import authService from '../services/authService';
 

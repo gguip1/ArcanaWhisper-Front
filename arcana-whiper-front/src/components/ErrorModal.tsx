@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState, FC } from 'react';
 import { FaTimes, FaExclamationCircle } from 'react-icons/fa';
 import errorService from '../services/errorService';
 import '../styles/ErrorModal.css';
@@ -8,7 +8,7 @@ interface ErrorModalProps {
   onClose: () => void;
 }
 
-const ErrorModal: React.FC<ErrorModalProps> = ({ message, onClose }) => {
+const ErrorModal: FC<ErrorModalProps> = ({ message, onClose }) => {
   useEffect(() => {
     // ESC 키로 모달 닫기
     const handleEscKey = (event: KeyboardEvent) => {
@@ -45,8 +45,8 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ message, onClose }) => {
 /**
  * 전역 에러 상태를 구독하고 에러 모달을 표시하는 컴포넌트
  */
-export const GlobalErrorModal: React.FC = () => {
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+export const GlobalErrorModal: FC = () => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
   useEffect(() => {
     // errorService 구독

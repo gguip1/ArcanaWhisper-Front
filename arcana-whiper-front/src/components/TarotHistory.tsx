@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { FaRedo, FaArrowLeft } from 'react-icons/fa';
 import authService from '../services/authService';
 import historyService, { HistoryItem } from '../services/historyService';
@@ -55,13 +55,9 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
         setLoadingMore(false);
         return;
       }
-      
-      // 사용자 ID와 공급자 정보 가져오기
-      const userId = currentUser.uid;
-      const provider = currentUser.provider;
-      
-      // 히스토리 데이터 요청
-      const response = await historyService.getTarotHistory(userId, provider, cursorDocId);
+
+      // 히스토리 데이터 요청 (Firebase ID Token으로 인증)
+      const response = await historyService.getTarotHistory(cursorDocId);
       
       // 응답 구조에 따라 데이터 처리
       if (response && typeof response === 'object' && 'history' in response) {

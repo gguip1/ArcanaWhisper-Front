@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReadingResult from '../components/ReadingResult';
 import { useTarot } from '../contexts/TarotContext';
