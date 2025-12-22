@@ -1,6 +1,7 @@
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import LoadingScreen from '../components/LoadingScreen';
+import ProtectedRoute from '../components/ProtectedRoute';
 import { ROUTES } from '../constants';
 
 // 페이지 컴포넌트들을 lazy loading으로 불러오기
@@ -18,7 +19,7 @@ const AppRouter: React.FC = () => {
         <Route path={ROUTES.QUESTION} element={<QuestionPage />} />
         <Route path={ROUTES.CARDS} element={<CardSelectionPage />} />
         <Route path={ROUTES.RESULT} element={<ResultPage />} />
-        <Route path={ROUTES.HISTORY} element={<HistoryPage />} />
+        <Route path={ROUTES.HISTORY} element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
         {/* 404 페이지 - 홈으로 리다이렉트 */}
         <Route path="*" element={<HomePage />} />
       </Routes>

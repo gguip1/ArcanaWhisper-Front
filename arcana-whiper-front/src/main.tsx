@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import AppNew from './AppNew.tsx' // 새로운 아키텍처 기반 App 사용
+import ErrorBoundary from './components/ErrorBoundary'
 
 // 앱 시작 시 인증 서비스 초기화
 import './services/authService'
@@ -42,6 +43,8 @@ if (!navigator.onLine) {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AppNew />
+    <ErrorBoundary>
+      <AppNew />
+    </ErrorBoundary>
   </StrictMode>,
 )
