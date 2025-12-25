@@ -25,17 +25,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // 인증 서비스 구독
-    const unsubscribe = authService.subscribe((userData) => {
-      setUser(userData);
+    let unsubscribe: (() => void) | undefined;
+
+    const initAuth = async () => {
+      // Auth 초기화 완료 대기
+      await authService.waitForAuthReady();
+
+      // 인증 서비스 구독
+      unsubscribe = authService.subscribe((userData) => {
+        setUser(userData);
+      });
+
+      // 초기 사용자 정보 설정 후 로딩 완료
+      setUser(authService.currentUser);
       setIsLoading(false);
-    });
+    };
 
-    // 초기 사용자 정보 설정
-    setUser(authService.currentUser);
-    setIsLoading(false);
+    initAuth();
 
-    return unsubscribe;
+    return () => {
+      unsubscribe?.();
+    };
   }, []);
 
   const signIn = async (provider: AuthProviderType): Promise<UserProfile> => {

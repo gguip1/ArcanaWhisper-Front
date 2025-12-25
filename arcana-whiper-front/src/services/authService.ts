@@ -40,8 +40,16 @@ const USER_STORAGE_KEY = 'arcana_whisper_user';
 class AuthService {
   private currentUserProfile: UserProfile | null = null;
   private listeners: Array<(user: UserProfile | null) => void> = [];
+  private authInitialized: boolean = false;
+  private authReadyPromise: Promise<void>;
+  private authReadyResolve: (() => void) | null = null;
 
   constructor() {
+    // Auth 초기화 완료 Promise 생성
+    this.authReadyPromise = new Promise((resolve) => {
+      this.authReadyResolve = resolve;
+    });
+
     // 로컬 스토리지에서 사용자 정보 복원
     const savedUser = this.getSavedUser();
     if (savedUser) {
@@ -62,12 +70,26 @@ class AuthService {
         this.currentUserProfile = userProfile;
         this.saveUser(userProfile);
       } else {
-        this.currentUserProfile = null;
-        this.clearSavedUser();
+        // 초기화 완료 후에만 null 처리 (세션 복원 대기)
+        if (this.authInitialized) {
+          this.currentUserProfile = null;
+          this.clearSavedUser();
+        }
+      }
+
+      // 첫 번째 콜백에서 초기화 완료 표시
+      if (!this.authInitialized) {
+        this.authInitialized = true;
+        this.authReadyResolve?.();
       }
 
       this.notifyListeners();
     });
+  }
+
+  // Auth 초기화 완료 대기
+  async waitForAuthReady(): Promise<void> {
+    return this.authReadyPromise;
   }
 
   // Firebase 사용자 데이터 파싱
@@ -111,20 +133,65 @@ class AuthService {
 
   // Google 로그인 처리
   async signIn(provider: AuthProvider): Promise<UserProfile> {
-    try {
-      if (provider !== 'google') {
-        throw new Error(`지원하지 않는 로그인 제공자: ${provider}`);
-      }
-
-      const authProvider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, authProvider);
-      this.currentUserProfile = this.parseUserData(result.user);
-      this.saveUser(this.currentUserProfile);
-      this.notifyListeners();
-      return this.currentUserProfile;
-    } catch (error) {
-      throw error;
+    if (provider !== 'google') {
+      throw new Error(`지원하지 않는 로그인 제공자: ${provider}`);
     }
+
+    const authProvider = new GoogleAuthProvider();
+
+    // 팝업 창 닫힘 감지를 위한 Promise 래핑
+    return new Promise((resolve, reject) => {
+      let popupCheckInterval: ReturnType<typeof setInterval> | null = null;
+      let isResolved = false;
+
+      // 팝업 창 참조를 얻기 위해 window.open 이벤트 감지
+      const originalOpen = window.open;
+      let popupWindow: Window | null = null;
+
+      window.open = function(...args) {
+        popupWindow = originalOpen.apply(this, args);
+        return popupWindow;
+      };
+
+      // 팝업 닫힘 체크 (200ms 간격)
+      popupCheckInterval = setInterval(() => {
+        if (popupWindow && popupWindow.closed && !isResolved) {
+          isResolved = true;
+          clearInterval(popupCheckInterval!);
+          window.open = originalOpen;
+          reject(new Error('LOGIN_CANCELLED'));
+        }
+      }, 200);
+
+      signInWithPopup(auth, authProvider)
+        .then((result) => {
+          if (!isResolved) {
+            isResolved = true;
+            if (popupCheckInterval) clearInterval(popupCheckInterval);
+            window.open = originalOpen;
+
+            this.currentUserProfile = this.parseUserData(result.user);
+            this.saveUser(this.currentUserProfile);
+            this.notifyListeners();
+            resolve(this.currentUserProfile);
+          }
+        })
+        .catch((error) => {
+          if (!isResolved) {
+            isResolved = true;
+            if (popupCheckInterval) clearInterval(popupCheckInterval);
+            window.open = originalOpen;
+
+            const firebaseError = error as { code?: string };
+            if (firebaseError.code === 'auth/popup-closed-by-user' ||
+                firebaseError.code === 'auth/cancelled-popup-request') {
+              reject(new Error('LOGIN_CANCELLED'));
+            } else {
+              reject(error);
+            }
+          }
+        });
+    });
   }
 
   // 로그아웃
