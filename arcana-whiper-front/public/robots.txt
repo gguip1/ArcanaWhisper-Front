@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aitarot.site/sitemap.xml
+Sitemap: https://www.aitarot.site/sitemap.xml
