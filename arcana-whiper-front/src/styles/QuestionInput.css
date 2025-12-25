@@ -237,6 +237,60 @@
   box-shadow: none;
 }
 
+/* ===== 사용량 표시 ===== */
+.usage-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: var(--space-lg);
+  text-align: center;
+}
+
+.usage-count {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.usage-login-hint {
+  font-size: 0.8rem;
+  color: var(--accent-primary);
+  opacity: 0.7;
+}
+
+.usage-info.exhausted {
+  padding: var(--space-md);
+  background: rgba(183, 110, 121, 0.1);
+  border: 1px solid rgba(183, 110, 121, 0.3);
+  border-radius: var(--radius-md);
+}
+
+.usage-exhausted-text {
+  font-size: 0.9rem;
+  color: var(--warm-primary);
+  font-weight: 500;
+}
+
+.usage-login-button {
+  margin-top: var(--space-sm);
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, #818cf8 100%);
+  border: none;
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.usage-login-button:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+  transform: translateY(-1px);
+}
+
 /* ===== 애니메이션 ===== */
 @keyframes fadeIn {
   from {
