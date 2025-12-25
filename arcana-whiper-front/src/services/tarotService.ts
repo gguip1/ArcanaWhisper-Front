@@ -3,6 +3,7 @@
  */
 
 import { auth } from './authService';
+import { getGuestToken } from './usageService';
 
 // 타로 카드 정보에 대한 타입 정의
 interface TarotCards {
@@ -60,13 +61,20 @@ export async function requestTarotReading(requestData: TarotRequest): Promise<Ta
       requestData: JSON.stringify(requestData)
     });
 
-    // API 호출
+    // API 호출 (로그인: Authorization, 비로그인: X-Guest-Token)
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    if (idToken) {
+      headers['Authorization'] = `Bearer ${idToken}`;
+    } else {
+      headers['X-Guest-Token'] = getGuestToken();
+    }
+
     const response = await fetch(`${API_URL}/tarot`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(idToken && { Authorization: `Bearer ${idToken}` }),
-      },
+      headers,
       body: JSON.stringify(requestData),
       signal: controller.signal
     });

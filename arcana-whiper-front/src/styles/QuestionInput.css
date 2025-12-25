@@ -1,13 +1,20 @@
+/* Question Input Styles - Open Layout */
+
+/* ===== 메인 컨테이너 ===== */
 .question-container {
+  position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   width: 100%;
   padding: 2rem;
   box-sizing: border-box;
+  overflow: hidden;
+  background: var(--bg-primary);
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(-20px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
@@ -16,258 +23,351 @@
   transform: translateY(0);
 }
 
-/* 배경 효과 */
-.mystical-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+/* ===== 별빛 배경 ===== */
+.question-container .starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1.5px 1.5px at 10% 20%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(2px 2px at 25% 60%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 45% 30%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 70% 80%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 85% 15%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(2px 2px at 90% 50%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 30% 85%, rgba(165, 180, 252, 0.8), transparent),
+    radial-gradient(1.5px 1.5px at 60% 10%, rgba(165, 180, 252, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 15% 45%, rgba(183, 110, 121, 0.7), transparent),
+    radial-gradient(2px 2px at 75% 35%, rgba(183, 110, 121, 0.6), transparent),
+    radial-gradient(1px 1px at 5% 75%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 35% 5%, rgba(255, 255, 255, 0.6), transparent),
+    var(--bg-gradient);
+  animation: twinkle 8s ease-in-out infinite;
+}
+
+/* ===== 별똥별 ===== */
+.question-container .shooting-stars {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
   overflow: hidden;
-  z-index: -1;
 }
 
-.stars {
+.question-container .shooting-stars span {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: radial-gradient(2px 2px at 50px 50px, var(--text-primary) 100%, transparent 0),
-                    radial-gradient(1px 1px at 100px 100px, var(--text-primary) 100%, transparent 0),
-                    radial-gradient(1px 1px at 150px 150px, var(--text-primary) 100%, transparent 0),
-                    radial-gradient(2px 2px at 200px 200px, var(--text-primary) 100%, transparent 0);
-  background-size: 550px 550px;
-  opacity: 0.3;
-  animation: twinkle 10s ease-in-out infinite;
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.5; }
-}
-
-.moon {
-  position: absolute;
-  top: 10%;
-  right: 10%;
   width: 100px;
-  height: 100px;
-  border-radius: var(--radius-circle);
-  background: linear-gradient(135deg, var(--accent-light), var(--accent-primary));
-  box-shadow: var(--shadow-glow-indigo);
-  opacity: 0.7;
-  animation: glow 4s infinite alternate;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(165, 180, 252, 0.6), transparent);
+  border-radius: 100px;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+  opacity: 0;
+  transform: rotate(-45deg);
+  animation: shootingStar 6s ease-out infinite;
 }
 
-@keyframes glow {
-  from { box-shadow: 0 0 20px var(--accent-glow); }
-  to { box-shadow: 0 0 40px var(--accent-glow); }
+.question-container .shooting-stars span:nth-child(1) { top: 8%; left: 20%; animation-delay: 0.5s; }
+.question-container .shooting-stars span:nth-child(2) { top: 18%; left: 70%; animation-delay: 1.5s; background: linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(183, 110, 121, 0.6), transparent); }
+.question-container .shooting-stars span:nth-child(3) { top: 5%; left: 50%; animation-delay: 2.5s; }
+.question-container .shooting-stars span:nth-child(4) { top: 25%; left: 35%; animation-delay: 3.2s; background: linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(183, 110, 121, 0.6), transparent); }
+.question-container .shooting-stars span:nth-child(5) { top: 12%; left: 85%; animation-delay: 0.8s; }
+.question-container .shooting-stars span:nth-child(6) { top: 30%; left: 60%; animation-delay: 2.0s; background: linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(183, 110, 121, 0.6), transparent); }
+.question-container .shooting-stars span:nth-child(7) { top: 3%; left: 30%; animation-delay: 3.8s; }
+.question-container .shooting-stars span:nth-child(8) { top: 22%; left: 95%; animation-delay: 1.2s; background: linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(183, 110, 121, 0.6), transparent); }
+
+/* ===== 뒤로가기 버튼 (원형, 로그인 버튼과 동일) ===== */
+.question-container .home-button {
+  top: 1rem;
+  left: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 50%;
 }
 
-/* 카드 스타일 */
-.question-card {
-  width: 100%;
-  max-width: 650px;
-  background: var(--bg-overlay);
-  border-radius: var(--radius-xl);
-  padding: 2.5rem;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border-accent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+.question-container .home-icon {
+  font-size: 1.1rem;
 }
 
-.question-title {
-  font-size: 2.2rem;
-  color: var(--accent-light);
-  text-align: center;
-  margin: 0 0 0.5rem;
-  text-shadow: var(--shadow-glow-indigo);
+@media (max-width: 768px) {
+  .question-container .home-button {
+    top: 0.8rem;
+    left: 0.8rem;
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  .question-container .home-icon {
+    font-size: 1rem;
+  }
 }
 
-.question-subtitle {
-  color: var(--text-muted);
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.question-form {
+/* ===== 메인 콘텐츠 ===== */
+.question-main {
+  position: relative;
+  z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+  padding: var(--space-xl);
+  animation: fadeIn 1s ease-out;
 }
 
-.textarea-wrapper {
-  position: relative;
+/* ===== 질문 프롬프트 ===== */
+.question-prompt {
+  font-size: clamp(1.3rem, 5vw, 1.6rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2xl);
+  letter-spacing: 2px;
+  opacity: 0.95;
+}
+
+/* ===== 질문 폼 ===== */
+.question-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
 }
 
 .question-textarea {
   width: 100%;
-  min-height: 130px;
-  padding: 1rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border-accent);
+  min-height: 120px;
+  padding: var(--space-md);
+  background: rgba(26, 26, 46, 0.5);
+  border: 1px solid rgba(183, 110, 121, 0.3);
   border-radius: var(--radius-lg);
   color: var(--text-primary);
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  text-align: center;
   resize: none;
-  box-sizing: border-box;
   transition: all var(--transition-normal);
-}
-
-/* 입력 요소는 텍스트 커서 유지 */
-.question-textarea {
   cursor: text !important;
+  backdrop-filter: blur(5px);
 }
 
-/* 버튼 요소 명시적 포인터 지정 */
-.action-buttons button {
-  cursor: pointer !important;
-}
-
-.action-buttons button * {
-  cursor: pointer !important;
-}
-
-.action-buttons button.disabled,
-.action-buttons button:disabled {
-  cursor: not-allowed !important;
-}
-
-.action-buttons button.disabled *,
-.action-buttons button:disabled * {
-  cursor: not-allowed !important;
+.question-textarea::placeholder {
+  color: rgba(148, 163, 184, 0.5);
+  font-style: italic;
 }
 
 .question-textarea:focus {
   outline: none;
-  border-color: var(--border-focus);
-  box-shadow: var(--shadow-glow-indigo);
+  border-color: var(--warm-primary);
+  box-shadow: 0 0 30px rgba(183, 110, 121, 0.2);
+  background: rgba(26, 26, 46, 0.7);
 }
 
-.character-count {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: var(--bg-card);
-  padding: 3px 8px;
-  border-radius: var(--radius-lg);
-  font-size: 0.8rem;
+/* ===== 입력 힌트 ===== */
+.input-hint {
+  font-size: 0.85rem;
   color: var(--text-muted);
+  opacity: 0.7;
+  min-height: 1.2rem;
 }
 
-.warning {
+.input-hint .warning {
   color: var(--status-warning);
+  opacity: 1;
 }
 
-/* 버튼 영역 */
-.action-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
-.back-button, .continue-button {
+/* ===== CTA 버튼 ===== */
+.cta-button {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0.8rem 1.5rem;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 240px;
+  padding: 1rem 1.5rem;
+  margin-top: var(--space-lg);
+  background: linear-gradient(135deg, var(--warm-primary) 0%, #c9868f 100%);
+  border: none;
   border-radius: var(--radius-full);
+  color: var(--text-primary);
   font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  box-shadow:
+    0 0 30px rgba(183, 110, 121, 0.3),
+    0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Shimmer 효과 */
+.cta-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.cta-button:not(.disabled):hover {
+  box-shadow:
+    0 0 50px rgba(183, 110, 121, 0.4),
+    0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.cta-button:not(.disabled):hover::after {
+  animation: shimmer 0.7s ease-out;
+}
+
+.cta-button.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ===== 사용량 표시 ===== */
+.usage-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: var(--space-lg);
+  text-align: center;
+}
+
+.usage-count {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.usage-login-hint {
+  font-size: 0.8rem;
+  color: var(--accent-primary);
+  opacity: 0.7;
+}
+
+.usage-info.exhausted {
+  padding: var(--space-md);
+  background: rgba(183, 110, 121, 0.1);
+  border: 1px solid rgba(183, 110, 121, 0.3);
+  border-radius: var(--radius-md);
+}
+
+.usage-exhausted-text {
+  font-size: 0.9rem;
+  color: var(--warm-primary);
+  font-weight: 500;
+}
+
+.usage-login-button {
+  margin-top: var(--space-sm);
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, #818cf8 100%);
+  border: none;
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-normal);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
 }
 
-.back-button {
-  background: var(--bg-card);
-  color: var(--text-muted);
-  border: 1px solid var(--border-default);
+.usage-login-button:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+  transform: translateY(-1px);
 }
 
-.back-button:hover {
-  background: var(--bg-overlay);
-  color: var(--text-primary);
-  transform: translateY(-2px);
-}
-
-.continue-button {
-  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  color: var(--text-primary);
-  border: none;
-  box-shadow: var(--shadow-button);
-}
-
-.continue-button:not(.disabled):hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-button-hover);
-}
-
-.continue-button.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-/* 반응형 스타일 */
-@media (max-width: 768px) {
-  .question-card {
-    padding: 2rem;
+/* ===== 애니메이션 ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
   }
-  
-  .question-title {
-    font-size: 1.8rem;
-  }
-  
-  .moon {
-    width: 80px;
-    height: 80px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes shootingStar {
+  0% { opacity: 0; transform: rotate(-45deg) translateX(0); }
+  3% { opacity: 1; }
+  15% { opacity: 0; transform: rotate(-45deg) translateX(-350px); }
+  100% { opacity: 0; transform: rotate(-45deg) translateX(-350px); }
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ===== 반응형 ===== */
 @media (max-width: 576px) {
   .question-container {
     padding: 1rem;
   }
-  
-  .question-card {
-    padding: 1.5rem;
+
+  .question-main {
+    padding: var(--space-lg);
   }
-  
-  .question-title {
-    font-size: 1.6rem;
+
+  .question-prompt {
+    letter-spacing: 1px;
+    margin-bottom: var(--space-xl);
   }
-  
-  .question-subtitle {
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+
+  .question-textarea {
+    min-height: 100px;
+    font-size: 1rem;
   }
-  
-  .action-buttons {
-    flex-direction: column;
-    gap: 1rem;
+
+  .cta-button {
+    max-width: 200px;
+    padding: 0.9rem 1.2rem;
+    font-size: 0.95rem;
   }
-  
-  .back-button, .continue-button {
-    width: 100%;
-    justify-content: center;
+}
+
+/* ===== 모션 감소 ===== */
+@media (prefers-reduced-motion: reduce) {
+  .question-container {
+    transition: opacity 0.3s ease;
+    transform: none;
   }
-  
-  .back-button {
-    order: 2;
+
+  .question-main {
+    animation: none;
   }
-  
-  .continue-button {
-    order: 1;
+
+  .question-container .starfield {
+    animation: none;
   }
-  
-  .moon {
-    width: 60px;
-    height: 60px;
-    top: 5%;
-    right: 5%;
+
+  .question-container .shooting-stars span {
+    animation: none;
+    opacity: 0;
+  }
+
+  .cta-button:not(.disabled):hover::after {
+    animation: none;
   }
 }

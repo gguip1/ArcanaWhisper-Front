@@ -60,6 +60,11 @@ const LoginButton: React.FC<LoginButtonProps> = ({
       await authService.signIn('google');
       setShowDropdown(false);
     } catch (err) {
+      // 로그인 취소는 조용히 무시
+      if (err instanceof Error && err.message === 'LOGIN_CANCELLED') {
+        setShowDropdown(false);
+        return;
+      }
       errorService.showError(err instanceof Error ? err.message : '로그인 중 오류가 발생했습니다');
     } finally {
       setLoading(false);
@@ -115,15 +120,10 @@ const LoginButton: React.FC<LoginButtonProps> = ({
       );
     }
 
-    return (
-      <>
-        <span className="login-icon"></span>
-        <span className="login-text">로그인</span>
-      </>
-    );
+    return <span className="login-icon"></span>;
   };
 
-  const buttonClass = `login-button ${user ? 'logged-in' : ''} ${initialLoading ? 'initializing' : ''}`;
+  const buttonClass = `login-button ${user ? 'logged-in' : ''} ${initialLoading ? 'initializing' : ''} ${loading ? 'loading' : ''}`;
 
   return (
     <div className={`login-button-container ${positionClass} ${className}`} ref={dropdownRef}>
