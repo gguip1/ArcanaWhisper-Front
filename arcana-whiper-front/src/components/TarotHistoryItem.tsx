@@ -2,8 +2,7 @@ import { useState, useMemo } from 'react';
 import {
   FaChevronDown,
   FaChevronUp,
-  FaClock,
-  FaMagic
+  FaClock
 } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
 import { HistoryItem } from '../services/historyService';
@@ -17,16 +16,22 @@ interface TarotHistoryItemProps {
 const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item }) => {
   const [expanded, setExpanded] = useState(false);
 
-  // 날짜 포맷팅 (한국어)
+  // 날짜 포맷팅 (한국어, KST 타임존)
   const formattedDate = useMemo(() => {
     try {
-      const date = new Date(item.created_at);
+      // 서버가 UTC 시간을 타임존 정보 없이 보내는 경우 'Z' 추가
+      let dateStr = item.created_at;
+      if (!dateStr.endsWith('Z') && !dateStr.includes('+') && !dateStr.includes('-', 10)) {
+        dateStr += 'Z';
+      }
+      const date = new Date(dateStr);
       return new Intl.DateTimeFormat('ko-KR', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
+        timeZone: 'Asia/Seoul'
       }).format(date);
     } catch {
       return item.created_at; // 포맷팅 실패 시 원본 문자열 반환
@@ -60,10 +65,6 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item }) => {
               <FaClock className="date-icon" />
               {formattedDate}
             </span>
-            <span className="history-item-cards">
-              <FaMagic className="cards-icon" />
-              {selectedCards.length}장의 카드
-            </span>
           </div>
         </div>
         <button
@@ -94,13 +95,7 @@ const TarotHistoryItem: React.FC<TarotHistoryItemProps> = ({ item }) => {
           </div>
 
           <div className="history-result">
-            <h3 className="result-title">
-              <FaMagic className="result-title-icon" />
-              리딩 결과
-            </h3>
-            <div className="result-content">
-              <ReactMarkdown>{item.result}</ReactMarkdown>
-            </div>
+            <ReactMarkdown>{item.result}</ReactMarkdown>
           </div>
         </div>
       )}

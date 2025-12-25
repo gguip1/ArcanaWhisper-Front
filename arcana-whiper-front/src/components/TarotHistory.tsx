@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { FaRedo, FaArrowLeft } from 'react-icons/fa';
+import { FaRedo, FaHome } from 'react-icons/fa';
 import authService from '../services/authService';
 import historyService, { HistoryItem } from '../services/historyService';
 import errorService from '../services/errorService';
@@ -31,7 +31,7 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadingRef = useRef<HTMLDivElement>(null);
   
-  // 컴포넌트 마운트 시 데이터 로드
+  // 컴포넌트 마운트 시 데이터 로드 (ProtectedRoute에서 이미 Auth 확인 완료)
   useEffect(() => {
     loadHistory();
   }, []);
@@ -143,13 +143,29 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
 
   return (
     <div className="tarot-history-container">
+      {/* 별빛 배경 */}
+      <div className="starfield"></div>
+
+      {/* 별똥별 효과 */}
+      <div className="shooting-stars">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      {/* 홈으로 돌아가는 버튼 - 원형 아이콘만 */}
       <button
         className="home-button"
         onClick={onGoHome}
         title="홈으로"
+        aria-label="홈으로"
       >
-        <FaArrowLeft className="button-icon" />
-        <span className="home-text">홈으로</span>
+        <FaHome className="home-icon" />
       </button>
 
       <div className="history-header">
