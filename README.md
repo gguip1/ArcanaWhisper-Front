@@ -1,7 +1,5 @@
 # ArcanaWhisper
 
-![ArcanaWhisper Banner](assets/readme/banner.png)
-
 <p align="center">
   <strong>AI 기반 타로 리딩 서비스</strong>
 </p>
@@ -12,6 +10,8 @@
   <img src="https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white" alt="Vite 6">
   <img src="https://img.shields.io/badge/Firebase-Auth-FFCA28?logo=firebase&logoColor=black" alt="Firebase Auth">
 </p>
+
+![ArcanaWhisper Banner](assets/readme/banner.png)
 
 ---
 
