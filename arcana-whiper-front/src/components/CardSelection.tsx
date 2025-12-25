@@ -178,6 +178,21 @@ const CardSelection: React.FC<CardSelectionProps> = ({
   
   return (
     <div className="card-selection-container">
+      {/* 별빛 배경 */}
+      <div className="starfield" />
+
+      {/* 별똥별 */}
+      <div className="shooting-stars">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
       <button
         className="home-button"
         onClick={handleBackButtonClick}
@@ -185,7 +200,6 @@ const CardSelection: React.FC<CardSelectionProps> = ({
         aria-label="뒤로"
       >
         <FaArrowLeft className="home-icon" />
-        <span className="home-text">뒤로</span>
       </button>
 
       <div className="card-selection-header">
@@ -244,10 +258,10 @@ const CardSelection: React.FC<CardSelectionProps> = ({
         <div className="card-action-overlay">
           <div className="card-action-panel">
             <div className="card-action-content">
-              <h2 className="card-action-title">선택 완료</h2>
+              <h2 className="card-action-title">운명의 카드</h2>
               <div className="card-action-description-container">
                 <p className="card-action-description-line">
-                  {selectedCards.length}장의 카드를 선택했습니다
+                  선택된 카드가 당신의 이야기를 기다리고 있습니다
                 </p>
               </div>
               <div className="card-action-buttons">

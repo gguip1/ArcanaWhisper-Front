@@ -1,9 +1,10 @@
 import { useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { FaHome, FaMagic } from 'react-icons/fa';
-import { shuffleCards } from '../data/tarotData';
+import { majorArcana } from '../data/tarotData';
 import TarotResultCard from './TarotResultCard';
 import { useSEO } from '../hooks';
+import '../styles/ReadingResult.css';
 
 // 카드 정보 타입 정의
 interface SelectedCardInfo {
@@ -56,19 +57,31 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
 
   // 카드 포지션 정의
   const positions = ['첫 번째 카드', '두 번째 카드', '세 번째 카드'];
-  
-  // 전체 카드 데이터 가져오기
-  const allCards = shuffleCards();
 
   // 선택한 카드 정보 가져오기
   const selectedCards = selectedCardInfos.map(cardInfo => {
-    const card = allCards.find(c => c.number === cardInfo.number);
+    const card = majorArcana.find(c => c.number === cardInfo.number);
     return card ? { ...card, reversed: cardInfo.reversed } : undefined;
   }).filter(card => card !== undefined);
 
   return (
     <div className="reading-result-container">
-      {/* 홈으로 돌아가는 버튼 */}
+      {/* 별빛 배경 */}
+      <div className="starfield"></div>
+
+      {/* 별똥별 효과 */}
+      <div className="shooting-stars">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      {/* 홈으로 돌아가는 버튼 - 원형 아이콘만 */}
       <button
         className="home-button"
         onClick={handleHomeButtonClick}
@@ -76,7 +89,6 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
         aria-label="홈으로"
       >
         <FaHome className="home-icon" />
-        <span className="home-text">홈으로</span>
       </button>
 
       <div className="reading-header">

@@ -26,51 +26,68 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ onSubmit, onCancel }) => 
 
   return (
     <div className={`question-container ${animateIn ? 'active' : ''}`}>
-      <div className="mystical-background">
-        <div className="stars"></div>
-        <div className="moon"></div>
+      {/* 별빛 배경 */}
+      <div className="starfield" aria-hidden="true" />
+
+      {/* 별똥별 */}
+      <div className="shooting-stars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
 
-      <div className="question-card">
-        <h1 className="question-title">타로에게 질문하기</h1>
-        <p className="question-subtitle">마음속에 품고 있던 질문을 입력해주세요</p>
+      {/* 뒤로가기 버튼 - 좌측 상단 고정 */}
+      <button
+        type="button"
+        className="home-button"
+        onClick={onCancel}
+        title="뒤로"
+        aria-label="홈으로 돌아가기"
+      >
+        <FaArrowLeft className="home-icon" />
+      </button>
 
+      {/* 메인 콘텐츠 - 열린 레이아웃 */}
+      <main className="question-main">
+        {/* 질문 프롬프트 */}
+        <p className="question-prompt">무엇이 궁금하신가요?</p>
+
+        {/* 질문 폼 */}
         <form onSubmit={handleSubmit} className="question-form">
-          <div className="textarea-wrapper">
-            <textarea
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="예: 나의 연애운은 어떨까요?"
-              className="question-textarea"
-              maxLength={200}
-              autoFocus
-            />
-            <div className="character-count">
-              <span className={question.length < 5 ? "warning" : ""}>
-                {question.length}/200
-                {question.length < 5 && question.length > 0 && ' (질문은 최소 5글자 이상 입력해주세요.)'}
-              </span>
-            </div>
+          <textarea
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder="마음속 질문을 자유롭게 적어주세요..."
+            className="question-textarea"
+            maxLength={200}
+            autoFocus
+          />
+
+          {/* 글자수 힌트 */}
+          <div className="input-hint">
+            <span className={question.length > 0 && question.length < 5 ? 'warning' : ''}>
+              {question.length > 0 && question.length < 5
+                ? '5글자 이상 입력해주세요'
+                : `${question.length}/200`}
+            </span>
           </div>
 
-          <div className="action-buttons">
-            <button
-              type="button"
-              className="back-button"
-              onClick={onCancel}
-            >
-              <FaArrowLeft /> 취소
-            </button>
-            <button
-              type="submit"
-              className={`continue-button ${isValid ? '' : 'disabled'}`}
-              disabled={!isValid}
-            >
-              질문 완료 <FaArrowRight />
-            </button>
-          </div>
+          {/* CTA 버튼 */}
+          <button
+            type="submit"
+            className={`cta-button ${isValid ? '' : 'disabled'}`}
+            disabled={!isValid}
+          >
+            <span>카드 선택하기</span>
+            <FaArrowRight />
+          </button>
         </form>
-      </div>
+      </main>
     </div>
   );
 };

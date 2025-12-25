@@ -15,17 +15,18 @@
   right: 1rem;
 }
 
-/* 로그인 버튼 스타일 - 항상 원형 유지하도록 수정 */
+/* 로그인 버튼 스타일 - 항상 원형 */
 .login-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
   background: var(--bg-overlay);
   color: var(--accent-light);
   border: 1px solid var(--border-accent);
-  padding: 0.7rem 1.2rem;
-  border-radius: var(--radius-full);
+  border-radius: 50%;
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
@@ -38,11 +39,9 @@
 .login-button:hover {
   background: var(--accent-glow);
   box-shadow: var(--shadow-button-hover);
-  transform: translateY(-2px);
 }
 
 .login-button:active {
-  transform: translateY(0);
   box-shadow: var(--shadow-sm);
   background: var(--accent-glow);
 }
@@ -75,9 +74,9 @@
 
 .login-icon {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23d4b2ff' d='M352 96h64c17.7 0 32 14.3 32 32V384c0 17.7-14.3 32-32 32H352c-17.7 0-32 14.3-32 32s14.3 32 32 32h64c53 0 96-43 96-96V128c0-53-43-96-96-96H352c-17.7 0-32 14.3-32 32s14.3 32 32 32zm-7.5 177.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H32c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H160v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z'/%3E%3C/svg%3E");
+  width: 18px;
+  height: 18px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23A5B4FC' d='M352 96h64c17.7 0 32 14.3 32 32V384c0 17.7-14.3 32-32 32H352c-17.7 0-32 14.3-32 32s14.3 32 32 32h64c53 0 96-43 96-96V128c0-53-43-96-96-96H352c-17.7 0-32 14.3-32 32s14.3 32 32 32zm-7.5 177.4c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22v72H32c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H160v72c0 9.6 5.7 18.2 14.5 22s19 2 26-4.6l144-136z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -155,7 +154,6 @@
 
 .provider-button:hover {
   background: var(--accent-glow);
-  transform: translateY(-2px);
 }
 
 .provider-icon {
@@ -221,31 +219,49 @@
   cursor: pointer;
   transition: all var(--transition-normal);
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .logout-button:hover {
   background: rgba(239, 68, 68, 0.3);
-  transform: translateY(-2px);
 }
 
 /* 초기화 중인 버튼 내부 로더 스타일 */
 .initializing-button {
+  display: block;
   width: 1.5rem;
   height: 1.5rem;
-  border-radius: var(--radius-circle);
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
   border: 2px solid var(--border-accent);
   border-top-color: var(--accent-light);
   animation: spin 1.2s linear infinite;
+  flex-shrink: 0;
+}
+
+/* 로딩 중인 버튼 스타일 */
+.login-button.loading {
+  pointer-events: none;
 }
 
 .loading-spinner {
-  display: inline-block;
+  display: block;
   width: 18px;
   height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  aspect-ratio: 1 / 1;
   border: 2px solid var(--border-accent);
-  border-radius: var(--radius-circle);
+  border-radius: 50%;
   border-top-color: var(--accent-light);
   animation: spin 1s linear infinite;
+  margin: 0 auto;
+  flex-shrink: 0;
 }
 
 @keyframes spin {
@@ -281,40 +297,19 @@
     top: 0.8rem;
     right: 0.8rem;
   }
-  
+
   .login-button {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .login-button.logged-in {
     width: 2.2rem;
     height: 2.2rem;
   }
 }
 
 @media (max-width: 480px) {
-  .login-button {
-    top: 0.6rem;
-    left: 0.6rem;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
-  
-  .login-icon {
-    font-size: 0.9rem;
-  }
-  
-  /* 모바일에서는 아이콘만 표시 */
-  .login-text {
-    display: none;
-  }
-  
-  .login-button {
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 50%;
-    padding: 0;
+  .loading-spinner {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
   }
 }
 
@@ -338,7 +333,6 @@
 
 .history-button:hover {
   background: rgba(99, 102, 241, 0.3);
-  transform: translateY(-2px);
   box-shadow: var(--shadow-button);
 }
 
