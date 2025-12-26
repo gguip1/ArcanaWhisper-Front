@@ -6,6 +6,7 @@ const initialState: TarotState = {
   selectedCards: [],
   question: '',
   readingResult: '',
+  historyId: '',
   isLoading: false,
   currentPage: 'home',
 };
@@ -19,6 +20,8 @@ const tarotReducer = (state: TarotState, action: TarotAction): TarotState => {
       return { ...state, question: action.payload };
     case 'SET_READING_RESULT':
       return { ...state, readingResult: action.payload };
+    case 'SET_HISTORY_ID':
+      return { ...state, historyId: action.payload };
     case 'SET_LOADING':
       return { ...state, isLoading: action.payload };
     case 'SET_CURRENT_PAGE':
@@ -38,6 +41,7 @@ interface TarotContextType {
   setSelectedCards: (cards: SelectedCardInfo[]) => void;
   setQuestion: (question: string) => void;
   setReadingResult: (result: string) => void;
+  setHistoryId: (historyId: string) => void;
   setLoading: (loading: boolean) => void;
   setCurrentPage: (page: PageType) => void;
   resetState: () => void;
@@ -68,6 +72,10 @@ export const TarotProvider: FC<TarotProviderProps> = ({ children }) => {
     dispatch({ type: 'SET_READING_RESULT', payload: result });
   };
 
+  const setHistoryId = (historyId: string) => {
+    dispatch({ type: 'SET_HISTORY_ID', payload: historyId });
+  };
+
   const setLoading = (loading: boolean) => {
     dispatch({ type: 'SET_LOADING', payload: loading });
   };
@@ -86,6 +94,7 @@ export const TarotProvider: FC<TarotProviderProps> = ({ children }) => {
     setSelectedCards,
     setQuestion,
     setReadingResult,
+    setHistoryId,
     setLoading,
     setCurrentPage,
     resetState,

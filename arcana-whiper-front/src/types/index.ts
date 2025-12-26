@@ -21,15 +21,17 @@ export interface TarotState {
   selectedCards: SelectedCardInfo[];
   question: string;
   readingResult: string;
+  historyId: string;
   isLoading: boolean;
   currentPage: PageType;
 }
 
 // 타로 액션 타입
-export type TarotAction = 
+export type TarotAction =
   | { type: 'SET_SELECTED_CARDS'; payload: SelectedCardInfo[] }
   | { type: 'SET_QUESTION'; payload: string }
   | { type: 'SET_READING_RESULT'; payload: string }
+  | { type: 'SET_HISTORY_ID'; payload: string }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_CURRENT_PAGE'; payload: PageType }
   | { type: 'RESET_STATE' };
@@ -53,10 +55,15 @@ export interface TarotResponse {
     reversed: boolean[];
   };
   result: string;
+  history_id: string;
 }
 
-// 히스토리 관련 타입
-export interface HistoryItem {
+// 공유 관련 타입
+export interface CreateShareResponse {
+  share_id: string;
+}
+
+export interface SharedReading {
   question: string;
   cards: {
     cards: number[];
@@ -64,6 +71,19 @@ export interface HistoryItem {
   };
   result: string;
   created_at: string;
+}
+
+// 히스토리 관련 타입
+export interface HistoryItem {
+  history_id: string;
+  question: string;
+  cards: {
+    cards: number[];
+    reversed: boolean[];
+  };
+  result: string;
+  created_at: string;
+  is_shared: boolean;
 }
 
 export interface HistoryResponse {

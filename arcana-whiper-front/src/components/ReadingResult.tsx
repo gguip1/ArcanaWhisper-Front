@@ -1,9 +1,11 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { FaHome, FaMagic } from 'react-icons/fa';
+import { FaHome, FaMagic, FaLink, FaComment } from 'react-icons/fa';
 import { majorArcana } from '../data/tarotData';
 import TarotResultCard from './TarotResultCard';
 import { useSEO } from '../hooks';
+import { createShareLink, getShareUrl } from '../services/shareService';
+import { shareToKakao, canShareToKakao, initKakao } from '../services/kakaoService';
 import '../styles/ReadingResult.css';
 
 // 카드 정보 타입 정의
@@ -17,7 +19,8 @@ interface ReadingResultProps {
   onNewReading: () => void;
   onGoHome: () => void;
   question?: string;
-  selectedCardInfos?: SelectedCardInfo[]; // 방향 정보를 포함한 카드 정보
+  selectedCardInfos?: SelectedCardInfo[];
+  historyId?: string;
 }
 
 const ReadingResult: React.FC<ReadingResultProps> = ({
@@ -25,9 +28,14 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
   onNewReading,
   onGoHome,
   question = '',
-  selectedCardInfos = []
+  selectedCardInfos = [],
+  historyId = ''
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [shareError, setShareError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [shareId, setShareId] = useState<string | null>(null);
 
   // SEO 설정 - 질문과 결과를 포함한 동적 메타데이터
   const truncatedQuestion = question.length > 50 ? question.substring(0, 50) + '...' : question;
@@ -40,7 +48,7 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
   useEffect(() => {
     // 페이지 최상단으로 스크롤
     window.scrollTo(0, 0);
-    
+
     // 첫 번째 단락에 스타일 적용
     if (contentRef.current) {
       const firstParagraph = contentRef.current.querySelector('p');
@@ -50,9 +58,65 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
     }
   }, []);
 
+  // 카카오 SDK 미리 초기화
+  useEffect(() => {
+    if (canShareToKakao()) {
+      initKakao();
+    }
+  }, []);
+
   // 홈 버튼 클릭 효과 처리
   const handleHomeButtonClick = () => {
     onGoHome();
+  };
+
+  // 공유 링크 생성 (한 번만 생성하고 재사용)
+  const getOrCreateShareId = async (): Promise<string> => {
+    if (shareId) return shareId;
+
+    const newShareId = await createShareLink(historyId);
+    setShareId(newShareId);
+    return newShareId;
+  };
+
+  // 링크 복사 처리
+  const handleCopyLink = async () => {
+    if (!historyId || isLoading) return;
+
+    setIsLoading(true);
+    setShareError(null);
+
+    try {
+      const id = await getOrCreateShareId();
+      const shareUrl = getShareUrl(id);
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error('링크 복사 실패:', error);
+      setShareError(error instanceof Error ? error.message : '링크 복사에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 카카오톡 공유 처리
+  const handleKakaoShare = async () => {
+    if (!historyId || isLoading) return;
+
+    setIsLoading(true);
+    setShareError(null);
+
+    try {
+      const id = await getOrCreateShareId();
+      const shareUrl = getShareUrl(id);
+      shareToKakao(shareUrl, question);
+    } catch (error) {
+      console.error('카카오톡 공유 실패:', error);
+      setShareError(error instanceof Error ? error.message : '카카오톡 공유에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // 카드 포지션 정의
@@ -109,7 +173,7 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
       <div className="section-connector"></div>
       
       {/* 카드 영역 - 테두리 제거 */}
-      <div className="content-card card-section fade-in" style={{animationDelay: '0.2s'}}>
+      <div className="content-card card-section fade-in">
         <h2 className="section-title">선택한 카드</h2>
         <div className="cards-container">
           {selectedCards.length > 0 && (
@@ -132,14 +196,38 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
       <div className="section-connector"></div>
       
       {/* 결과 영역 - 이중 테두리 제거 */}
-      <div className="content-card result-section fade-in" style={{animationDelay: '0.4s'}}>
+      <div className="content-card result-section fade-in">
         <h2 className="section-title">리딩 결과</h2>
         <div className="reading-content" ref={contentRef}>
           <ReactMarkdown>{markdown}</ReactMarkdown>
         </div>
       </div>
       
-      <div className="reading-actions fade-in" style={{animationDelay: '0.5s'}}>
+      <div className="reading-actions fade-in">
+        {historyId && (
+          <div className="share-buttons">
+            <button
+              className="share-btn link-btn"
+              onClick={handleCopyLink}
+              disabled={isLoading}
+              aria-label="링크 복사"
+            >
+              <FaLink />
+              <span>{copied ? '복사됨' : '링크 복사'}</span>
+            </button>
+            {canShareToKakao() && (
+              <button
+                className="share-btn kakao-btn"
+                onClick={handleKakaoShare}
+                disabled={isLoading}
+                aria-label="카카오톡 공유"
+              >
+                <FaComment />
+                <span>카카오톡</span>
+              </button>
+            )}
+          </div>
+        )}
         <button
           className="reading-action-btn primary-action"
           onClick={onNewReading}
@@ -148,6 +236,12 @@ const ReadingResult: React.FC<ReadingResultProps> = ({
           <FaMagic /> <span className="btn-text">새로운 리딩</span>
         </button>
       </div>
+
+      {shareError && (
+        <div className="share-error fade-in">
+          {shareError}
+        </div>
+      )}
     </div>
   );
 };

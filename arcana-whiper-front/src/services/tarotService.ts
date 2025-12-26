@@ -4,6 +4,7 @@
 
 import { auth } from './authService';
 import { getGuestToken } from './usageService';
+import { TarotResponse } from '../types';
 
 // 타로 카드 정보에 대한 타입 정의
 interface TarotCards {
@@ -13,17 +14,10 @@ interface TarotCards {
 
 // API 요청에 대한 타입 정의
 interface TarotRequest {
-  cards: TarotCards; // 카드와 방향 정보를 포함하는 객체로 변경
+  cards: TarotCards;
   question: string;
   user_id?: string;
   provider?: string;
-}
-
-// API 응답에 대한 타입 정의
-interface TarotResponse {
-  message: string;
-  cards: TarotCards; // 카드와 방향 정보를 포함하는 객체로 변경
-  result: string;
 }
 
 /**

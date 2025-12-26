@@ -6,7 +6,7 @@ import { useTarot } from '../contexts/TarotContext';
 const ResultPage: React.FC = () => {
   const navigate = useNavigate();
   const {
-    state: { readingResult, question, selectedCards },
+    state: { readingResult, question, selectedCards, historyId },
     resetState
   } = useTarot();
 
@@ -38,6 +38,7 @@ const ResultPage: React.FC = () => {
       onGoHome={handleGoHome}
       question={question}
       selectedCardInfos={selectedCards}
+      historyId={historyId}
     />
   );
 };

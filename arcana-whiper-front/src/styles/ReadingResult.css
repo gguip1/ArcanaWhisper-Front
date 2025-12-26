@@ -406,12 +406,68 @@
 /* 액션 버튼 영역 */
 .reading-actions {
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
   margin-top: 0.5rem;
   margin-bottom: 2rem;
   position: relative;
   z-index: 1;
+}
+
+/* 공유 버튼 그룹 */
+.share-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* 공유 버튼 공통 스타일 */
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+}
+
+.share-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 링크 복사 버튼 */
+.share-btn.link-btn {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-dark) 100%);
+  color: var(--text-primary);
+  box-shadow: 0 2px 10px var(--accent-glow);
+}
+
+.share-btn.link-btn:hover:not(:disabled) {
+  box-shadow: 0 4px 15px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.share-btn.link-btn span {
+  min-width: 52px;
+  text-align: center;
+}
+
+/* 카카오톡 버튼 */
+.share-btn.kakao-btn {
+  background: #FEE500;
+  color: #191919;
+  box-shadow: 0 2px 10px rgba(254, 229, 0, 0.3);
+}
+
+.share-btn.kakao-btn:hover:not(:disabled) {
+  box-shadow: 0 4px 15px rgba(254, 229, 0, 0.5);
+  transform: translateY(-1px);
 }
 
 /* 액션 버튼 - warm 그라데이션 */
@@ -455,6 +511,53 @@
 
 .reading-action-btn.primary-action:hover::before {
   left: 150%;
+}
+
+/* 공유 버튼 - 인디고 그라데이션 */
+.reading-action-btn.secondary-action {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-dark) 100%);
+  box-shadow: var(--shadow-button);
+}
+
+.reading-action-btn.secondary-action:hover {
+  box-shadow: var(--shadow-button-hover);
+}
+
+.reading-action-btn.secondary-action:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.reading-action-btn.secondary-action::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 60px;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(30deg);
+  transition: left 0.6s ease;
+}
+
+.reading-action-btn.secondary-action:hover:not(:disabled)::before {
+  left: 150%;
+}
+
+/* 공유 에러 메시지 */
+.share-error {
+  text-align: center;
+  color: var(--status-error);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--status-error-bg);
+  border-radius: var(--radius-md);
+  max-width: min(400px, calc(100vw - 4rem));
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 1;
 }
 
 /* 반응형 디자인 */
@@ -557,6 +660,11 @@
   .section-connector {
     height: 30px;
   }
+
+  .share-btn {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 360px) {
@@ -581,20 +689,18 @@
   }
 }
 
-/* 애니메이션 */
+/* 애니메이션 - opacity만 사용하여 레이아웃 시프트 방지 */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
 .fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
 /* 모션 감소 설정 */

@@ -7,6 +7,7 @@ import { requestTarotReading } from '../services/tarotService';
 import authService from '../services/authService';
 import errorService from '../services/errorService';
 import { MAX_CARDS } from '../constants';
+import { TarotResponse } from '../types';
 
 const CardSelectionPage: React.FC = () => {
   const navigate = useNavigate();
@@ -14,13 +15,14 @@ const CardSelectionPage: React.FC = () => {
     state: { selectedCards, question },
     setSelectedCards,
     setReadingResult,
+    setHistoryId,
     resetState
   } = useTarot();
 
   const {
     loading: isLoading,
     execute: executeReading,
-  } = useAsyncOperation<string>();
+  } = useAsyncOperation<TarotResponse>();
 
   // API 응답 완료 상태 (로딩바 애니메이션용)
   const [isReadingComplete, setIsReadingComplete] = useState(false);
@@ -60,7 +62,7 @@ const CardSelectionPage: React.FC = () => {
     }
 
     try {
-      const result = await executeReading(async () => {
+      const response = await executeReading(async () => {
         // 로그인 상태 확인
         const currentUser = authService.currentUser;
 
@@ -78,11 +80,11 @@ const CardSelectionPage: React.FC = () => {
           })
         };
 
-        const response = await requestTarotReading(requestData);
-        return response.result;
+        return await requestTarotReading(requestData);
       });
 
-      setReadingResult(result);
+      setReadingResult(response.result);
+      setHistoryId(response.history_id);
       // 바로 navigate하지 않고, 로딩바 완료 애니메이션 시작
       setIsReadingComplete(true);
 
