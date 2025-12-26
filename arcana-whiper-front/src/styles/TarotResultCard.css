@@ -52,12 +52,49 @@
   justify-content: center;
 }
 
+/* 카드 이미지 placeholder */
+.tarot-card-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--bg-tertiary) 0%,
+    var(--bg-secondary) 50%,
+    var(--bg-tertiary) 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
 /* 카드 이미지 */
 .tarot-card-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
+  transition: opacity 0.15s ease;
+}
+
+.tarot-card-image.loading {
+  opacity: 0;
+}
+
+.tarot-card-image.loaded {
+  opacity: 1;
 }
 
 /* 역방향: 이미지만 회전 */

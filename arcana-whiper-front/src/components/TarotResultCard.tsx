@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import '../styles/TarotResultCard.css';
 
 interface TarotResultCardProps {
@@ -13,6 +14,8 @@ const TarotResultCard: React.FC<TarotResultCardProps> = ({
   position,
   reversed = false
 }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   // 카드 번호 → 이미지 파일 매핑 (number 1 = 0.jpg)
   const imageNumber = number - 1;
   const imagePath = `/assets/tarot-cards/${imageNumber}.jpg`;
@@ -26,11 +29,13 @@ const TarotResultCard: React.FC<TarotResultCardProps> = ({
 
       <div className={`tarot-result-card ${reversed ? 'reversed' : ''}`}>
         <div className="tarot-card-image-wrapper">
+          {!imageLoaded && <div className="tarot-card-placeholder" />}
           <img
             src={imagePath}
             alt={name}
-            className="tarot-card-image"
-            loading="lazy"
+            className={`tarot-card-image ${imageLoaded ? 'loaded' : 'loading'}`}
+            loading="eager"
+            onLoad={() => setImageLoaded(true)}
           />
           <div className="tarot-card-name-overlay">{name}</div>
         </div>
