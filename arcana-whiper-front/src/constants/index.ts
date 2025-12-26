@@ -22,6 +22,7 @@ export const ROUTES = {
   CARDS: '/cards',
   RESULT: '/result',
   HISTORY: '/history',
+  SHARED: '/shared/:shareId',
 } as const;
 
 // 애니메이션 상수

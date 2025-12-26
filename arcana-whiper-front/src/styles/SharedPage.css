@@ -1,0 +1,236 @@
+/* 공유 페이지 전용 스타일 */
+
+/* 공유 페이지 컨테이너 */
+.shared-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+  position: relative;
+}
+
+/* 헤더 로고 */
+.shared-header-logo {
+  position: absolute;
+  top: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-light);
+  letter-spacing: 1px;
+  z-index: 100;
+  opacity: 0.8;
+}
+
+/* CTA 섹션 */
+.shared-cta-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: min(500px, calc(100vw - 4rem));
+  position: relative;
+  z-index: 1;
+}
+
+.shared-cta-text {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  text-align: center;
+  margin: 0;
+}
+
+.shared-cta-button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-dark) 100%);
+  box-shadow: var(--shadow-button);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.shared-cta-button:hover {
+  box-shadow: var(--shadow-button-hover);
+  transform: translateY(-2px);
+}
+
+.shared-cta-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 60px;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(30deg);
+  transition: left 0.6s ease;
+}
+
+.shared-cta-button:hover::before {
+  left: 150%;
+}
+
+/* 푸터 */
+.shared-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  margin-top: auto;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  position: relative;
+  z-index: 1;
+}
+
+.shared-footer-brand {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+
+.shared-footer-divider {
+  opacity: 0.5;
+}
+
+.shared-footer-tagline {
+  opacity: 0.8;
+}
+
+/* 로딩 콘텐츠 - 스피너는 LoadingScreen.css 재사용 */
+.shared-loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* 에러 페이지 */
+.shared-error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.shared-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-light);
+  margin-bottom: 3rem;
+  letter-spacing: 2px;
+}
+
+.shared-error-icon {
+  font-size: 3rem;
+  color: var(--warm-primary);
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+}
+
+.shared-error-title {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.shared-error-message {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  max-width: 300px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .shared-header-logo {
+    font-size: 0.9rem;
+    top: 1rem;
+  }
+
+  .shared-cta-section {
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+  }
+
+  .shared-cta-button {
+    padding: 0.9rem 1.8rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .shared-header-logo {
+    font-size: 0.85rem;
+    top: 0.8rem;
+  }
+
+  .shared-cta-section {
+    padding: 1.2rem;
+    margin: 1rem auto;
+  }
+
+  .shared-cta-text {
+    font-size: 0.9rem;
+  }
+
+  .shared-cta-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .shared-footer {
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .shared-footer-divider {
+    display: none;
+  }
+
+  .shared-error-title {
+    font-size: 1.3rem;
+  }
+
+  .shared-error-icon {
+    font-size: 2.5rem;
+  }
+}
+
+/* 모션 감소 설정 */
+@media (prefers-reduced-motion: reduce) {
+  .shared-cta-button {
+    transition: none;
+  }
+
+  .shared-cta-button::before {
+    display: none;
+  }
+
+  .shared-cta-button:hover {
+    transform: none;
+  }
+}
