@@ -3,26 +3,16 @@
  */
 
 import { auth } from './authService';
+import { HistoryItem, HistoryResponse } from '../types';
 
-// 타로 카드 정보 타입 정의
+// 타로 카드 정보 타입 정의 (내부용)
 export interface TarotCards {
   cards: number[];
   reversed: boolean[];
 }
 
-// 히스토리 아이템 타입 정의
-export interface HistoryItem {
-  question: string;
-  cards: TarotCards; // 카드 배열에서 객체로 변경
-  result: string;
-  created_at: string;
-}
-
-// 히스토리 응답 타입 정의 (페이지네이션 지원)
-export interface HistoryResponse {
-  history: HistoryItem[];
-  next_cursor_doc_id: string | null;
-}
+// 타입 재export (기존 import 호환성)
+export type { HistoryItem, HistoryResponse };
 
 /**
  * 타로 카드 히스토리 서비스 클래스
@@ -86,7 +76,15 @@ export class HistoryService {
       
       // 성공적인 응답 반환
       const data = await response.json();
-      
+
+      // DEBUG: 히스토리 API 응답 확인
+      console.log('히스토리 API 응답:', JSON.stringify(data, null, 2));
+      if (data.history && data.history.length > 0) {
+        console.log('첫 번째 아이템 키:', Object.keys(data.history[0]));
+        console.log('history_id 존재?', 'history_id' in data.history[0]);
+        console.log('is_shared 존재?', 'is_shared' in data.history[0]);
+      }
+
       // 이전 API 호환성을 위한 처리 (배열 형태로 반환된 경우)
       if (Array.isArray(data)) {
         console.warn('서버가 이전 형식의 응답을 반환했습니다. 페이지네이션이 지원되지 않습니다.');
