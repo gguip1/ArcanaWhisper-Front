@@ -2,12 +2,13 @@ import { useEffect } from 'react';
 
 export const useStructuredData = () => {
   useEffect(() => {
+    const siteUrl = import.meta.env.VITE_SITE_URL || 'https://tarotnow.cloud';
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "ArcanaWhisper - AI 타로 리딩",
       "description": "AI 타로 리딩으로 당신의 운명을 알아보세요. 타로 카드와 인공지능이 속삭이는 운명의 메시지를 지금 확인하세요.",
-      "url": "https://aitarot.site",
+      "url": siteUrl,
       "applicationCategory": "LifestyleApplication",
       "operatingSystem": "Any",
       "offers": {
