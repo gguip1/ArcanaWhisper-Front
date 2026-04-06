@@ -91,7 +91,7 @@ ArcanaWhisper는 AI가 타로 카드를 해석해주는 웹 서비스입니다. 
 git clone https://github.com/your-username/arcana-whisper-front.git
 
 # 디렉토리 이동
-cd arcana-whisper-front/arcana-whiper-front
+cd ArcanaWhisper-Front
 
 # 의존성 설치
 npm install
@@ -134,19 +134,13 @@ npm run preview
 ## 프로젝트 구조
 
 ```
-arcana-whiper-front/
-├── src/
-│   ├── components/     # UI 컴포넌트
-│   ├── pages/          # 페이지 컴포넌트
-│   ├── contexts/       # React Context
-│   ├── hooks/          # 커스텀 훅
-│   ├── services/       # API 서비스
-│   ├── styles/         # CSS 파일
-│   ├── data/           # 정적 데이터
-│   ├── types/          # TypeScript 타입
-│   └── utils/          # 유틸리티 함수
+ArcanaWhisper-Front/
+├── src/                # 애플리케이션 소스
 ├── public/             # 정적 파일
-└── docs/               # 프로젝트 문서
+├── assets/             # README 등 문서 자산
+├── .github/workflows/  # CI/CD
+├── package.json
+└── vite.config.ts
 ```
 
 ---

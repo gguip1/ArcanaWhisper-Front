@@ -25,3 +25,10 @@ scripts/
 claude.md
 
 .playwright-mcp
+
+# Frontend build artifacts
+node_modules
+dist
+dist-ssr
+*.local
+.env.local
