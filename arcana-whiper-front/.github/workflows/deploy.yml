@@ -1,0 +1,84 @@
+name: Frontend CI/CD
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || secrets.AWS_REGION || 'ap-northeast-2' }}
+  AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN || secrets.AWS_ROLE_ARN }}
+  S3_BUCKET: ${{ vars.S3_BUCKET || secrets.S3_BUCKET }}
+  CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID || secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create build environment file
+        run: |
+          cat <<'EOF' > .env.production
+          VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY || vars.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN=${{ secrets.VITE_FIREBASE_AUTH_DOMAIN || vars.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID=${{ secrets.VITE_FIREBASE_PROJECT_ID || vars.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.VITE_FIREBASE_STORAGE_BUCKET || vars.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID || vars.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID || vars.VITE_FIREBASE_APP_ID }}
+          VITE_KAKAO_JS_KEY=${{ secrets.VITE_KAKAO_JS_KEY || vars.VITE_KAKAO_JS_KEY }}
+          VITE_API_URL=${{ secrets.VITE_API_URL || vars.VITE_API_URL }}
+          EOF
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Configure AWS credentials
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+
+      - name: Upload static files to S3
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          aws s3 sync dist/ s3://$S3_BUCKET --delete --exclude "*.html" --exclude "robots.txt" --exclude "sitemap.xml" --cache-control "public, max-age=31536000, immutable"
+          aws s3 sync dist/ s3://$S3_BUCKET --delete --exclude "*" --include "*.html" --cache-control "no-cache, no-store, must-revalidate" --content-type "text/html"
+
+          if [ -f dist/robots.txt ]; then
+            aws s3 cp dist/robots.txt s3://$S3_BUCKET/robots.txt --cache-control "no-cache, max-age=300" --content-type "text/plain"
+          fi
+
+          if [ -f dist/sitemap.xml ]; then
+            aws s3 cp dist/sitemap.xml s3://$S3_BUCKET/sitemap.xml --cache-control "no-cache, max-age=300" --content-type "application/xml"
+          fi
+
+      - name: Invalidate CloudFront cache
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: aws cloudfront create-invalidation --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" --paths "/*"

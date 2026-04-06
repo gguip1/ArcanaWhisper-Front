@@ -4,12 +4,14 @@ interface HomeProps {
   onStartReading: () => void;
 }
 
+const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://tarotnow.cloud';
+
 const Home: React.FC<HomeProps> = ({ onStartReading }) => {
   // SEO 설정
   useSEO({
     title: 'ArcanaWhisper - AI 타로 리딩으로 보는 운명의 메시지',
     description: 'AI 타로 리딩으로 당신의 운명을 알아보세요. 타로 카드와 인공지능이 속삭이는 운명의 메시지를 지금 확인하세요.',
-    canonical: 'https://aitarot.site'
+    canonical: SITE_URL
   });
 
   return (
