@@ -55,7 +55,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ onSubmit, onCancel }) => 
   const handleLoginClick = async () => {
     try {
       await signIn('google');
-    } catch (error) {
+    } catch {
       // 로그인 취소 무시
     }
   };

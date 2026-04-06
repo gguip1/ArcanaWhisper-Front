@@ -133,7 +133,7 @@ export class HistoryService {
         hour: '2-digit',
         minute: '2-digit'
       }).format(date);
-    } catch (error) {
+    } catch {
       return dateString; // 포맷팅 실패 시 원본 문자열 반환
     }
   }

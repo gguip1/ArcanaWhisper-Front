@@ -50,6 +50,7 @@ jobs:
           VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID || vars.VITE_FIREBASE_APP_ID }}
           VITE_KAKAO_JS_KEY=${{ secrets.VITE_KAKAO_JS_KEY || vars.VITE_KAKAO_JS_KEY }}
           VITE_API_URL=${{ secrets.VITE_API_URL || vars.VITE_API_URL }}
+          VITE_SITE_URL=${{ secrets.VITE_SITE_URL || vars.VITE_SITE_URL || 'https://tarotnow.cloud' }}
           EOF
 
       - name: Lint

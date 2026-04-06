@@ -16,12 +16,13 @@ firebase_cred_base64.txt
 samconfig.toml
 
 # 로컬 문서/스크립트
-docs/
-scripts/
 
 # Playwright 테스트 관련
 .playwright-mcp
 
-claude.md
-
-.playwright-mcp
+# Frontend build artifacts
+node_modules
+dist
+dist-ssr
+*.local
+.env.local

@@ -1,5 +1,5 @@
 {
-  "name": "arcana-whiper-front",
+  "name": "arcanawhisper-front",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "setup:hooks": "git config core.hooksPath .githooks",
     "preview": "vite preview"
   },
   "dependencies": {
