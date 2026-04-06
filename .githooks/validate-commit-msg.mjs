@@ -21,10 +21,26 @@ if (/^(Merge |Revert |fixup! |squash! )/.test(firstLine)) {
   process.exit(0);
 }
 
-const pattern =
-  /^(✨|🐛|♻️|📝|🎨|✅|🔧|👷|🚀|📦|⚡|🔥) (feat|fix|refactor|docs|style|test|chore|ci|build|perf|remove)(\([^)]+\))?: .+/u;
+const allowedMappings = [
+  ['\u2728', 'feat'],
+  ['\u{1F41B}', 'fix'],
+  ['\u267B\uFE0F', 'refactor'],
+  ['\u{1F4DD}', 'docs'],
+  ['\u{1F3A8}', 'style'],
+  ['\u2705', 'test'],
+  ['\u{1F527}', 'chore'],
+  ['\u{1F477}', 'ci'],
+  ['\u{1F4E6}', 'build'],
+  ['\u{1F680}', 'deploy'],
+  ['\u26A1', 'perf'],
+  ['\u{1F525}', 'remove'],
+];
 
-if (pattern.test(firstLine)) {
+const validPrefixes = allowedMappings.map(
+  ([emoji, type]) => new RegExp(`^${emoji} ${type}(\\([^)]+\\))?: .+`, 'u')
+);
+
+if (validPrefixes.some((pattern) => pattern.test(firstLine))) {
   process.exit(0);
 }
 
@@ -38,6 +54,7 @@ Examples:
   🐛 fix(auth): 로그인 취소 처리 수정
   ♻️ refactor: 히스토리 로딩 구조 정리
   👷 ci: 프론트 배포 워크플로우 수정
+  🚀 deploy: S3 배포 단계 조정
 
 Allowed emojis/types:
   ✨ feat
@@ -48,8 +65,8 @@ Allowed emojis/types:
   ✅ test
   🔧 chore
   👷 ci
-  🚀 build
   📦 build
+  🚀 deploy
   ⚡ perf
   🔥 remove`);
 
