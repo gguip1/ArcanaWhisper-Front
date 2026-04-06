@@ -31,13 +31,8 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadingRef = useRef<HTMLDivElement>(null);
   
-  // 컴포넌트 마운트 시 데이터 로드 (ProtectedRoute에서 이미 Auth 확인 완료)
-  useEffect(() => {
-    loadHistory();
-  }, []);
-  
   // 히스토리 데이터 로드 함수
-  const loadHistory = async (cursorDocId?: string) => {
+  const loadHistory = useCallback(async (cursorDocId?: string) => {
     try {
       if (!cursorDocId) {
         setLoading(true);  // 초기 로드시에만 전체 로딩 표시
@@ -92,7 +87,12 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
       setLoading(false);
       setLoadingMore(false);
     }
-  };
+  }, [onGoHome]);
+
+  // 컴포넌트 마운트 시 데이터 로드 (ProtectedRoute에서 이미 Auth 확인 완료)
+  useEffect(() => {
+    loadHistory();
+  }, [loadHistory]);
   
   // 정렬된 히스토리 아이템
   const sortedItems = [...historyItems].sort((a, b) => {
@@ -111,7 +111,7 @@ const TarotHistory: React.FC<TarotHistoryProps> = ({ onGoHome }) => {
         loadHistory(nextCursor);
       }
     },
-    [hasMore, loadingMore, loading, nextCursor]
+    [hasMore, loadingMore, loading, nextCursor, loadHistory]
   );
   
   // Observer 설정

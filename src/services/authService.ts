@@ -107,7 +107,7 @@ class AuthService {
   private saveUser(user: UserProfile): void {
     try {
       localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
-    } catch (error) {
+    } catch {
       // 저장 실패 시 무시
     }
   }
@@ -117,7 +117,7 @@ class AuthService {
     try {
       const savedUser = localStorage.getItem(USER_STORAGE_KEY);
       return savedUser ? JSON.parse(savedUser) : null;
-    } catch (error) {
+    } catch {
       return null;
     }
   }
@@ -126,7 +126,7 @@ class AuthService {
   private clearSavedUser(): void {
     try {
       localStorage.removeItem(USER_STORAGE_KEY);
-    } catch (error) {
+    } catch {
       // 삭제 실패 시 무시
     }
   }
@@ -196,14 +196,10 @@ class AuthService {
 
   // 로그아웃
   async signOut(): Promise<void> {
-    try {
-      await firebaseSignOut(auth);
-      this.currentUserProfile = null;
-      this.clearSavedUser();
-      this.notifyListeners();
-    } catch (error) {
-      throw error;
-    }
+    await firebaseSignOut(auth);
+    this.currentUserProfile = null;
+    this.clearSavedUser();
+    this.notifyListeners();
   }
 
   // 현재 사용자 정보
