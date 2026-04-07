@@ -61,12 +61,12 @@
 
 .reading-result-container .shooting-stars span {
   position: absolute;
-  width: 100px;
+  width: 78px;
   height: 2px;
   background: linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(165, 180, 252, 0.6), transparent);
   border-radius: 50%;
   transform: rotate(-45deg);
-  animation: shootingResult 6s linear infinite;
+  animation: shootingResult 5.2s ease-out infinite;
   opacity: 0;
   filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
 }
@@ -108,10 +108,10 @@
 }
 
 @keyframes shootingResult {
-  0% { transform: rotate(-45deg) translateX(0) translateY(0); opacity: 0; }
-  10% { opacity: 1; }
-  70% { opacity: 1; }
-  100% { transform: rotate(-45deg) translateX(-300px) translateY(150px); opacity: 0; }
+  0% { transform: rotate(-45deg) translateX(0); opacity: 0; }
+  3% { opacity: 1; }
+  14% { transform: rotate(-45deg) translateX(-260px); opacity: 0; }
+  100% { transform: rotate(-45deg) translateX(-260px); opacity: 0; }
 }
 
 /* 홈 버튼 - 원형 아이콘 */
